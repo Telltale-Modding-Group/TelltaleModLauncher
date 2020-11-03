@@ -7,6 +7,7 @@ This launcher is designed to make installing and managing mods for Telltale Game
 - Texture Mods
 - Sound Mods
 - Scripting Mods
+
 Scripting mods are currently possible using the Telltale Script Editor, however the other two are currently a work in progress.
 
 ## Supported Games
