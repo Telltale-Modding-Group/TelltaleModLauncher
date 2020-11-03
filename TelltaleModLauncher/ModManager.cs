@@ -12,6 +12,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace TelltaleModLauncher
 {
+    /// <summary>
+    /// The main class for the mod manager functionality.
+    /// </summary>
     class ModManager
     {
         //public variables
@@ -22,22 +25,26 @@ namespace TelltaleModLauncher
         //private variables
         private IOManagement ioManagement = new IOManagement();
 
+
         public ModManager ()
         {
-            Mod mod1 = new Mod("Load Any Level", "4.0.0", "droyti");
+            //all of the values here are temporary and are for testing purposes
             List<string> modFiles = new List<string>();
             modFiles.Add("_resdesc_50_Boot_LoadAnyLevel.lua");
             modFiles.Add("_resdesc_50_Menu_LoadAnyLevel.lua");
             modFiles.Add("WDC_pc_Boot_data_LoadAnyLevel.ttarch2");
             modFiles.Add("WDC_pc_Menu_data_LoadAnyLevel.ttarch2");
-            mod1.SetModFiles(modFiles);
+            Mod mod1 = new Mod("Load Any Level", "4.0.0", "droyti", modFiles);
 
-            Mod mod2 = new Mod("Season 4 Graphic Black Disabler", "1.0.0", "changemymindpls1");
-            Mod mod3 = new Mod("Season 1 Weapon Sounds Overhaul", "1.5.0", "changemymindpls1");
-            Mod mod4 = new Mod("Ambience", "1.0.0", "droyti");
-            Mod mod5 = new Mod("Super Speed for S1", "1.0.0", "imdogshitatwritingcode");
-            Mod mod6 = new Mod("Graphics Enhancement Definitve Series", "2.0.0", "jesuschrist");
-            Mod mod7 = new Mod("Telltale Trainer", "2.0.0", "stolenFromGtaV");
+
+
+
+            Mod mod2 = new Mod("Season 4 Graphic Black Disabler", "1.0.0", "changemymindpls1", new List<string>());
+            Mod mod3 = new Mod("Season 1 Weapon Sounds Overhaul", "1.5.0", "changemymindpls1", new List<string>());
+            Mod mod4 = new Mod("Ambience", "1.0.0", "droyti", new List<string>());
+            Mod mod5 = new Mod("Super Speed for S1", "1.0.0", "imdogshitatwritingcode", new List<string>());
+            Mod mod6 = new Mod("Graphics Enhancement Definitve Series", "2.0.0", "jesuschrist", new List<string>());
+            Mod mod7 = new Mod("Telltale Trainer", "2.0.0", "stolenFromGtaV", new List<string>());
 
             mods.Add(mod1);
             mods.Add(mod2);
@@ -79,6 +86,7 @@ namespace TelltaleModLauncher
 
         public void PurgeMods()
         {
+            //temporarily here to test functionaltiy
             Json_WriteModFile();
 
             //if (ioManagement.MessageBox_Confirmation("Are you sure you want to purge the mod directory? This will remove all the mod files currently installed. This action can't be reverted.", "Purge Mods"))
