@@ -4,9 +4,12 @@ Telltale Mod Launcher, encapsulates the Mod Installer and Mod Creator projects i
 **NOTE: This project is still heavily a work in progress. Many critical features have not been implemented just yet and there will be issues/bugs that you will encounter.**
 
 ## Telltale Mod Launcher
-This launcher is designed to make installing and managing mods for Telltale Games much easier through a launcher interface. In addition to that, the launcher also includes the tools necessary for you to create a mod for a Telltale Title.
+This launcher is designed to make installing and managing mods for Telltale Games much easier through a launcher interface. In addition to that, the launcher also includes the tools necessary for you to create a mod for a Telltale Title. You will be able to make the following mods.
+- Texture Mods
+- Sound Mods
+- Scripting Mods
 
-Currently supports
+The launcher currently supports the following games.
 - The Walking Dead Definitive Edition
 
 NOTE: The installer has not been tested with any other Telltale game besides 'The Walking Dead Definitive Edition' though future support is planned.
