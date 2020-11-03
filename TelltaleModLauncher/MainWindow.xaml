@@ -1,0 +1,114 @@
+﻿<mah:MetroWindow x:Class="TelltaleModLauncher.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TelltaleModLauncher"
+        mc:Ignorable="d"
+                 GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+                 ResizeMode="CanMinimize"
+        Title="Telltale Mod Launcher" Height="354.097" Width="669.355" WindowStartupLocation="CenterScreen">
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <iconPacks:BootstrapIcons Width="30" Height="22" Kind="GearFill" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <Grid>
+        <mah:MetroAnimatedSingleRowTabControl Height="305" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left">
+            <TabItem Header="Launcher">
+                <Grid>
+                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,258"/>
+                    <mah:Tile Name="ui_launcher_launchgame_tile" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="457">
+                        <StackPanel>
+                            <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
+                            <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
+                        </StackPanel>
+                    </mah:Tile>
+                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="457"/>
+                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="457"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Mod Manager">
+                <Grid>
+                    <Label Name="ui_modmanager_gameversion_label" Content="The Walking Dead - Telltale Definitive Series" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="457"/>
+                    <ListView Name="ui_modmanager_modlist_listview" HorizontalAlignment="Left" Height="194" Margin="10,41,0,0" VerticalAlignment="Top" Width="457" SelectionChanged="ui_modmanager_modlist_listview_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Mod Name" DisplayMemberBinding="{Binding ModDisplayName}" />
+                                <GridViewColumn Header="Author"  DisplayMemberBinding="{Binding ModAuthor}" />
+                                <GridViewColumn Header="Version"  DisplayMemberBinding="{Binding ModVersion}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Name="ui_modmanager_addmod_button" HorizontalAlignment="Left" Margin="10,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="ui_modmanager_addmod_button_Click" ToolTip="Add a mod to the game.">
+                        <iconPacks:BootstrapIcons Width="20" Height="20" Kind="Plus"></iconPacks:BootstrapIcons>
+                    </Button>
+                    <Button Name="ui_modmanager_removemod_button" HorizontalAlignment="Left" Margin="55,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Click="ui_modmanager_removemod_button_Click" ToolTip="Remove the selected mod from the game.">
+                        <iconPacks:BootstrapIcons Width="20" Height="20" Kind="Dash"></iconPacks:BootstrapIcons>
+                    </Button>
+                    <Button Name="ui_modmanager_editmod_button" HorizontalAlignment="Left" Margin="100,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Content="{iconPacks:BootstrapIcons GearFill, Height=20, Width=20}" Click="ui_modmanager_editmod_button_Click" ToolTip="View/Edit the Mod."/>
+                    <Button Name="ui_modmanager_purgemod_button" HorizontalAlignment="Left" Margin="427,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Content="{iconPacks:BootstrapIcons TrashFill, Height=20, Width=20}" Click="ui_modmanager_purgemod_button_Click" ToolTip="Purge/Remove all Mods that are installed."/>
+                    <Separator HorizontalAlignment="Left" Height="14" Margin="10,235,0,0" VerticalAlignment="Top" Width="457"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Create">
+                <Grid>
+                    <mah:Tile Name="ui_create_scriptmod_tile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Script Mod Editor for creating Telltale Scripting Mods.">
+                        <StackPanel>
+                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileCodeSolid"></iconPacks:PackIconFontAwesome>
+                            <TextBlock Margin="0,10,0,0" FontSize="16">Script Mod</TextBlock>
+                        </StackPanel>
+                    </mah:Tile>
+                    <mah:Tile Name="ui_create_audiomod_tile" HorizontalAlignment="Left" Margin="163,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Audio Mod Editor for creating Telltale Audio Mods.">
+                        <StackPanel>
+                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileAudioSolid"></iconPacks:PackIconFontAwesome>
+                            <TextBlock Margin="0,10,0,0" FontSize="16">Audio Mod</TextBlock>
+                        </StackPanel>
+                    </mah:Tile>
+                    <mah:Tile Name="ui_create_texturemod_tile" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Texture Mod Editor for creating Telltale Texture Mods.">
+                        <StackPanel>
+                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="PaintBrushSolid"></iconPacks:PackIconFontAwesome>
+                            <TextBlock Margin="0,10,0,0" FontSize="16">Texture Mod</TextBlock>
+                        </StackPanel>
+                    </mah:Tile>
+                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the ">
+                        <StackPanel>
+                            <iconPacks:PackIconFontAwesome Width="90" Height="40" Kind="FolderOpenSolid"/>
+                            <TextBlock Margin="0,10,0,0" FontSize="16"><Run Text="View Archive"/></TextBlock>
+                        </StackPanel>
+                    </mah:Tile>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
+                <ScrollViewer>
+                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="672">
+                        <Label Name="ui_settings_gamesettings_label" Content="Game Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
+                        <Label Name="ui_settings_gamedirectory_label" Content="Game Directory" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_gamedirectory_textbox" HorizontalAlignment="Left" Height="23" Margin="10,87,0,0" TextWrapping="Wrap" Text="Game Directory Executable" VerticalAlignment="Top" Width="434"/>
+                        <Button Name="ui_settings_gamedirectorybrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_gamedirectorybrowse_button_Click"/>
+                        
+                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,150,0,0" VerticalAlignment="Top" Width="434"/>
+                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
+                        <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_ttarchexePath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,236,0,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_ttarchexePath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_ttarchexePathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_ttarchexePathBrowse_button_Click"/>
+                        <Label Name="ui_settings_luacompiler_label" Content="Lua Compiler Executable Path" HorizontalAlignment="Left" Margin="10,299,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_luacompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,330,0,0" TextWrapping="Wrap" Text="Lua Compiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luacompilerPath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_luacompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luacompilerPathBrowse_button_Click"/>
+                        <Label Name="ui_settings_luadecompiler_label" Content="Lua Decompiler Executable Path" HorizontalAlignment="Left" Margin="10,393,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_luadecompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,424,0,0" TextWrapping="Wrap" Text="Lua Decompiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luadecompilerPath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_luadecompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,455,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luadecompilerPathBrowse_button_Click"/>
+
+                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,487,0,0" VerticalAlignment="Top" Width="434"/>
+                        <Label Name="ui_settings_uisettings_label" Content="UI Settings" HorizontalAlignment="Left" Margin="10,501,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,7,5,5"/>
+                        <mah:ToggleSwitch Name="ui_settings_darkmode_toggle" Header="Light Theme" HorizontalAlignment="Left" Height="100" Margin="10,547,0,0" VerticalAlignment="Top" Width="100" Toggled="ui_settings_darkmode_toggle_Toggled"/>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </mah:MetroAnimatedSingleRowTabControl>
+    </Grid>
+</mah:MetroWindow>
