@@ -9,11 +9,11 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="View Mod" Height="348" Width="327.074" WindowStartupLocation="CenterScreen" Background="#FF0A0909" Closing="ViewMod_Closing">
+        Title="View Mod" Height="348" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-            <iconPacks:BootstrapIcons Width="30" Height="22" Kind="EyeFill" />
+            <iconPacks:BootstrapIcons Width="35" Height="18" Kind="EyeFill" />
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 

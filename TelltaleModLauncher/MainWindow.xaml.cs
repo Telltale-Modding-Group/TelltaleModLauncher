@@ -122,6 +122,7 @@ namespace TelltaleModLauncher
             string darkmodeTheme = ui_settings_darkmode_toggle.IsOn ? "Light.Blue" : "Dark.Blue";
 
             ThemeManager.Current.ChangeTheme(this, darkmodeTheme);
+            modManager_ViewMod.UI_ChangeTheme(darkmodeTheme);
         }
 
         private void ui_modmanager_viewmod_button_Click(object sender, RoutedEventArgs e)

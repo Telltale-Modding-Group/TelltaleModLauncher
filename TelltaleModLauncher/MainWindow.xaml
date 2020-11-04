@@ -9,7 +9,7 @@
         mc:Ignorable="d"
                  GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
                  ResizeMode="CanMinimize"
-        Title="Telltale Mod Launcher" Height="354.097" Width="669.355" WindowStartupLocation="CenterScreen">
+        Title="Telltale Mod Launcher" Height="352.097" Width="669.355" WindowStartupLocation="CenterScreen">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -18,7 +18,7 @@
     </mah:MetroWindow.LeftWindowCommands>
 
     <Grid>
-        <mah:MetroAnimatedSingleRowTabControl Height="305" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left">
+        <mah:MetroAnimatedSingleRowTabControl Height="303" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left">
             <TabItem Header="Launcher">
                 <Grid>
                     <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,258" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged"/>
@@ -91,27 +91,31 @@
             </TabItem>
             <TabItem Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
                 <ScrollViewer>
-                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="672">
+                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="736">
                         <Label Name="ui_settings_gamesettings_label" Content="Game Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
-                        <Label Name="ui_settings_gamedirectory_label" Content="Game Directory" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="434"/>
-                        <TextBox Name="ui_settings_gamedirectory_textbox" HorizontalAlignment="Left" Height="23" Margin="10,87,0,0" TextWrapping="Wrap" Text="Game Directory Executable" VerticalAlignment="Top" Width="434"/>
-                        <Button Name="ui_settings_gamedirectorybrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_gamedirectorybrowse_button_Click"/>
-                        
-                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,150,0,0" VerticalAlignment="Top" Width="434"/>
-                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
-                        <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Width="434"/>
-                        <TextBox Name="ui_settings_ttarchexePath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,236,0,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_ttarchexePath_textbox_TextChanged"/>
-                        <Button Name="ui_settings_ttarchexePathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_ttarchexePathBrowse_button_Click"/>
-                        <Label Name="ui_settings_luacompiler_label" Content="Lua Compiler Executable Path" HorizontalAlignment="Left" Margin="10,299,0,0" VerticalAlignment="Top" Width="434"/>
-                        <TextBox Name="ui_settings_luacompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,330,0,0" TextWrapping="Wrap" Text="Lua Compiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luacompilerPath_textbox_TextChanged"/>
-                        <Button Name="ui_settings_luacompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luacompilerPathBrowse_button_Click"/>
-                        <Label Name="ui_settings_luadecompiler_label" Content="Lua Decompiler Executable Path" HorizontalAlignment="Left" Margin="10,393,0,0" VerticalAlignment="Top" Width="434"/>
-                        <TextBox Name="ui_settings_luadecompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,424,0,0" TextWrapping="Wrap" Text="Lua Decompiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luadecompilerPath_textbox_TextChanged"/>
-                        <Button Name="ui_settings_luadecompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,455,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luadecompilerPathBrowse_button_Click"/>
 
-                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,487,0,0" VerticalAlignment="Top" Width="434"/>
-                        <Label Name="ui_settings_uisettings_label" Content="UI Settings" HorizontalAlignment="Left" Margin="10,501,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,7,5,5"/>
-                        <mah:ToggleSwitch Name="ui_settings_darkmode_toggle" Header="Light Theme" HorizontalAlignment="Left" Height="100" Margin="10,547,0,0" VerticalAlignment="Top" Width="100" Toggled="ui_settings_darkmode_toggle_Toggled"/>
+                        <Label Name="ui_settings_gameversion_label" Content="Default Game Version" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="434"/>
+                        <ComboBox Name="ui_settings_gameversion_combobox" Margin="10,87,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="434"/>
+
+                        <Label Name="ui_settings_gamedirectory_label" Content="Game Directory" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_gamedirectory_textbox" HorizontalAlignment="Left" Height="23" Margin="10,149,0,0" TextWrapping="Wrap" Text="Game Directory Executable" VerticalAlignment="Top" Width="434"/>
+                        <Button Name="ui_settings_gamedirectorybrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_gamedirectorybrowse_button_Click"/>
+
+                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,212,0,0" VerticalAlignment="Top" Width="434"/>
+                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
+                        <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_ttarchexePath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,303,0,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_ttarchexePath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_ttarchexePathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,334,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_ttarchexePathBrowse_button_Click"/>
+                        <Label Name="ui_settings_luacompiler_label" Content="Lua Compiler Executable Path" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_luacompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,397,0,0" TextWrapping="Wrap" Text="Lua Compiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luacompilerPath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_luacompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,428,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luacompilerPathBrowse_button_Click"/>
+                        <Label Name="ui_settings_luadecompiler_label" Content="Lua Decompiler Executable Path" HorizontalAlignment="Left" Margin="10,460,0,0" VerticalAlignment="Top" Width="434"/>
+                        <TextBox Name="ui_settings_luadecompilerPath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,491,0,0" TextWrapping="Wrap" Text="Lua Decompiler Executable Path" VerticalAlignment="Top" Width="434" TextChanged="ui_settings_luadecompilerPath_textbox_TextChanged"/>
+                        <Button Name="ui_settings_luadecompilerPathBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,522,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_luadecompilerPathBrowse_button_Click"/>
+
+                        <Separator HorizontalAlignment="Left" Height="9" Margin="10,554,0,0" VerticalAlignment="Top" Width="434"/>
+                        <Label Name="ui_settings_uisettings_label" Content="UI Settings" HorizontalAlignment="Left" Margin="10,568,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,7,5,5"/>
+                        <mah:ToggleSwitch Name="ui_settings_darkmode_toggle" Header="Light Theme" HorizontalAlignment="Left" Height="100" Margin="10,614,0,0" VerticalAlignment="Top" Width="100" Toggled="ui_settings_darkmode_toggle_Toggled"/>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

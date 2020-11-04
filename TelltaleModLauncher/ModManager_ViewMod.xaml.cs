@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ControlzEx.Theming;
 
 namespace TelltaleModLauncher
 {
@@ -49,6 +50,11 @@ namespace TelltaleModLauncher
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        public void UI_ChangeTheme(string theme)
+        {
+            ThemeManager.Current.ChangeTheme(this, theme);
         }
     }
 }
