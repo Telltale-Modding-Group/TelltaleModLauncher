@@ -17,11 +17,13 @@ using ControlzEx.Theming;
 namespace TelltaleModLauncher
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Main UI Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
+        //main mod manager class
         private ModManager modManager = new ModManager();
+        private ModManager_ViewMod modManager_ViewMod = new ModManager_ViewMod();
 
         public MainWindow()
         {
@@ -37,16 +39,20 @@ namespace TelltaleModLauncher
 
         public void UpdateUI()
         {
-            ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
-            ui_modmanager_modlist_listview.Items.Refresh();
-
-            //label_gameName.Content = app_Settings.Default_Game_Version.Replace("_", " ");
-
             bool ifModSelected = ui_modmanager_modlist_listview.SelectedIndex != -1 && ui_modmanager_modlist_listview.SelectedItem != null;
             bool ifModsExist = ui_modmanager_modlist_listview.Items.Count != 0;
+            bool ifCanLaunchGame = ui_launcher_gameversion_combobox.SelectedIndex != -1;
+
+            ui_launcher_gameversion_combobox.ItemsSource = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>().ToList();
+            ui_launcher_launchgame_tile.IsEnabled = ifCanLaunchGame;
+
+            //ui_label.Content = app_Settings.Default_Game_Version.Replace("_", " ");
+
             ui_modmanager_removemod_button.IsEnabled = ifModSelected;
-            ui_modmanager_editmod_button.IsEnabled = ifModSelected;
-            //button_addMod.IsEnabled = ifModsLocationExist;
+            ui_modmanager_viewmod_button.IsEnabled = ifModSelected;
+            ui_modmanager_purgemod_button.IsEnabled = ifModsExist;
+            ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
+            ui_modmanager_modlist_listview.Items.Refresh();
         }
 
         //---------------- XAML FUNCTIONS ----------------
@@ -62,11 +68,6 @@ namespace TelltaleModLauncher
             modManager.RemoveMod(ui_modmanager_modlist_listview.SelectedIndex);
 
             UpdateUI();
-        }
-
-        private void ui_modmanager_editmod_button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void ui_modmanager_purgemod_button_Click(object sender, RoutedEventArgs e)
@@ -121,6 +122,42 @@ namespace TelltaleModLauncher
             string darkmodeTheme = ui_settings_darkmode_toggle.IsOn ? "Light.Blue" : "Dark.Blue";
 
             ThemeManager.Current.ChangeTheme(this, darkmodeTheme);
+        }
+
+        private void ui_modmanager_viewmod_button_Click(object sender, RoutedEventArgs e)
+        {
+            Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
+
+            modManager_ViewMod.Show();
+            modManager_ViewMod.SetMod(selectedMod);
+        }
+
+        private void ui_modmanager_modlist_listview_contextmenu_view_click(object sender, RoutedEventArgs e)
+        {
+            Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
+
+            modManager_ViewMod.Show();
+            modManager_ViewMod.SetMod(selectedMod);
+        }
+
+        private void ui_modmanager_modlist_listview_contextmenu_remove_click(object sender, RoutedEventArgs e)
+        {
+            modManager.RemoveMod(ui_modmanager_modlist_listview.SelectedIndex);
+
+            UpdateUI();
+        }
+
+        private void ui_modmanager_modlist_listview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
+
+            modManager_ViewMod.Show();
+            modManager_ViewMod.SetMod(selectedMod);
+        }
+
+        private void ui_launcher_gameversion_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateUI();
         }
         //---------------- XAML FUNCTIONS END ----------------
     }

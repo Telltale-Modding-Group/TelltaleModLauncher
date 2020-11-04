@@ -6,22 +6,11 @@ using System.Threading.Tasks;
 
 namespace TelltaleModLauncher
 {
-    class AppSettings
+    class AppSettingsFile
     {
         public string Default_Game_Version { get; set; }
         public string Location_Ttarchext { get; set; }
         public string Location_LuaCompiler { get; set; }
         public string Location_LuaDecompiler { get; set; }
-        public List<GameVersionSettings> GameVersionSettings { get; set; }
-
-        public void WriteNewFile()
-        {
-
-        }
-
-        public void UpdateChangesToFile()
-        {
-
-        }
     }
 }

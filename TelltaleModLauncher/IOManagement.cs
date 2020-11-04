@@ -503,8 +503,17 @@ namespace TelltaleModLauncher
         /// Delete the files in a given directory.
         /// </summary>
         /// <param name="directory"></param>
-        public void DeleteFilesInDirectory(string directory)
+        /// <param name="warning"></param>
+        /// <param name="promptDescription"></param>
+        /// <param name="promptTitle"></param>
+        public void DeleteFilesInDirectory(string directory, bool warning = false, string promptDescription = "", string promptTitle = "")
         {
+            if(warning)
+            {
+                if (MessageBox_Confirmation(promptDescription, promptTitle) == false)
+                    return;
+            }
+
             foreach (string filePath in Directory.GetFiles(directory))
             {
                 DeleteFile(filePath);
@@ -515,8 +524,17 @@ namespace TelltaleModLauncher
         /// Delete the sub directories in a given directory.
         /// </summary>
         /// <param name="mainDir"></param>
-        public void DeleteDirectoriesInDirectory(string mainDir)
+        /// <param name="warning"></param>
+        /// <param name="promptDescription"></param>
+        /// <param name="promptTitle"></param>
+        public void DeleteDirectoriesInDirectory(string mainDir, bool warning = false, string promptDescription = "", string promptTitle = "")
         {
+            if (warning)
+            {
+                if (MessageBox_Confirmation(promptDescription, promptTitle) == false)
+                    return;
+            }
+
             foreach (string directory in Directory.GetDirectories(mainDir))
             {
                 DeleteDirectory(directory);
