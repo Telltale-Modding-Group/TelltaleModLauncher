@@ -22,14 +22,16 @@ namespace TelltaleModLauncher
         //public variables
         public List<Mod> mods;
 
-        //for testing
-        public string tempModInfoFile = "A:/Work/MODDING/Github/TESTING-DIR/modinfo.json";
-
         //private variables
         private IOManagement ioManagement;
         private AppSettings appSettings;
         private string modZipFilePath;
 
+        /// <summary>
+        /// Initalizes a new Mod Manager object. The following fields must be given.
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="ioManagement"></param>
         public ModManager (AppSettings appSettings, IOManagement ioManagement)
         {
             this.appSettings = appSettings;
@@ -38,16 +40,23 @@ namespace TelltaleModLauncher
             mods = new List<Mod>();
         }
 
+        //------------------------- MAIN ACTIONS -------------------------
+        //------------------------- MAIN ACTIONS -------------------------
+        //------------------------- MAIN ACTIONS -------------------------
+
         /// <summary>
         /// Adds a mod to the mod manager.
         /// <para>Will prompt the user with a file browser to select a mod file (.zip)</para>
         /// </summary>
         public void AddMod()
         {
+            //create a temporary string to contain the path
             string filePath = "";
 
+            //prompt the user with a file browser dialog
             ioManagement.GetFilePath(ref filePath, "ZIP files|*.zip", "Select a Mod File");
 
+            //if the string is not empty (meaning the user has chosen their path) read the zip file for a modinfo.json
             if (String.IsNullOrEmpty(filePath) == false)
                 ReadModZipFile(filePath);
         }
@@ -60,11 +69,10 @@ namespace TelltaleModLauncher
         /// <param name="selectedIndex"></param>
         public void RemoveMod(int selectedIndex, bool ignorePrompt = false)
         {
+            //obtain the given mod at the selected index
             Mod selectedMod = mods[selectedIndex];
 
-            string promptDescription = string.Format("Are you sure you want to remove '{0}'?", selectedMod.ModDisplayName);
-
-            if (ignorePrompt)
+            if (ignorePrompt) //ignores the confirmation prompt and removes the mod object, mod contents, and json file
             {
                 RemoveModFiles(selectedMod);
                 ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath());
@@ -72,6 +80,10 @@ namespace TelltaleModLauncher
             }
             else
             {
+                //description for the confirmation prompt
+                string promptDescription = string.Format("Are you sure you want to remove '{0}'?", selectedMod.ModDisplayName);
+
+                //prompt the user about removing the mod
                 if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
                 {
                     RemoveModFiles(selectedMod);
@@ -82,11 +94,65 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
+        /// Removes all mods from the mod manager.
+        /// <para>Will prompt the user if they wish to proceed.</para>
+        /// <para>If yes, it will remove all mods from the manager and the files associated with each from the disk.</para>
+        /// </summary>
+        public void PurgeMods()
+        {
+            //prompt the user upfront if they wish to remove all of the mods in the directory
+            if (ioManagement.MessageBox_Confirmation("Are you sure you want to purge the mod directory? This will remove all the mod files currently installed. This action can't be reverted.", "Purge Mods"))
+            {
+                //get the game mods location of the current game version
+                string dir = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+
+                //loop through the mod list first and remove the files in relation to each mod
+                foreach (Mod mod in mods)
+                {
+                    foreach (string modfile in mod.ModFiles)
+                    {
+                        string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
+                        ioManagement.DeleteFile(modfile_pathOnDisk);
+                    }
+                }
+
+                //loop through the mods directory again to get the .json files, and remove them
+                foreach (string modJsonFile in ioManagement.GetFilesPathsByExtension(dir, ".json"))
+                {
+                    ioManagement.DeleteFile(modJsonFile);
+                }
+
+                //clear the mods list
+                mods.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Opens the Game Mods folder with Windows Explorer.
+        /// </summary>
+        public void OpenModFolder()
+        {
+            //create a windows explorer processinfo to be exectued
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.Verb = "open";
+
+            //start the process
+            Process.Start(processStartInfo);
+        }
+
+        //------------------------- MAIN ACTIONS END -------------------------
+        //------------------------- MAIN ACTIONS END -------------------------
+        //------------------------- MAIN ACTIONS END -------------------------
+
+        /// <summary>
         /// Remove the mod files assoicated with the given mod on the disk.
         /// </summary>
         /// <param name="mod"></param>
         public void RemoveModFiles(Mod mod)
         {
+            //loop through each of the mod files detailed in the mods .json file
             foreach (string modfile in mod.ModFiles)
             {
                 string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
@@ -97,58 +163,42 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
-        /// Check if the given mod files exist. If the files are missing for the mod, it prompts the user if they wish to remove the mod.
+        /// Reads the Game Mod Folder for any existing mods by looking for a modinfo.json file.
+        /// <para>Will fill the mods list on the mod manager if there are any found.</para>
         /// </summary>
-        /// <param name="mod"></param>
-        /// <param name="showPrompt"></param>
-        public bool CheckIfModFilesExist(Mod mod)
+        public void GetModsFromFolder()
         {
-            List<string> missingModFiles = new List<string>();
-
-            foreach(string modfile in mod.ModFiles)
+            //if the game mods directory exists
+            if (Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()))
             {
-                string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
+                //get all of the modinfo.json files found in the folder
+                List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), ".json");
 
-                if (!File.Exists(modfile_pathOnDisk))
+                //go through the json files list and read each one to get the data
+                foreach (string jsonFilePath in modJsonFilesPath)
                 {
-                    missingModFiles.Add(modfile);
+                    Json_ReadModFile(jsonFilePath, true);
                 }
-            }
 
-            if (missingModFiles.Count != 0)
-            {
-                return false;
-            }
-            else
-                return true;
-        }
+                //temp list for any bad mods found
+                List<Mod> badMods = new List<Mod>();
 
-        /// <summary>
-        /// Removes all mods from the mod manager.
-        /// <para>Will prompt the user if they wish to proceed.</para>
-        /// <para>If yes, it will remove all mods from the manager and the files associated with each from the disk.</para>
-        /// </summary>
-        public void PurgeMods()
-        {
-            if (ioManagement.MessageBox_Confirmation("Are you sure you want to purge the mod directory? This will remove all the mod files currently installed. This action can't be reverted.", "Purge Mods"))
-            {
-                string dir = appSettings.Get_Current_GameVersionSettings_ModsLocation();
-
+                //loop through the existing mod list and check if each mod has its assoicated files
                 foreach (Mod mod in mods)
                 {
-                    foreach (string modfile in mod.ModFiles)
+                    //if the given mod does not pass the check, then its missing files! so add it to the list
+                    if (CheckIfModFilesExist(mod) == false)
                     {
-                        string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
-                        ioManagement.DeleteFile(modfile_pathOnDisk);
+                        badMods.Add(mod);
                     }
                 }
 
-                foreach (string modJsonFile in ioManagement.GetFilesPathsByExtension(dir, ".json"))
+                //loop through the list of the bad mods that have been found and remove each one.
+                //NOTE: FUTURE REFERENCE, Give the user a prompt that notifies them. For now we will handle removing the bad mod automatically.
+                foreach (Mod badMod in badMods)
                 {
-                    ioManagement.DeleteFile(modJsonFile);
+                    RemoveMod(mods.IndexOf(badMod), true);
                 }
-
-                mods.Clear();
             }
         }
 
@@ -157,24 +207,35 @@ namespace TelltaleModLauncher
         /// </summary>
         public void ExtractModZipFileContents_ToDirectory(Mod mod)
         {
+            if(File.Exists(modZipFilePath) == false)
+            {
+                MessageBox.Show("ExtractModZipFileContents_ToDirectory() modZipFilePath does not exist!");
+                return;
+            }
+
             using (ZipArchive archive = ZipFile.OpenRead(modZipFilePath))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
+                    //check if the given entry has an extension, i.e. check if it is a file and not a folder (we want to extract the contents, not the folder)
                     if (Path.HasExtension(entry.FullName))
                     {
                         // Gets the full path to ensure that relative segments are removed.
                         string modFile_extractedFromArchive = Path.GetFullPath(Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), entry.Name));
 
+                        //checks the extension for a .json file, if one is found then it sets it for the mod
                         if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
                             mod.Set_ModInfoJson_FilePath(modFile_extractedFromArchive);
 
                         // Ordinal match is safest, case-sensitive volumes can be mounted within volumes that are case-insensitive.
                         if (modFile_extractedFromArchive.StartsWith(appSettings.Get_Current_GameVersionSettings_ModsLocation(), StringComparison.Ordinal))
                         {
+                            //if there is an existing modfile that shares the same path/extension and everything, remove it
+                            //NOTE: in the future, want to prompt the user about replacing mod files
                             if (File.Exists(modFile_extractedFromArchive))
                                 ioManagement.DeleteFile(modFile_extractedFromArchive);
 
+                            //extract the given entry to the game mods directory
                             entry.ExtractToFile(modFile_extractedFromArchive);
                         }
                     }
@@ -182,18 +243,57 @@ namespace TelltaleModLauncher
             }
         }
 
-        public void CheckModContents_WithExistingMods(Mod newMod)
+        /// <summary>
+        /// Check if the given mod files exist. If the files are missing for the mod, it prompts the user if they wish to remove the mod.
+        /// <para>returns false is there are missing mod files.</para>
+        /// <para>returns true is there are no missing mod files.</para>
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <param name="showPrompt"></param>
+        public bool CheckIfModFilesExist(Mod mod)
         {
-            List<Mod> conflictingMods = new List<Mod>();
-            List<string> conflictingModNames = new List<string>();
-            List<string> conflictingModFiles = new List<string>();
+            //initalize a temporary list for the missing mod file paths
+            List<string> missingModFiles = new List<string>();
 
+            //loop through the modfiles list in the mod for any missing files
+            foreach (string modfile in mod.ModFiles)
+            {
+                string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
+
+                //if the modfile does not exist on the disk, add it to the missing files list.
+                if (!File.Exists(modfile_pathOnDisk))
+                {
+                    missingModFiles.Add(modfile);
+                }
+            }
+
+
+            if (missingModFiles.Count != 0)
+                return false;
+            else
+                return true;
+        }
+
+        /// <summary>
+        /// Checks the given mod's contents with all the other mod's contents found in the main mods list.
+        /// </summary>
+        /// <param name="newMod"></param>
+        public void CheckModContents_WithExistingMods(Mod newMod, bool addMod = false)
+        {
+            List<Mod> conflictingMods = new List<Mod>(); //temp list for the conflicting mods
+            List<string> conflictingModNames = new List<string>(); //temp list for the conflicting mods names (for the ui prompt)
+            List<string> conflictingModFiles = new List<string>(); //temp list for the conflicting mods files (for the ui prompt)
+
+            //loop through the mod list
             foreach (Mod mod in mods)
             {
+                //create a boolean that states whether or not the given mod has conflicts
                 bool hasConflictingFiles = false;
 
+                //loop through the mod files for the current mod in the loop
                 foreach(string file in mod.ModFiles)
                 {
+                    //loop through each 'newModFile' and check each one with the given mod 'file'
                     foreach(string newModFile in newMod.ModFiles)
                     {
                         if(file.Equals(newModFile))
@@ -204,6 +304,7 @@ namespace TelltaleModLauncher
                     }
                 }
 
+                //if there are conflicting files, add the current mod and its name to the list
                 if(hasConflictingFiles)
                 {
                     conflictingMods.Add(mod);
@@ -211,12 +312,15 @@ namespace TelltaleModLauncher
                 }
             }
 
+            //if there are conflicting mods
             if(conflictingMods.Count != 0)
             {
+                //for prompt ui
                 string conflictingModsMessage = string.Join(", ", conflictingModNames);
                 string conflictingModFilesMessage = string.Join(", ", conflictingModFiles);
                 string finalMessage = string.Format("{0} has conflicts with the following mods! {1}. They share the following files! {2}. Do you want to remove the conflicting mods?", newMod.ModDisplayName, conflictingModsMessage, conflictingModFilesMessage);
 
+                //notify the user about the conflicts, if they take action (press yes) it will remove the conflicting mods from the list, and removes the respective files and .json files
                 if (ioManagement.MessageBox_Confirmation(finalMessage, "Mod Conflicts!", MessageBoxIcon.Error))
                 {
                     foreach(Mod mod in conflictingMods)
@@ -226,7 +330,95 @@ namespace TelltaleModLauncher
                         mods.Remove(mod);
                     }
                 }
+
+                return;
             }
+
+            //if everything passes, add the mod (if the boolean on the function call has been set)
+            if(addMod)
+            {
+                ExtractModZipFileContents_ToDirectory(newMod);
+                mods.Add(newMod);
+            }
+        }
+
+
+        /// <summary>
+        /// Adds a mod with a bunch of validation checks.
+        /// <para>If a validation check fails, it will not add the mod.</para>
+        /// </summary>
+        /// <param name="newMod"></param>
+        public void ValidateAndAddMod(Mod newMod)
+        {
+            //if there are no mods in the list, go ahead and install it
+            if (mods.Count < 1)
+            {
+                mods.Add(newMod);
+                ExtractModZipFileContents_ToDirectory(newMod);
+
+                return; //dont continue
+            }
+
+            //if there are mods, then loop through each one to check their properties
+            foreach (Mod mod in mods)
+            {
+                //if mod shares the name
+                if (mod.ModDisplayName.Equals(newMod.ModDisplayName))
+                {
+                    if (mod.ModVersion.Equals(newMod.ModVersion)) //if the mod is the same version and has the same name, this mod is a duplicate! stop!
+                    {
+                        string message = string.Format("You already have '{0}' version '{1}' installed!", newMod.ModDisplayName, newMod.ModVersion);
+
+                        MessageBox.Show(message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        return;
+                    }
+                    else //if the mod has the same name but is a different version, then prompt the user if they want to replace it with the given version.
+                    {
+                        string message = string.Format("You have '{0}' installed with version '{1}'. Do you wish to replace it with this version {2}?", mod.ModDisplayName, mod.ModVersion, newMod.ModVersion);
+
+                        if (ioManagement.MessageBox_Confirmation(message, "Replace Mod"))
+                        {
+                            ReplaceMod(mod, newMod);
+                        }
+
+                        return;
+                    }
+                }
+
+                //now check the mod's compatiblity
+                GameVersion parsedModCompatiblity;
+
+                try
+                {
+                    //attempt to parse the mods game version string as a game version enum
+                    parsedModCompatiblity = (GameVersion)Enum.Parse(typeof(GameVersion), newMod.ModCompatibility);
+                }
+                catch(Exception e)
+                {
+                    //the parsing failed, and whatever it is, we don't support the version
+                    MessageBox.Show(e.ToString(), e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; //dont continue
+                }
+
+                //if the parse is sucessful, now check if it matches the current game version we have selected
+                if(parsedModCompatiblity.Equals(appSettings.Get_Current_GameVersionName()) == false)
+                {
+                    //for ui
+                    string current_gameVersionString = Enum.GetName(typeof(GameVersion), appSettings.Get_Current_GameVersionName());
+                    string mod_gameVersionString = Enum.GetName(typeof(GameVersion), parsedModCompatiblity);
+                    string message = string.Format("'{0}' is incompatible with your current game version '{1}'. The mod was built for the following game version '{2}'.", mod.ModDisplayName, current_gameVersionString, mod_gameVersionString);
+
+                    //notify the user
+                    //NOTE: Future addition - add an option for the user to convert the mod version, but warn them that this may not work.
+                    MessageBox.Show(message, "Incompatible Game Version!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    return;//dont continue
+                }
+            }
+
+            //if all checks pass, do a final check to check the contents of the mod with the existing ones
+            CheckModContents_WithExistingMods(newMod, true);
         }
 
         /// <summary>
@@ -264,52 +456,8 @@ namespace TelltaleModLauncher
                 }
             }
 
+            //after extraction, read the json file
             Json_ReadModFile(modJson_extractedFromArchive);
-        }
-
-        /// <summary>
-        /// Reads the Game Mod Folder for any existing mods by looking for a modinfo.json file.
-        /// <para>Will fill the mods list on the mod manager if there are any found.</para>
-        /// </summary>
-        public void GetModsFromFolder()
-        {
-            if (Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()))
-            {
-                List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), ".json");
-
-                foreach (string jsonFilePath in modJsonFilesPath)
-                {
-                    Json_ReadModFile(jsonFilePath, true);
-                }
-
-                List<Mod> badModFiles = new List<Mod>();
-
-                foreach(Mod mod in mods)
-                {
-                    if(CheckIfModFilesExist(mod) == false)
-                    {
-                        badModFiles.Add(mod);
-                    }
-                }
-
-                foreach(Mod badMod in badModFiles)
-                {
-                    RemoveMod(mods.IndexOf(badMod), true);
-                }
-            }    
-        }
-
-        /// <summary>
-        /// Opens the Game Mods folder with Windows Explorer.
-        /// </summary>
-        public void OpenModFolder()
-        {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = appSettings.Get_Current_GameVersionSettings_ModsLocation();
-            processStartInfo.UseShellExecute = true;
-            processStartInfo.Verb = "open";
-
-            Process.Start(processStartInfo);
         }
 
         /// <summary>
@@ -348,50 +496,6 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
-        /// Adds a mod with a bunch of validation checks.
-        /// <para>If a validation check fails, it will not add the mod.</para>
-        /// </summary>
-        /// <param name="newMod"></param>
-        public void ValidateAndAddMod(Mod newMod)
-        {
-            if(mods.Count < 1)
-            {
-                mods.Add(newMod);
-                ExtractModZipFileContents_ToDirectory(newMod);
-
-                return;
-            }
-
-            foreach (Mod mod in mods)
-            {
-                if (mod.ModDisplayName.Equals(newMod.ModDisplayName))
-                {
-                    if (mod.ModVersion.Equals(newMod.ModVersion))
-                    {
-                        string message = string.Format("You already have '{0}' version '{1}' installed!", newMod.ModDisplayName, newMod.ModVersion);
-
-                        MessageBox.Show(message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        return;
-                    }
-                    else
-                    {
-                        string message = string.Format("You have '{0}' installed with version '{1}'. Do you wish to replace it with this version {2}?", mod.ModDisplayName, mod.ModVersion, newMod.ModVersion);
-
-                        if (ioManagement.MessageBox_Confirmation(message, "Replace Mod"))
-                        {
-                            ReplaceMod(mod, newMod);
-                        }
-
-                        return;
-                    }
-                }
-            }
-
-            CheckModContents_WithExistingMods(newMod);
-        }
-
-        /// <summary>
         /// Reads a modinfo.json file and parses the data into a new mod object.
         /// <para>After sucessfully getting the data, it will execute ValidateAndAddMod()</para>
         /// </summary>
@@ -410,7 +514,7 @@ namespace TelltaleModLauncher
             //loop through each property to get the data
             foreach (JProperty property in obj.Properties())
             {
-                string name = property.Name;
+                string name = property.Name; //get the name of the property from the json object
 
                 if (name.Equals(nameof(Mod.ModAuthor)))
                     newMod.ModAuthor = (string)property.Value;
@@ -421,6 +525,7 @@ namespace TelltaleModLauncher
                 if (name.Equals(nameof(Mod.ModDisplayName)))
                     newMod.ModDisplayName = (string)property.Value;
 
+                //if the property is a mod files array, parse the given files to a list
                 if (name.Equals(nameof(Mod.ModFiles)))
                 {
                     JArray fileArray = (JArray)obj[nameof(Mod.ModFiles)];
@@ -438,14 +543,21 @@ namespace TelltaleModLauncher
                     newMod.ModVersion = (string)property.Value;
             }
 
-            newMod.Set_ModInfoJson_FilePath(modJsonFile);
+            //delete the modJsonFile since we don't need it anymore
+            ioManagement.DeleteFile(modJsonFile);
 
-            if(bypassValidation)
+            //bypass the validation stage and just add the mod anyway
+            //(for when this function is called to gather mods from the mod folder on startup)
+            if (bypassValidation)
             {
                 mods.Add(newMod);
+
+                if(CheckIfModFilesExist(newMod) == false)
+                    ExtractModZipFileContents_ToDirectory(newMod);
             }
             else
             {
+                //otherwise, validate the mod. if its sucessful it will be added
                 ValidateAndAddMod(newMod);
             }
         }
