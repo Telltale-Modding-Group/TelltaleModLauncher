@@ -28,6 +28,7 @@ namespace TelltaleModLauncher
 
         //xaml windows
         private ModManager_ViewMod modManager_ViewMod = new ModManager_ViewMod();
+        private SetupWizard setupWizard = new SetupWizard();
 
         //IMPORTANT: xaml calls UpdateUI() too soon causing errors due to incomplete initalization.
         //This 'nullifies' UpdateUI() until InitalizeApplication() is done.
@@ -194,6 +195,7 @@ namespace TelltaleModLauncher
             Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
 
             modManager_ViewMod.Show();
+            modManager_ViewMod.Activate();
             modManager_ViewMod.SetMod(selectedMod);
 
             UpdateUI();
@@ -204,6 +206,7 @@ namespace TelltaleModLauncher
             Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
 
             modManager_ViewMod.Show();
+            modManager_ViewMod.Activate();
             modManager_ViewMod.SetMod(selectedMod);
 
             UpdateUI();
@@ -221,6 +224,7 @@ namespace TelltaleModLauncher
             Mod selectedMod = modManager.mods[ui_modmanager_modlist_listview.SelectedIndex];
 
             modManager_ViewMod.Show();
+            modManager_ViewMod.Activate();
             modManager_ViewMod.SetMod(selectedMod);
         }
 
