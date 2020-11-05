@@ -193,7 +193,7 @@ namespace TelltaleModLauncher
                 //go through the json files list and read each one to get the data
                 foreach (string jsonFilePath in modJsonFilesPath)
                 {
-                    Json_ReadModFile(jsonFilePath, true, false);
+                    Json_ReadModFile_New(jsonFilePath, true, false);
                 }
 
                 //temp list for any bad mods found
@@ -276,7 +276,6 @@ namespace TelltaleModLauncher
                     missingModFiles.Add(modfile);
                 }
             }
-
 
             if (missingModFiles.Count != 0)
                 return false;
@@ -505,11 +504,11 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
-        /// Reads a modinfo.json file and parses the data into a new mod object.
-        /// <para>After sucessfully getting the data, it will execute ValidateAndAddMod()</para>
+        /// Reads the data from the modinfo.json file and returns a mod object.
         /// </summary>
         /// <param name="modJsonFile"></param>
-        public void Json_ReadModFile(string modJsonFile, bool bypassValidation = false, bool deleteJson = true)
+        /// <returns></returns>
+        public Mod GetJsonData(string modJsonFile)
         {
             //create a new mod object
             Mod newMod = new Mod();
@@ -540,7 +539,7 @@ namespace TelltaleModLauncher
                     JArray fileArray = (JArray)obj[nameof(Mod.ModFiles)];
                     List<string> parsedModFiles = new List<string>();
 
-                    foreach(JValue file in fileArray)
+                    foreach (JValue file in fileArray)
                     {
                         parsedModFiles.Add((string)file.Value);
                     }
@@ -552,7 +551,20 @@ namespace TelltaleModLauncher
                     newMod.ModVersion = (string)property.Value;
             }
 
-            if(deleteJson)
+            return newMod;
+        }
+
+        /// <summary>
+        /// Reads a modinfo.json file and parses the data into a new mod object.
+        /// <para>After sucessfully getting the data, it will execute ValidateAndAddMod()</para>
+        /// </summary>
+        /// <param name="modJsonFile"></param>
+        public void Json_ReadModFile(string modJsonFile, bool bypassValidation = false, bool deleteJson = true)
+        {
+            //create a new mod object
+            Mod newMod = GetJsonData(modJsonFile);
+
+            if (deleteJson)
             {
                 //delete the modJsonFile since we don't need it anymore
                 ioManagement.DeleteFile(modJsonFile);
@@ -565,6 +577,40 @@ namespace TelltaleModLauncher
                 mods.Add(newMod);
 
                 if(CheckIfModFilesExist(newMod) == false)
+                    ExtractModZipFileContents_ToDirectory(newMod);
+            }
+            else
+            {
+                //otherwise, validate the mod. if its sucessful it will be added
+                ValidateAndAddMod(newMod);
+            }
+        }
+
+        /// <summary>
+        /// Reads a modinfo.json file and parses the data into a new mod object.
+        /// <para>After sucessfully getting the data, it will execute ValidateAndAddMod()</para>
+        /// </summary>
+        /// <param name="modJsonFile"></param>
+        public void Json_ReadModFile_New(string modJsonFile, bool bypassValidation = false, bool deleteJson = true)
+        {
+            //create a new mod object
+            Mod newMod = GetJsonData(modJsonFile);
+
+            newMod.Set_ModInfoJson_FilePath(modJsonFile);
+
+            if (deleteJson)
+            {
+                //delete the modJsonFile since we don't need it anymore
+                ioManagement.DeleteFile(modJsonFile);
+            }
+
+            //bypass the validation stage and just add the mod anyway
+            //(for when this function is called to gather mods from the mod folder on startup)
+            if (bypassValidation)
+            {
+                mods.Add(newMod);
+
+                if (CheckIfModFilesExist(newMod) == false)
                     ExtractModZipFileContents_ToDirectory(newMod);
             }
             else
