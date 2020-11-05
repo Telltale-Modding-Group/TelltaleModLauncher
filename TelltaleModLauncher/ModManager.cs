@@ -65,7 +65,17 @@ namespace TelltaleModLauncher
 
             if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
             {
-                mods.RemoveAt(selectedIndex);
+                RemoveModFiles(selectedMod);
+                mods.Remove(selectedMod);
+            }
+        }
+
+        public void RemoveModFiles(Mod mod)
+        {
+            foreach (string modfile in mod.ModFiles)
+            {
+                string modfile_pathOnDisk = modfile;
+                ioManagement.DeleteFile(modfile_pathOnDisk);
             }
         }
 
@@ -100,7 +110,21 @@ namespace TelltaleModLauncher
 
         public void ExtractModZipFileContents_ToDirectory()
         {
-            ZipFile.ExtractToDirectory(modZipFilePath, appSettings.Get_Current_GameVersionSettings_ModsLocation());
+            using (ZipArchive archive = ZipFile.OpenRead(modZipFilePath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    if (Path.HasExtension(entry.FullName))
+                    {
+                        // Gets the full path to ensure that relative segments are removed.
+                        string modFile_extractedFromArchive = Path.GetFullPath(Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), entry.Name));
+
+                        // Ordinal match is safest, case-sensitive volumes can be mounted within volumes that are case-insensitive.
+                        if (modFile_extractedFromArchive.StartsWith(appSettings.Get_Current_GameVersionSettings_ModsLocation(), StringComparison.Ordinal))
+                            entry.ExtractToFile(modFile_extractedFromArchive);
+                    }
+                }
+            }
         }
 
         public void ReadModZipFile(string newModZipFilePath)
@@ -142,12 +166,15 @@ namespace TelltaleModLauncher
         /// </summary>
         public void GetModsFromFolder()
         {
-            List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), ".json");
-
-            foreach(string jsonFilePath in modJsonFilesPath)
+            if (Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()))
             {
-                Json_ReadModFile(jsonFilePath, true);
-            }
+                List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), "json");
+
+                foreach (string jsonFilePath in modJsonFilesPath)
+                {
+                    Json_ReadModFile(jsonFilePath, true);
+                }
+            }    
         }
 
         /// <summary>

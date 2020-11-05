@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Newtonsoft;
@@ -51,16 +53,37 @@ namespace TelltaleModLauncher
             }    
         }
 
+        public void LaunchGame()
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = current_GameVersionSettings.Game_LocationExe;
+
+            Process.Start(processStartInfo);
+        }
+
+        public void ChangeGameVersion(GameVersion newVersion)
+        {
+            foreach(GameVersionSettings gameVersionSetting in GameVersionSettings)
+            {
+                if(newVersion.Equals(gameVersionSetting.Game_Version))
+                {
+                    current_GameVersionSettings = gameVersionSetting;
+                    return;
+                }
+            }
+        }
+
         private void New_GameVersionSettingsList()
         {
             GameVersionSettings = new List<GameVersionSettings>();
 
-            List<string> enumList = Enum.GetNames(typeof(GameVersion)).ToList();
+            var enumList = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>();
+            var enumListString = Enum.GetNames(typeof(GameVersion));
 
-            for (int i = 0; i < enumList.Count; i++)
+            for (int i = 0; i < enumListString.Length; i++)
             {
                 GameVersionSettings new_gameVersionSettings = new GameVersionSettings();
-                new_gameVersionSettings.Game_Version = enumList[i];
+                new_gameVersionSettings.Game_Version = (GameVersion)Enum.Parse(typeof(GameVersion), enumListString[i]);
 
                 GameVersionSettings.Add(new_gameVersionSettings);
             }
@@ -86,7 +109,7 @@ namespace TelltaleModLauncher
                 string name = property.Name;
 
                 if (name.Equals(nameof(appSettingsFile.Default_Game_Version)))
-                    appSettingsFile.Default_Game_Version = (string)property.Value;
+                    appSettingsFile.Default_Game_Version = (GameVersion)(int)property.Value;
 
                 if (name.Equals(nameof(appSettingsFile.Location_LuaCompiler)))
                     appSettingsFile.Location_LuaCompiler = (string)property.Value;
@@ -96,6 +119,9 @@ namespace TelltaleModLauncher
 
                 if (name.Equals(nameof(appSettingsFile.Location_Ttarchext)))
                     appSettingsFile.Location_Ttarchext = (string)property.Value;
+
+                if (name.Equals(nameof(appSettingsFile.UI_LightMode)))
+                    appSettingsFile.UI_LightMode = (bool)property.Value;
             }
 
             //loop through each property to get the data
@@ -108,23 +134,31 @@ namespace TelltaleModLauncher
                 {
                     string name = property.Name;
 
-                    if (name.Equals(nameof(appSettingsFile.Default_Game_Version)))
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_Location)))
                         new_gameVersionSettings.Game_Location = (string)property.Value;
 
-                    if (name.Equals(nameof(appSettingsFile.Location_LuaCompiler)))
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_LocationExe)))
                         new_gameVersionSettings.Game_LocationExe = (string)property.Value;
 
-                    if (name.Equals(nameof(appSettingsFile.Location_LuaDecompiler)))
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_Location_Mods)))
                         new_gameVersionSettings.Game_Location_Mods = (string)property.Value;
 
-                    if (name.Equals(nameof(appSettingsFile.Location_Ttarchext)))
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_Ttarch_GameEnumNumber)))
                         new_gameVersionSettings.Game_Ttarch_GameEnumNumber = (int)property.Value;
 
-                    if (name.Equals(nameof(appSettingsFile.Location_Ttarchext)))
-                        new_gameVersionSettings.Game_Version = (string)property.Value;
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_Version)))
+                    {
+                        new_gameVersionSettings.Game_Version = (GameVersion)(int)property.Value;
+                    }
                 }
 
                 GameVersionSettings.Add(new_gameVersionSettings);
+            }
+
+            foreach(GameVersionSettings version in GameVersionSettings)
+            {
+                if (appSettingsFile.Default_Game_Version.Equals(version.Game_Version))
+                    current_GameVersionSettings = version;
             }
         }
 
@@ -155,6 +189,20 @@ namespace TelltaleModLauncher
             WriteToFile();
         }
 
+        public bool IsGameSetupAndValid()
+        {
+            if (File.Exists(current_GameVersionSettings.Game_LocationExe) == false)
+                return false;
+
+            if (Directory.Exists(current_GameVersionSettings.Game_Location) == false)
+                return false;
+
+            if (Directory.Exists(current_GameVersionSettings.Game_Location_Mods) == false)
+                return false;
+
+            return true;
+        }
+
         //---------------- GETTERS ----------------
         public int Get_Current_GameVersionSettings_ttarchNumber()
         {
@@ -176,13 +224,13 @@ namespace TelltaleModLauncher
             return current_GameVersionSettings.Game_Location_Mods;
         }
 
-        public string Get_Current_GameVersionName()
+        public GameVersion Get_Current_GameVersionName()
         {
             return current_GameVersionSettings.Game_Version;
         }
         //---------------- GETTERS END ----------------
         //---------------- MODIFIERS ----------------
-        public void Set_Current_AppSettings_DefaultGameVersion(string version)
+        public void Set_Current_AppSettings_DefaultGameVersion(GameVersion version)
         {
             appSettingsFile.Default_Game_Version = version;
         }
@@ -230,7 +278,7 @@ namespace TelltaleModLauncher
         {
             string newFilePath = "";
 
-            ioManagement.GetFolderPath(ref newFilePath, "Select the Game Executable File");
+            ioManagement.GetFilePath(ref newFilePath, "Exe Files (.exe)|*.exe", "Select the Game Executable File");
 
             if (File.Exists(newFilePath))
             {

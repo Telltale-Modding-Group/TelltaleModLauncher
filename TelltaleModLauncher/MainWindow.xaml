@@ -22,7 +22,7 @@
             <TabItem Header="Launcher">
                 <Grid>
                     <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,258" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged"/>
-                    <mah:Tile Name="ui_launcher_launchgame_tile" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="457">
+                    <mah:Tile Name="ui_launcher_launchgame_tile" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="457" Click="ui_launcher_launchgame_tile_Click">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
@@ -118,7 +118,7 @@
                         <Separator HorizontalAlignment="Left" Height="9" Margin="10,189,0,0" VerticalAlignment="Top" Width="434"/>
                         <Label Name="ui_settings_appsettings_label" Content="Application Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,7,5,5"/>
                         <Label Name="ui_settings_defaultgameversion_label" Content="Default Game Version" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="434"/>
-                        <ComboBox Name="ui_settings_gameversion_combobox" Margin="10,87,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="434"/>
+                        <ComboBox Name="ui_settings_gameversion_combobox" Margin="10,87,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="434" SelectionChanged="ui_settings_gameversion_combobox_SelectionChanged"/>
                         <mah:ToggleSwitch Name="ui_settings_darkmode_toggle" Header="Light Theme" HorizontalAlignment="Left" Height="66" Margin="10,118,0,0" VerticalAlignment="Top" Width="100" Toggled="ui_settings_darkmode_toggle_Toggled"/>
                         <Label Name="ui_settings_gameversion_label" Content="Current Game: The Walking Dead Definitive Edition" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" Width="434"/>
                     </Grid>
