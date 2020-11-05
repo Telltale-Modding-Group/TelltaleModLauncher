@@ -103,7 +103,7 @@
                         <Button Name="ui_settings_gamemodsdirectoryBrowse_button" Content="Browse" HorizontalAlignment="Left" Margin="10,436,0,0" VerticalAlignment="Top" Width="75" Click="ui_settings_gamemodsdirectoryBrowse_button_Click"/>
 
                         <Separator HorizontalAlignment="Left" Height="9" Margin="10,468,0,0" VerticalAlignment="Top" Width="434"/>
-                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" HorizontalAlignment="Left" Margin="10,482,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
+                        <Label Name="ui_settings_dependencies_label" Content="Creator Dependencies" HorizontalAlignment="Left" Margin="10,482,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
                         <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" HorizontalAlignment="Left" Margin="10,528,0,0" VerticalAlignment="Top" Width="434"/>
                         <TextBox Name="ui_settings_ttarchexePath_textbox" HorizontalAlignment="Left" Height="23" Margin="10,559,0,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top" Width="434"/>
                         <Label Name="ui_settings_ttarchexePathNumber_label_" Content="ttarchexe Game Enum Value" HorizontalAlignment="Left" Margin="10,622,0,0" VerticalAlignment="Top" Width="434"/>

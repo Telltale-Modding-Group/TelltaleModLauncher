@@ -229,6 +229,7 @@ namespace TelltaleModLauncher
             GameVersion selectedGameVersion = (GameVersion)ui_launcher_gameversion_combobox.SelectedItem;
 
             appSettings.ChangeGameVersion(selectedGameVersion);
+            modManager.ChangedGameVersion();
 
             UpdateUI();
         }
