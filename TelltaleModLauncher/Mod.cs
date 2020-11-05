@@ -33,6 +33,18 @@ namespace TelltaleModLauncher
         /// </summary>
         public List<string> ModFiles { get; set; }
 
+        private string ModInfoJson_FilePath { get; set; }
+
+        public void Set_ModInfoJson_FilePath(string path)
+        {
+            ModInfoJson_FilePath = path;
+        }
+
+        public string Get_ModInfoJson_FilePath()
+        {
+            return ModInfoJson_FilePath;
+        }
+
         /// <summary>
         /// Creates a blank mod object, must be filled
         /// </summary>

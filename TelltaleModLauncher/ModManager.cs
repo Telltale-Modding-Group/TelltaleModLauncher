@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace TelltaleModLauncher
             if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
             {
                 RemoveModFiles(selectedMod);
+                ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath());
                 mods.Remove(selectedMod);
             }
         }
@@ -74,8 +76,31 @@ namespace TelltaleModLauncher
         {
             foreach (string modfile in mod.ModFiles)
             {
-                string modfile_pathOnDisk = modfile;
+                string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
                 ioManagement.DeleteFile(modfile_pathOnDisk);
+            }
+        }
+
+        public void CheckIfModFilesExist(Mod mod, bool showPrompt = true)
+        {
+            List<string> missingModFiles = new List<string>();
+
+            foreach(string modfile in mod.ModFiles)
+            {
+                string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
+
+                if (!File.Exists(modfile_pathOnDisk))
+                {
+                    missingModFiles.Add(modfile);
+                }
+            }
+
+            string missingFileString = string.Join(", ", missingModFiles);
+            string message = string.Format("The following files for the mod '{0}' are missing! {1}. Do you want to remove the mod and it's contents?", mod.ModDisplayName, missingFileString);
+
+            if (ioManagement.MessageBox_Confirmation(message, "Missing Mod Files!", MessageBoxIcon.Error))
+            {
+                RemoveMod(mods.IndexOf(mod));
             }
         }
 
@@ -88,13 +113,13 @@ namespace TelltaleModLauncher
         {
             if (ioManagement.MessageBox_Confirmation("Are you sure you want to purge the mod directory? This will remove all the mod files currently installed. This action can't be reverted.", "Purge Mods"))
             {
-                string dir = "";
+                string dir = appSettings.Get_Current_GameVersionSettings_ModsLocation();
 
                 foreach (Mod mod in mods)
                 {
                     foreach (string modfile in mod.ModFiles)
                     {
-                        string modfile_pathOnDisk = modfile;
+                        string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
                         ioManagement.DeleteFile(modfile_pathOnDisk);
                     }
                 }
@@ -108,7 +133,10 @@ namespace TelltaleModLauncher
             }
         }
 
-        public void ExtractModZipFileContents_ToDirectory()
+        /// <summary>
+        /// Extracts the mod file zip contents to the Game Mods directory.
+        /// </summary>
+        public void ExtractModZipFileContents_ToDirectory(Mod mod)
         {
             using (ZipArchive archive = ZipFile.OpenRead(modZipFilePath))
             {
@@ -119,6 +147,9 @@ namespace TelltaleModLauncher
                         // Gets the full path to ensure that relative segments are removed.
                         string modFile_extractedFromArchive = Path.GetFullPath(Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), entry.Name));
 
+                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                            mod.Set_ModInfoJson_FilePath(modFile_extractedFromArchive);
+
                         // Ordinal match is safest, case-sensitive volumes can be mounted within volumes that are case-insensitive.
                         if (modFile_extractedFromArchive.StartsWith(appSettings.Get_Current_GameVersionSettings_ModsLocation(), StringComparison.Ordinal))
                             entry.ExtractToFile(modFile_extractedFromArchive);
@@ -127,6 +158,11 @@ namespace TelltaleModLauncher
             }
         }
 
+        /// <summary>
+        /// Reads a mod zip file.
+        /// <para>Extracts the modinfo.json file</para>
+        /// </summary>
+        /// <param name="newModZipFilePath"></param>
         public void ReadModZipFile(string newModZipFilePath)
         {
             modZipFilePath = newModZipFilePath;
@@ -168,13 +204,31 @@ namespace TelltaleModLauncher
         {
             if (Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()))
             {
-                List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), "json");
+                List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), ".json");
 
                 foreach (string jsonFilePath in modJsonFilesPath)
                 {
                     Json_ReadModFile(jsonFilePath, true);
                 }
+
+                foreach(Mod mod in mods)
+                {
+                    CheckIfModFilesExist(mod);
+                }
             }    
+        }
+
+        /// <summary>
+        /// Opens the Game Mods folder with Windows Explorer.
+        /// </summary>
+        public void OpenModFolder()
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.Verb = "open";
+
+            Process.Start(processStartInfo);
         }
 
         /// <summary>
@@ -204,7 +258,11 @@ namespace TelltaleModLauncher
         /// <param name="newMod"></param>
         private void ReplaceMod(Mod orignalMod, Mod newMod)
         {
+            RemoveModFiles(orignalMod);
+            ioManagement.DeleteFile(orignalMod.Get_ModInfoJson_FilePath());
             mods.Remove(orignalMod);
+
+            ExtractModZipFileContents_ToDirectory(newMod);
             mods.Add(newMod);
         }
 
@@ -218,7 +276,7 @@ namespace TelltaleModLauncher
             if(mods.Count < 1)
             {
                 mods.Add(newMod);
-                ExtractModZipFileContents_ToDirectory();
+                ExtractModZipFileContents_ToDirectory(newMod);
 
                 return;
             }

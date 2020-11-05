@@ -33,8 +33,6 @@ namespace TelltaleModLauncher
         {
             this.ioManagement = ioManagement;
 
-            current_GameVersionSettings = new GameVersionSettings();
-
             if (File.Exists(configFile_file_location))
             {
                 ReadConfigFile();

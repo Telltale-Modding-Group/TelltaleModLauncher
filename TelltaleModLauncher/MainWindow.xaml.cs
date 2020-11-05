@@ -70,6 +70,7 @@ namespace TelltaleModLauncher
             bool ifModSelected = ui_modmanager_modlist_listview.SelectedIndex != -1 && ui_modmanager_modlist_listview.SelectedItem != null;
             bool ifModsExist = ui_modmanager_modlist_listview.Items.Count != 0;
             bool ifCanLaunchGame = ui_launcher_gameversion_combobox.SelectedIndex != -1 && appSettings.IsGameSetupAndValid();
+            bool ifOtherGame = appSettings.Get_Current_GameVersionName() == GameVersion.Other;
 
             var GameVersions_ToStringList = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>();
 
@@ -83,13 +84,16 @@ namespace TelltaleModLauncher
             ui_modmanager_addmod_button.IsEnabled = ifCanLaunchGame;
             ui_modmanager_removemod_button.IsEnabled = ifModSelected;
             ui_modmanager_viewmod_button.IsEnabled = ifModSelected;
+            ui_modmanager_openmodfolder_button.IsEnabled = ifCanLaunchGame;
             ui_modmanager_purgemod_button.IsEnabled = ifModsExist;
             ui_modmanager_modlist_listview.IsEnabled = ifCanLaunchGame;
             ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
             ui_modmanager_modlist_listview.Items.Refresh();
             ui_modmanager_gameversion_label.Content = appSettings.Get_Current_GameVersionName();
+            ui_modmanager_gameversion_label.Content = string.Format("Game: {0}", appSettings.Get_Current_GameVersionName().ToString().Replace("_", " "));
 
             //settings stuff
+            ui_settings_gameversion_label.Content = string.Format("Current Game: {0}", appSettings.Get_Current_GameVersionName().ToString().Replace("_", " "));
             ui_settings_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
             ui_settings_gameversion_combobox.SelectedIndex = (int)appSettings.appSettingsFile.Default_Game_Version;
             ui_settings_gamedirectoryexe_textbox.Text = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
@@ -97,6 +101,7 @@ namespace TelltaleModLauncher
             ui_settings_luacompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaCompiler;
             ui_settings_luadecompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaDecompiler;
             ui_settings_ttarchexePath_textbox.Text = appSettings.appSettingsFile.Location_Ttarchext;
+            ui_settings_ttarchexePathNumber_textbox.IsEnabled = ifOtherGame;
             ui_settings_ttarchexePathNumber_textbox.Text = appSettings.Get_Current_GameVersionSettings_ttarchNumber().ToString();
         }
 
@@ -290,6 +295,13 @@ namespace TelltaleModLauncher
         private void ui_launcher_launchgame_tile_Click(object sender, RoutedEventArgs e)
         {
             appSettings.LaunchGame();
+        }
+
+        private void ui_modmanager_openmodfolder_button_Click(object sender, RoutedEventArgs e)
+        {
+            modManager.OpenModFolder();
+
+            UpdateUI();
         }
         //---------------- XAML FUNCTIONS END ----------------
     }

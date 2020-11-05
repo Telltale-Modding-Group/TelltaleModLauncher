@@ -19,20 +19,20 @@
 
     <Grid>
         <mah:MetroAnimatedSingleRowTabControl Height="302" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left">
-            <TabItem Header="Launcher">
+            <TabItem Name="ui_launcher_tab" Header="Launcher">
                 <Grid>
-                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,258" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged"/>
-                    <mah:Tile Name="ui_launcher_launchgame_tile" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="457" Click="ui_launcher_launchgame_tile_Click">
+                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,72,10,196" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged"/>
+                    <mah:Tile Name="ui_launcher_launchgame_tile" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Width="457" Click="ui_launcher_launchgame_tile_Click" Height="181">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="457"/>
-                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="457"/>
+                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="457"/>
+                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="457"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Mod Manager">
+            <TabItem Name="ui_modmanager_tab" Header="Mod Manager">
                 <Grid>
                     <Label Name="ui_modmanager_gameversion_label" Content="The Walking Dead - Telltale Definitive Series" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="457"/>
                     <ListView Name="ui_modmanager_modlist_listview" HorizontalAlignment="Left" Height="194" Margin="10,41,0,0" VerticalAlignment="Top" Width="457" SelectionChanged="ui_modmanager_modlist_listview_SelectionChanged" MouseDoubleClick="ui_modmanager_modlist_listview_MouseDoubleClick">
@@ -59,9 +59,10 @@
                     <Button Name="ui_modmanager_viewmod_button" HorizontalAlignment="Left" Margin="100,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Content="{iconPacks:BootstrapIcons EyeFill, Height=25, Width=25}" Click="ui_modmanager_viewmod_button_Click"  ToolTip="View the Mod contents."/>
                     <Button Name="ui_modmanager_purgemod_button" HorizontalAlignment="Left" Margin="427,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Content="{iconPacks:BootstrapIcons TrashFill, Height=20, Width=20}" Click="ui_modmanager_purgemod_button_Click" ToolTip="Purge/Remove all Mods that are installed."/>
                     <Separator HorizontalAlignment="Left" Height="14" Margin="10,235,0,0" VerticalAlignment="Top" Width="457"/>
+                    <Button Name="ui_modmanager_openmodfolder_button" HorizontalAlignment="Left" Margin="145,254,0,0" VerticalAlignment="Top" Width="40" Height="40" Content="{iconPacks:BootstrapIcons Folder2, Height=22, Width=22}" ToolTip="Open the Game Mods folder." Click="ui_modmanager_openmodfolder_button_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Create">
+            <TabItem Name="ui_create_tab" Header="Create">
                 <Grid>
                     <mah:Tile Name="ui_create_scriptmod_tile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Script Mod Editor for creating Telltale Scripting Mods.">
                         <StackPanel>
@@ -81,7 +82,7 @@
                             <TextBlock Margin="0,10,0,0" FontSize="16">Texture Mod</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the ">
+                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens a tool to view the contents of an archive.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="40" Kind="FolderOpenSolid"/>
                             <TextBlock Margin="0,10,0,0" FontSize="16"><Run Text="View Archive"/></TextBlock>
@@ -89,7 +90,7 @@
                     </mah:Tile>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
+            <TabItem Name="ui_settings_tab" Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
                 <ScrollViewer>
                     <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="950">
                         <Label Name="ui_settings_gamesettings_label" Content="Game Settings" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" Width="434" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
