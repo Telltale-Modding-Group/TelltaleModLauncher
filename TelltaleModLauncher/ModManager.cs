@@ -58,30 +58,50 @@ namespace TelltaleModLauncher
         /// <para>If yes, it will remove the files associated with the mod on the disk, and remove it from the mod manager.</para>
         /// </summary>
         /// <param name="selectedIndex"></param>
-        public void RemoveMod(int selectedIndex)
+        public void RemoveMod(int selectedIndex, bool ignorePrompt = false)
         {
             Mod selectedMod = mods[selectedIndex];
 
             string promptDescription = string.Format("Are you sure you want to remove '{0}'?", selectedMod.ModDisplayName);
 
-            if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
+            if (ignorePrompt)
             {
                 RemoveModFiles(selectedMod);
                 ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath());
                 mods.Remove(selectedMod);
             }
+            else
+            {
+                if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
+                {
+                    RemoveModFiles(selectedMod);
+                    ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath());
+                    mods.Remove(selectedMod);
+                }
+            }
         }
 
+        /// <summary>
+        /// Remove the mod files assoicated with the given mod on the disk.
+        /// </summary>
+        /// <param name="mod"></param>
         public void RemoveModFiles(Mod mod)
         {
             foreach (string modfile in mod.ModFiles)
             {
                 string modfile_pathOnDisk = Path.Combine(appSettings.Get_Current_GameVersionSettings_ModsLocation(), modfile);
-                ioManagement.DeleteFile(modfile_pathOnDisk);
+
+                if(File.Exists(modfile_pathOnDisk))
+                    ioManagement.DeleteFile(modfile_pathOnDisk);
             }
         }
 
-        public void CheckIfModFilesExist(Mod mod, bool showPrompt = true)
+        /// <summary>
+        /// Check if the given mod files exist. If the files are missing for the mod, it prompts the user if they wish to remove the mod.
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <param name="showPrompt"></param>
+        public bool CheckIfModFilesExist(Mod mod)
         {
             List<string> missingModFiles = new List<string>();
 
@@ -95,13 +115,12 @@ namespace TelltaleModLauncher
                 }
             }
 
-            string missingFileString = string.Join(", ", missingModFiles);
-            string message = string.Format("The following files for the mod '{0}' are missing! {1}. Do you want to remove the mod and it's contents?", mod.ModDisplayName, missingFileString);
-
-            if (ioManagement.MessageBox_Confirmation(message, "Missing Mod Files!", MessageBoxIcon.Error))
+            if (missingModFiles.Count != 0)
             {
-                RemoveMod(mods.IndexOf(mod));
+                return false;
             }
+            else
+                return true;
         }
 
         /// <summary>
@@ -152,7 +171,59 @@ namespace TelltaleModLauncher
 
                         // Ordinal match is safest, case-sensitive volumes can be mounted within volumes that are case-insensitive.
                         if (modFile_extractedFromArchive.StartsWith(appSettings.Get_Current_GameVersionSettings_ModsLocation(), StringComparison.Ordinal))
+                        {
+                            if (File.Exists(modFile_extractedFromArchive))
+                                ioManagement.DeleteFile(modFile_extractedFromArchive);
+
                             entry.ExtractToFile(modFile_extractedFromArchive);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void CheckModContents_WithExistingMods(Mod newMod)
+        {
+            List<Mod> conflictingMods = new List<Mod>();
+            List<string> conflictingModNames = new List<string>();
+            List<string> conflictingModFiles = new List<string>();
+
+            foreach (Mod mod in mods)
+            {
+                bool hasConflictingFiles = false;
+
+                foreach(string file in mod.ModFiles)
+                {
+                    foreach(string newModFile in newMod.ModFiles)
+                    {
+                        if(file.Equals(newModFile))
+                        {
+                            hasConflictingFiles = true;
+                            conflictingModFiles.Add(file);
+                        }
+                    }
+                }
+
+                if(hasConflictingFiles)
+                {
+                    conflictingMods.Add(mod);
+                    conflictingModNames.Add(mod.ModDisplayName);
+                }
+            }
+
+            if(conflictingMods.Count != 0)
+            {
+                string conflictingModsMessage = string.Join(", ", conflictingModNames);
+                string conflictingModFilesMessage = string.Join(", ", conflictingModFiles);
+                string finalMessage = string.Format("{0} has conflicts with the following mods! {1}. They share the following files! {2}. Do you want to remove the conflicting mods?", newMod.ModDisplayName, conflictingModsMessage, conflictingModFilesMessage);
+
+                if (ioManagement.MessageBox_Confirmation(finalMessage, "Mod Conflicts!", MessageBoxIcon.Error))
+                {
+                    foreach(Mod mod in conflictingMods)
+                    {
+                        RemoveModFiles(mod);
+                        ioManagement.DeleteFile(mod.Get_ModInfoJson_FilePath());
+                        mods.Remove(mod);
                     }
                 }
             }
@@ -211,9 +282,19 @@ namespace TelltaleModLauncher
                     Json_ReadModFile(jsonFilePath, true);
                 }
 
+                List<Mod> badModFiles = new List<Mod>();
+
                 foreach(Mod mod in mods)
                 {
-                    CheckIfModFilesExist(mod);
+                    if(CheckIfModFilesExist(mod) == false)
+                    {
+                        badModFiles.Add(mod);
+                    }
+                }
+
+                foreach(Mod badMod in badModFiles)
+                {
+                    RemoveMod(mods.IndexOf(badMod), true);
                 }
             }    
         }
@@ -283,7 +364,7 @@ namespace TelltaleModLauncher
 
             foreach (Mod mod in mods)
             {
-                if(mod.ModDisplayName.Equals(newMod.ModDisplayName))
+                if (mod.ModDisplayName.Equals(newMod.ModDisplayName))
                 {
                     if (mod.ModVersion.Equals(newMod.ModVersion))
                     {
@@ -297,7 +378,7 @@ namespace TelltaleModLauncher
                     {
                         string message = string.Format("You have '{0}' installed with version '{1}'. Do you wish to replace it with this version {2}?", mod.ModDisplayName, mod.ModVersion, newMod.ModVersion);
 
-                        if(ioManagement.MessageBox_Confirmation(message, "Replace Mod"))
+                        if (ioManagement.MessageBox_Confirmation(message, "Replace Mod"))
                         {
                             ReplaceMod(mod, newMod);
                         }
@@ -306,6 +387,8 @@ namespace TelltaleModLauncher
                     }
                 }
             }
+
+            CheckModContents_WithExistingMods(newMod);
         }
 
         /// <summary>
@@ -354,6 +437,8 @@ namespace TelltaleModLauncher
                 if (name.Equals(nameof(Mod.ModVersion)))
                     newMod.ModVersion = (string)property.Value;
             }
+
+            newMod.Set_ModInfoJson_FilePath(modJsonFile);
 
             if(bypassValidation)
             {

@@ -96,7 +96,17 @@ namespace TelltaleModLauncher
             string jsonText = File.ReadAllText(configFile_file_location);
 
             //parse the data into a json array
-            JArray array = JArray.Parse(jsonText);
+            JArray array;
+
+            try
+            {
+                array = JArray.Parse(jsonText);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.ToString(), e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             JObject AppSettingsFile_fromJson = array[0] as JObject;
             JArray GameVersionSettings_fromJson = array[1] as JArray;

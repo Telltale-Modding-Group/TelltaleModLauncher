@@ -254,14 +254,7 @@ namespace TelltaleModLauncher
 
         private void ui_settings_gamedirectoryexeBrowse_button_Click(object sender, RoutedEventArgs e)
         {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the Game executable");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_GameVersionSettings_GameExeLocation(path);
+            appSettings.Set_Current_GameVersionSettings_GameExeLocation();
             appSettings.UpdateChangesToFile();
 
             UpdateUI();
@@ -269,14 +262,7 @@ namespace TelltaleModLauncher
 
         private void ui_settings_gamemodsdirectoryBrowse_button_Click(object sender, RoutedEventArgs e)
         {
-            string path = "";
-
-            ioManagement.GetFolderPath(ref path, "Locate the Game Mods directory");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_GameVersionSettings_GameModsDirectory(path);
+            appSettings.Set_Current_GameVersionSettings_GameModsDirectory();
             appSettings.UpdateChangesToFile();
 
             UpdateUI();

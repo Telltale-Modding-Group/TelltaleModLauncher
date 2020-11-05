@@ -541,6 +541,9 @@ namespace TelltaleModLauncher
             }
         }
 
+        //------------------------------ PROMPTS ------------------------------ 
+        //------------------------------ PROMPTS ------------------------------ 
+        //------------------------------ PROMPTS ------------------------------ 
 
         /// <summary>
         /// Opens a FolderBrowserDialog for the user to select a folder path.
