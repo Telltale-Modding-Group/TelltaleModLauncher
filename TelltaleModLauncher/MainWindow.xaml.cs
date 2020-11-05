@@ -21,10 +21,21 @@ namespace TelltaleModLauncher
     /// </summary>
     public partial class MainWindow
     {
-        //main mod manager class
-        private ModManager modManager = new ModManager();
+        //main script objects
+        private IOManagement ioManagement;
+        private AppSettings appSettings;
+        private ModManager modManager;
+
+        //xaml windows
         private ModManager_ViewMod modManager_ViewMod = new ModManager_ViewMod();
 
+        //IMPORTANT: xaml calls UpdateUI() too soon causing errors due to incomplete initalization.
+        //This 'nullifies' UpdateUI() until InitalizeApplication() is done.
+        private bool startingUp = true;
+
+        /// <summary>
+        /// XAML Main Window Initalization
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -32,27 +43,55 @@ namespace TelltaleModLauncher
             UpdateUI();
         }
 
+        /// <summary>
+        /// Initalizes the main script objects
+        /// </summary>
         public void InitalizeApplication()
         {
-            ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
+            ioManagement = new IOManagement();
+            appSettings = new AppSettings(ioManagement);
+            modManager = new ModManager(appSettings, ioManagement);
+
+            startingUp = false;
+
+            ui_settings_darkmode_toggle.IsOn = appSettings.appSettingsFile.UI_LightMode;
         }
 
+        /// <summary>
+        /// Updates the UI to reflect the new values from the scripts.
+        /// </summary>
         public void UpdateUI()
         {
+            if (startingUp)
+                return;
+
             bool ifModSelected = ui_modmanager_modlist_listview.SelectedIndex != -1 && ui_modmanager_modlist_listview.SelectedItem != null;
             bool ifModsExist = ui_modmanager_modlist_listview.Items.Count != 0;
             bool ifCanLaunchGame = ui_launcher_gameversion_combobox.SelectedIndex != -1;
 
-            ui_launcher_gameversion_combobox.ItemsSource = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>().ToList();
+            var GameVersions_ToStringList = Enum.GetNames(typeof(GameVersion)).ToList();
+
+            //launcher stuff
+            ui_launcher_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
+            ui_launcher_gamedirectory_label.Content = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
+            ui_launcher_gamemodsamount_label.Content = string.Format("Mods Installed: {0}", modManager.mods.Count);
             ui_launcher_launchgame_tile.IsEnabled = ifCanLaunchGame;
 
-            //ui_label.Content = app_Settings.Default_Game_Version.Replace("_", " ");
-
+            //mod manager stuff
             ui_modmanager_removemod_button.IsEnabled = ifModSelected;
             ui_modmanager_viewmod_button.IsEnabled = ifModSelected;
             ui_modmanager_purgemod_button.IsEnabled = ifModsExist;
             ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
             ui_modmanager_modlist_listview.Items.Refresh();
+            ui_modmanager_gameversion_label.Content = appSettings.Get_Current_GameVersionName();
+
+            //settings stuff
+            ui_settings_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
+            ui_settings_gamedirectoryexe_textbox.Text = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
+            ui_settings_gamemodsdirectory_textbox.Text = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+            ui_settings_luacompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaCompiler;
+            ui_settings_luadecompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaDecompiler;
+            ui_settings_ttarchexePath_textbox.Text = appSettings.appSettingsFile.Location_Ttarchext;
         }
 
         //---------------- XAML FUNCTIONS ----------------
@@ -82,39 +121,48 @@ namespace TelltaleModLauncher
             UpdateUI();
         }
 
-        private void ui_settings_gamedirectorybrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ui_settings_ttarchexePathBrowse_button_Click(object sender, RoutedEventArgs e)
         {
+            string path = "";
 
-        }
+            ioManagement.GetFilePath(ref path, "Locate the ttarchext executable");
 
-        private void ui_settings_ttarchexePath_textbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+            if (string.IsNullOrEmpty(path))
+                return;
 
-        }
+            appSettings.Set_Current_AppSettings_ttarchextLocation(path);
+            appSettings.UpdateChangesToFile();
 
-        private void ui_settings_luacompilerPath_textbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            UpdateUI();
         }
 
         private void ui_settings_luacompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
         {
+            string path = "";
 
+            ioManagement.GetFilePath(ref path, "Locate the Lua Compiler executable");
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            appSettings.Set_Current_AppSettings_LuaCompilerLocation(path);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
         }
-
-        private void ui_settings_luadecompilerPath_textbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void ui_settings_luadecompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
         {
+            string path = "";
 
+            ioManagement.GetFilePath(ref path, "Locate the Lua Decompiler executable");
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            appSettings.Set_Current_AppSettings_LuaDecompilerLocation(path);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
         }
 
         private void ui_settings_darkmode_toggle_Toggled(object sender, RoutedEventArgs e)
@@ -123,6 +171,11 @@ namespace TelltaleModLauncher
 
             ThemeManager.Current.ChangeTheme(this, darkmodeTheme);
             modManager_ViewMod.UI_ChangeTheme(darkmodeTheme);
+
+            appSettings.Set_Current_AppSettings_UI_LightMode(ui_settings_darkmode_toggle.IsOn);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
         }
 
         private void ui_modmanager_viewmod_button_Click(object sender, RoutedEventArgs e)
@@ -131,6 +184,8 @@ namespace TelltaleModLauncher
 
             modManager_ViewMod.Show();
             modManager_ViewMod.SetMod(selectedMod);
+
+            UpdateUI();
         }
 
         private void ui_modmanager_modlist_listview_contextmenu_view_click(object sender, RoutedEventArgs e)
@@ -139,6 +194,8 @@ namespace TelltaleModLauncher
 
             modManager_ViewMod.Show();
             modManager_ViewMod.SetMod(selectedMod);
+
+            UpdateUI();
         }
 
         private void ui_modmanager_modlist_listview_contextmenu_remove_click(object sender, RoutedEventArgs e)
@@ -158,6 +215,60 @@ namespace TelltaleModLauncher
 
         private void ui_launcher_gameversion_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string selectedGameVersion = ui_launcher_gameversion_combobox.SelectedItem.ToString();
+
+            appSettings.Set_Current_AppSettings_DefaultGameVersion(selectedGameVersion);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
+        }
+
+        private void ui_settings_ttarchexePathNumber_textbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (startingUp)
+                return;
+
+            try
+            {
+                int userValue = int.Parse(ui_settings_ttarchexePath_textbox.Text);
+                appSettings.Set_Current_GameVersionSettings_EnumNumber(userValue);
+                appSettings.UpdateChangesToFile();
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message, exception.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            UpdateUI();
+        }
+
+        private void ui_settings_gamedirectoryexeBrowse_button_Click(object sender, RoutedEventArgs e)
+        {
+            string path = "";
+
+            ioManagement.GetFilePath(ref path, "Locate the Game executable");
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            appSettings.Set_Current_GameVersionSettings_GameExeLocation(path);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
+        }
+
+        private void ui_settings_gamemodsdirectoryBrowse_button_Click(object sender, RoutedEventArgs e)
+        {
+            string path = "";
+
+            ioManagement.GetFolderPath(ref path, "Locate the Game Mods directory");
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            appSettings.Set_Current_GameVersionSettings_GameModsDirectory(path);
+            appSettings.UpdateChangesToFile();
+
             UpdateUI();
         }
         //---------------- XAML FUNCTIONS END ----------------

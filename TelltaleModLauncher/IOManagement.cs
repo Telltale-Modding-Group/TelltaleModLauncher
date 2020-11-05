@@ -470,7 +470,7 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
-        /// Get the file paths in a given directory by a specified file extension.
+        /// Get the file paths in a given directory by a specified file extension. (include the period on the extension, like .txt)
         /// </summary>
         /// <param name="givenDirectory"></param>
         /// <param name="fileExtension"></param>

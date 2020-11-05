@@ -20,26 +20,37 @@ namespace TelltaleModLauncher
     /// </summary>
     public partial class ModManager_ViewMod
     {
+        //mod object, this will need to be set with SetMod() to display the mod values.
         private Mod mod;
 
+        /// <summary>
+        /// Opens a 'ViewMod' window to view a mod.
+        /// </summary>
         public ModManager_ViewMod()
         {
             InitializeComponent();
 
+            //create a temporary mod object with some default values
             mod = new Mod("Mod Name", "0", "Mod Author", new List<string>(), "None");
         }
 
+        /// <summary>
+        /// Sets the mod object so the values can be obtained and shown to the user.
+        /// </summary>
+        /// <param name="mod"></param>
         public void SetMod(Mod mod)
         {
             this.mod = mod;
-
             UpdateUI();
         }
 
+        /// <summary>
+        /// Updates the UI Elements of the XAML window to reflect the mod values
+        /// </summary>
         private void UpdateUI()
         {
             ui_displayauthor_label.Content = string.Format("Author: {0}", mod.ModAuthor);
-            ui_displaycompatibility_label.Content = string.Format("Compatibility: {0}", mod.ModCompatibility);
+            ui_displaycompatibility_label.Content = string.Format("Compatibility: {0}", mod.ModCompatibility.Replace("_", " "));
             ui_displayname_label.Content = string.Format("Name: {0}", mod.ModDisplayName);
             ui_displayversion_label.Content = string.Format("Version: {0}", mod.ModVersion);
 
@@ -48,10 +59,15 @@ namespace TelltaleModLauncher
 
         private void ViewMod_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //hide the window on closing instead of creating a new window object every time
             e.Cancel = true;
             this.Hide();
         }
 
+        /// <summary>
+        /// Changes the theme of the window.
+        /// </summary>
+        /// <param name="theme"></param>
         public void UI_ChangeTheme(string theme)
         {
             ThemeManager.Current.ChangeTheme(this, theme);
