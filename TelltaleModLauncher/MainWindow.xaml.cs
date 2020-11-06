@@ -102,8 +102,21 @@ namespace TelltaleModLauncher
             ui_settings_luacompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaCompiler;
             ui_settings_luadecompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaDecompiler;
             ui_settings_ttarchexePath_textbox.Text = appSettings.appSettingsFile.Location_Ttarchext;
-            ui_settings_ttarchexePathNumber_textbox.IsEnabled = ifOtherGame;
-            ui_settings_ttarchexePathNumber_textbox.Text = appSettings.Get_Current_GameVersionSettings_ttarchNumber().ToString();
+
+            ui_settings_ttarchexePathNumber_combobox.IsEnabled = ifOtherGame;
+            ui_settings_ttarchexePathNumber_combobox.SelectedIndex = appSettings.Get_Current_GameVersionSettings_ttarchNumber();
+            List<string> ttarchext_GameEnumNames = Enum.GetNames(typeof(ttarchext_GameEnums)).ToList();
+            List<string> ttarchext_GameEnumDisplayNames = new List<string>();
+
+            foreach(string ttarchextName in ttarchext_GameEnumNames)
+            {
+                int gameEnumValue = (int)Enum.Parse(typeof(ttarchext_GameEnums), ttarchextName);
+                string displayName = string.Format("{0} | {1}", gameEnumValue, ttarchextName);
+
+                ttarchext_GameEnumDisplayNames.Add(displayName);
+            }
+
+            ui_settings_ttarchexePathNumber_combobox.ItemsSource = ttarchext_GameEnumDisplayNames;
         }
 
         //---------------- XAML FUNCTIONS ----------------
@@ -238,25 +251,6 @@ namespace TelltaleModLauncher
             UpdateUI();
         }
 
-        private void ui_settings_ttarchexePathNumber_textbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (startingUp)
-                return;
-
-            try
-            {
-                int userValue = int.Parse(ui_settings_ttarchexePathNumber_textbox.Text);
-                appSettings.Set_Current_GameVersionSettings_EnumNumber(userValue);
-                appSettings.UpdateChangesToFile();
-            }
-            catch(Exception exception)
-            {
-                MessageBox.Show(exception.ToString(), exception.Message, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            UpdateUI();
-        }
-
         private void ui_settings_gamedirectoryexeBrowse_button_Click(object sender, RoutedEventArgs e)
         {
             appSettings.Set_Current_GameVersionSettings_GameExeLocation();
@@ -313,6 +307,17 @@ namespace TelltaleModLauncher
         private void ui_create_viewarchive_tile_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ui_settings_ttarchexePathNumber_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (startingUp)
+                return;
+
+            appSettings.Set_Current_GameVersionSettings_EnumNumber(ui_settings_ttarchexePathNumber_combobox.SelectedIndex);
+            appSettings.UpdateChangesToFile();
+
+            UpdateUI();
         }
         //---------------- XAML FUNCTIONS END ----------------
     }

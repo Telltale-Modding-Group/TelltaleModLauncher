@@ -176,6 +176,7 @@
     <Compile Include="SetupWizard.xaml.cs">
       <DependentUpon>SetupWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ttarchext_GameEnums.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
