@@ -64,25 +64,25 @@
             </TabItem>
             <TabItem Name="ui_create_tab" Header="Create">
                 <Grid>
-                    <mah:Tile Name="ui_create_scriptmod_tile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Script Mod Editor for creating Telltale Scripting Mods.">
+                    <mah:Tile Name="ui_create_scriptmod_tile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_scriptmod_tile_Click" ToolTip="Opens the Script Mod Editor for creating Telltale Scripting Mods.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileCodeSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Script Mod</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <mah:Tile Name="ui_create_audiomod_tile" HorizontalAlignment="Left" Margin="163,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Audio Mod Editor for creating Telltale Audio Mods.">
+                    <mah:Tile Name="ui_create_audiomod_tile" HorizontalAlignment="Left" Margin="163,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_audiomod_tile_Click" ToolTip="Opens the Audio Mod Editor for creating Telltale Audio Mods.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileAudioSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Audio Mod</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <mah:Tile Name="ui_create_texturemod_tile" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens the Texture Mod Editor for creating Telltale Texture Mods.">
+                    <mah:Tile Name="ui_create_texturemod_tile" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_texturemod_tile_Click" ToolTip="Opens the Texture Mod Editor for creating Telltale Texture Mods.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="PaintBrushSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Texture Mod</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" ToolTip="Opens a tool to view the contents of an archive.">
+                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_viewarchive_tile_Click" ToolTip="Opens a tool to view the contents of an archive.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="40" Kind="FolderOpenSolid"/>
                             <TextBlock Margin="0,10,0,0" FontSize="16"><Run Text="View Archive"/></TextBlock>

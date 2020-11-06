@@ -294,6 +294,26 @@ namespace TelltaleModLauncher
 
             UpdateUI();
         }
+
+        private void ui_create_scriptmod_tile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ui_create_audiomod_tile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ui_create_texturemod_tile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ui_create_viewarchive_tile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         //---------------- XAML FUNCTIONS END ----------------
     }
 }

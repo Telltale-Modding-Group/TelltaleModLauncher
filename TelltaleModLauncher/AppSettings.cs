@@ -55,6 +55,8 @@ namespace TelltaleModLauncher
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = current_GameVersionSettings.Game_LocationExe;
+            processStartInfo.WorkingDirectory = current_GameVersionSettings.Game_Location;
+            processStartInfo.UseShellExecute = false;
 
             Process.Start(processStartInfo);
         }
