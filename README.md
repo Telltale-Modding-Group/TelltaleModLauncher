@@ -5,7 +5,7 @@
 If you wish to try it out, you'll need Visual Studio to open the project and build it (Haven't put out a build just yet). If you encounter any bugs/issues or have suggestions, feel free to leave an 'issue' on the repository.
 
 ## About
-This launcher is designed to make installing and managing mods for Telltale Games much easier through a launcher interface. In addition to that, the launcher also includes the tools necessary for you to create a mod for a Telltale Title. You will be able to make the following mods.
+This launcher is designed to make installing and managing mods for Telltale Games much easier through a launcher interface. In addition to that, the launcher also includes a hub for mod tools necessary for you to create a mod for a Telltale Title. You will be able to make the following mods.
 - Texture Mods (not implemented yet)
 - Sound Mods (not implemented yet)
 - Scripting Mods (work in progress)
