@@ -14,12 +14,17 @@ using Newtonsoft.Json.Serialization;
 
 namespace TelltaleModLauncher
 {
+    /// <summary>
+    /// Main class pertaining to the application settings.
+    /// </summary>
     class AppSettings
     {
+        //public
         public AppSettingsFile appSettingsFile;
         public List<GameVersionSettings> GameVersionSettings { get; set; }
         public GameVersionSettings current_GameVersionSettings;
 
+        //private
         private IOManagement ioManagement;
         private static string systemDocumentsPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private static string configFile_filename = "TelltaleModLauncher_Config.json";
@@ -27,7 +32,9 @@ namespace TelltaleModLauncher
         private static string configFile_file_location = configFile_directory_location + configFile_filename;
 
         /// <summary>
-        /// Application Settings Class
+        /// Application Settings Class, creates an AppSettings object. This is called on application startup.
+        /// <para>If there is an existing config file, it will parse the data from it.</para>
+        /// <para>If there is not an existing config file, or a TelltaleModLauncher directory, create a new one.</para>
         /// </summary>
         public AppSettings(IOManagement ioManagement)
         {
@@ -51,6 +58,9 @@ namespace TelltaleModLauncher
             }    
         }
 
+        /// <summary>
+        /// Launches the exe that is found in the current selected game version exe location.
+        /// </summary>
         public void LaunchGame()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
@@ -60,6 +70,10 @@ namespace TelltaleModLauncher
             Process.Start(processStartInfo);
         }
 
+        /// <summary>
+        /// Changes the current game version to the desired game version.
+        /// </summary>
+        /// <param name="newVersion"></param>
         public void ChangeGameVersion(GameVersion newVersion)
         {
             foreach(GameVersionSettings gameVersionSetting in GameVersionSettings)
@@ -72,6 +86,9 @@ namespace TelltaleModLauncher
             }
         }
 
+        /// <summary>
+        /// Creates a new game version settings list.
+        /// </summary>
         private void New_GameVersionSettingsList()
         {
             GameVersionSettings = new List<GameVersionSettings>();
@@ -88,6 +105,9 @@ namespace TelltaleModLauncher
             }
         }
 
+        /// <summary>
+        /// Reads and parses the data from the app config file.
+        /// </summary>
         public void ReadConfigFile()
         {
             appSettingsFile = new AppSettingsFile();
@@ -171,6 +191,9 @@ namespace TelltaleModLauncher
             }
         }
 
+        /// <summary>
+        /// Writes existing values of the App Settings objects into the config file.
+        /// </summary>
         public void WriteToFile()
         {
             if(File.Exists(configFile_file_location))
@@ -192,12 +215,21 @@ namespace TelltaleModLauncher
             }
         }
 
+        /// <summary>
+        /// Updates the changes to the app config file by replacing it and writing a new one. (there is a better way of doing it, but this works fine)
+        /// </summary>
         public void UpdateChangesToFile()
         {
             ioManagement.DeleteFile(configFile_file_location);
             WriteToFile();
         }
 
+        /// <summary>
+        /// Checks the current selected game version values if the following values are assigned/exist.
+        /// <para>Game_LocationExe, Game_Location, and Game_Location_Mods</para>
+        /// <para>returns false if one or all of these values aren't assigned/exist</para>
+        /// </summary>
+        /// <returns></returns>
         public bool IsGameSetupAndValid()
         {
             if (File.Exists(current_GameVersionSettings.Game_LocationExe) == false)
