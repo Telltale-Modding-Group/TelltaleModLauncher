@@ -17,7 +17,7 @@ namespace TelltaleModLauncher
     /// <summary>
     /// The main class for the mod manager functionality.
     /// </summary>
-    class ModManager
+    public class ModManager
     {
         //public variables
         public List<Mod> mods;

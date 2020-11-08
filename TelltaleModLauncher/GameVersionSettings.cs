@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TelltaleModLauncher
 {
-    class GameVersionSettings
+    public class GameVersionSettings
     {
         private int userSet_ttarchGameEnumNumber;
 

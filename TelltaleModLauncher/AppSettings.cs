@@ -17,7 +17,7 @@ namespace TelltaleModLauncher
     /// <summary>
     /// Main class pertaining to the application settings.
     /// </summary>
-    class AppSettings
+    public class AppSettings
     {
         //public
         public AppSettingsFile appSettingsFile;
@@ -244,6 +244,19 @@ namespace TelltaleModLauncher
             return true;
         }
 
+        public void Open_LauncherHelp()
+        {
+            string launcherGihtubLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher";
+
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = launcherGihtubLink,
+                UseShellExecute = true
+            };
+
+            Process.Start(processStartInfo);
+        }
+
         //---------------- GETTERS ----------------
         public int Get_Current_GameVersionSettings_ttarchNumber()
         {
@@ -268,6 +281,10 @@ namespace TelltaleModLauncher
         public GameVersion Get_Current_GameVersionName()
         {
             return current_GameVersionSettings.Game_Version;
+        }
+        public bool Get_AppSettings_LightMode()
+        {
+            return appSettingsFile.UI_LightMode;
         }
         //---------------- GETTERS END ----------------
         //---------------- MODIFIERS ----------------
@@ -306,7 +323,7 @@ namespace TelltaleModLauncher
             current_GameVersionSettings = GameVersionSettings[selectedIndex];
         }
 
-        public void Set_Current_GameVersionSettings_GameModsDirectory(string newPath = "")
+        public void Set_Current_GameVersionSettings_GameModsDirectory()
         {
             string newDirectory = "";
 
@@ -315,7 +332,7 @@ namespace TelltaleModLauncher
             current_GameVersionSettings.Game_Location_Mods = newDirectory;
         }
 
-        public void Set_Current_GameVersionSettings_GameExeLocation(string newPath = "")
+        public void Set_Current_GameVersionSettings_GameExeLocation()
         {
             string newFilePath = "";
 

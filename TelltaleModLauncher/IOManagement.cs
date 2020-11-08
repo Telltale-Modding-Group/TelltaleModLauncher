@@ -14,7 +14,7 @@ namespace TelltaleModLauncher
     /// <para>It also contains other additional custom System.IO functions</para>
     /// <para>We recomend you use this class's functions in-place of the traditional System.IO functions</para>
     /// </summary>
-    class IOManagement
+    public class IOManagement
     {
 
         /// <summary>

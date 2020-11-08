@@ -25,10 +25,11 @@ namespace TelltaleModLauncher
         private IOManagement ioManagement;
         private AppSettings appSettings;
         private ModManager modManager;
+        private CreatorManager creatorManager;
 
         //xaml windows
-        private ModManager_ViewMod modManager_ViewMod = new ModManager_ViewMod();
-        private SetupWizard setupWizard = new SetupWizard();
+        private ModManager_ViewMod modManager_ViewMod;
+        private SetupWizard_Window setupWizard_Window;
 
         //IMPORTANT: xaml calls UpdateUI() too soon causing errors due to incomplete initalization.
         //This 'nullifies' UpdateUI() until InitalizeApplication() is done.
@@ -50,14 +51,31 @@ namespace TelltaleModLauncher
         /// <summary>
         /// Initalizes the main script objects
         /// </summary>
-        public void InitalizeApplication()
+        private void InitalizeApplication()
         {
             ioManagement = new IOManagement();
+            creatorManager = new CreatorManager();
             appSettings = new AppSettings(ioManagement);
             modManager = new ModManager(appSettings, ioManagement);
             modManager.GetModsFromFolder();
 
+            modManager_ViewMod = new ModManager_ViewMod();
+            setupWizard_Window = new SetupWizard_Window(appSettings, this, ioManagement, modManager);
+
             startingUp = false;
+
+            if (appSettings.IsGameSetupAndValid() == false)
+                InitalizeSetupWizard();
+        }
+
+        /// <summary>
+        /// Initalizes the setup wizard and hides the main window
+        /// </summary>
+        private void InitalizeSetupWizard()
+        {
+            this.Hide();
+            setupWizard_Window.Show();
+            setupWizard_Window.Activate();
         }
 
         /// <summary>
@@ -291,22 +309,22 @@ namespace TelltaleModLauncher
 
         private void ui_create_scriptmod_tile_Click(object sender, RoutedEventArgs e)
         {
-
+            creatorManager.Open_ScriptModCreator();
         }
 
         private void ui_create_audiomod_tile_Click(object sender, RoutedEventArgs e)
         {
-
+            creatorManager.Open_SoundModCreator();
         }
 
         private void ui_create_texturemod_tile_Click(object sender, RoutedEventArgs e)
         {
-
+            creatorManager.Open_TextureModCreator();
         }
 
         private void ui_create_viewarchive_tile_Click(object sender, RoutedEventArgs e)
         {
-
+            creatorManager.Open_ArchiveViewer();
         }
 
         private void ui_settings_ttarchexePathNumber_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -318,6 +336,11 @@ namespace TelltaleModLauncher
             appSettings.UpdateChangesToFile();
 
             UpdateUI();
+        }
+
+        private void ui_window_help_button_Click(object sender, RoutedEventArgs e)
+        {
+            appSettings.Open_LauncherHelp();
         }
         //---------------- XAML FUNCTIONS END ----------------
     }

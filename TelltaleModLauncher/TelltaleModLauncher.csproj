@@ -173,8 +173,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SetupWizard.xaml.cs">
-      <DependentUpon>SetupWizard.xaml</DependentUpon>
+    <Compile Include="CreatorManager.cs" />
+    <Compile Include="SetupWizard_Window.xaml.cs">
+      <DependentUpon>SetupWizard_Window.xaml</DependentUpon>
     </Compile>
     <Compile Include="ttarchext_GameEnums.cs" />
     <Page Include="MainWindow.xaml">
@@ -198,7 +199,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SetupWizard.xaml">
+    <Page Include="SetupWizard_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
