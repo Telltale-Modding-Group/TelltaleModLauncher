@@ -246,7 +246,7 @@ namespace TelltaleModLauncher
 
         public void Open_LauncherHelp()
         {
-            string launcherGihtubLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher";
+            string launcherGihtubLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/Launcher-Help";
 
             var processStartInfo = new ProcessStartInfo
             {
