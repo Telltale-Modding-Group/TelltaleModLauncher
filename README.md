@@ -2,7 +2,7 @@
 
 **NOTE: This project is a work in progress. Some features have not been implemented just yet and there could be issues/bugs that you might encounter. If you do please follow [this](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D---Reporting-an-Issue-or-Bug) to submit an issue.**
 
-**Releases are now being put out! You can get them [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases).**
+**Releases are now being put out! You can get them [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)!**
 
 **If you are setting up the application and need help, click [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D-Application-Setup)!**
 
