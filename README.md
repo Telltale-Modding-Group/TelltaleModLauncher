@@ -1,6 +1,6 @@
 # Telltale Mod Launcher
 
-**NOTE: This project is a work in progress. Some features have not been implemented just yet and there could be issues/bugs that you might encounter. If you do please follow [this](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D---Reporting-an-Issue-or-Bug) to submit and issue.**
+**NOTE: This project is a work in progress. Some features have not been implemented just yet and there could be issues/bugs that you might encounter. If you do please follow [this](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D---Reporting-an-Issue-or-Bug) to submit an issue.**
 
 If you wish to try it out, you'll need Visual Studio to open the project and build it (Haven't put out a build just yet). If you encounter any bugs/issues or have suggestions, feel free to leave an 'issue' on the repository.
 
