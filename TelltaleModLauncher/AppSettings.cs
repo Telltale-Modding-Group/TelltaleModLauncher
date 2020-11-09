@@ -30,6 +30,7 @@ namespace TelltaleModLauncher
         private static string configFile_filename = "TelltaleModLauncher_Config.json";
         private static string configFile_directory_location = systemDocumentsPath + "/TelltaleModLauncher/";
         private static string configFile_file_location = configFile_directory_location + configFile_filename;
+        private static string launcherHelpLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D";
 
         /// <summary>
         /// Application Settings Class, creates an AppSettings object. This is called on application startup.
@@ -246,11 +247,9 @@ namespace TelltaleModLauncher
 
         public void Open_LauncherHelp()
         {
-            string launcherGihtubLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/Launcher-Help";
-
             var processStartInfo = new ProcessStartInfo
             {
-                FileName = launcherGihtubLink,
+                FileName = launcherHelpLink,
                 UseShellExecute = true
             };
 

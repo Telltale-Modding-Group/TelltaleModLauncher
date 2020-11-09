@@ -92,5 +92,18 @@ namespace TelltaleModLauncher
             if (modManager_ViewMod_ViewText.CheckPreviewValidity(finalPath))
                 modManager_ViewMod_ViewText.OpenWindow(finalPath, mod.ModDisplayName);
         }
+
+        private void ui_displayfiles_viewfilecontents_click(object sender, RoutedEventArgs e)
+        {
+            if (ui_displayfiles_listview.SelectedItem == null)
+                return;
+
+            string modDirectory = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+            string selectedModFilePath = (string)ui_displayfiles_listview.SelectedItem;
+            string finalPath = System.IO.Path.Combine(modDirectory, selectedModFilePath);
+
+            if (modManager_ViewMod_ViewText.CheckPreviewValidity(finalPath))
+                modManager_ViewMod_ViewText.OpenWindow(finalPath, mod.ModDisplayName);
+        }
     }
 }

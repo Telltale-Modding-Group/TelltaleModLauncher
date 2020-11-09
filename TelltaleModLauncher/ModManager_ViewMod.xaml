@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="View Mod" Height="348" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True">
+        Title="View Mod" Height="351" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -22,14 +22,20 @@
         <Label Name="ui_displayversion_label" Content="ModVersion" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="301"/>
         <Label Name="ui_displayauthor_label" Content="ModAuthor" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="301"/>
         <Label Name="ui_displaycompatibility_label" Content="ModCompatibility" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="301"/>
-        <ListView Name="ui_displayfiles_listview" HorizontalAlignment="Left" Height="159" Margin="10,150,0,0" VerticalAlignment="Top" Width="301" MouseDoubleClick="ui_displayfiles_listview_MouseDoubleClick">
+        <Separator HorizontalAlignment="Left" Height="16" Margin="10,129,0,0" VerticalAlignment="Top" Width="301"/>
+
+        <ListView Name="ui_displayfiles_listview" HorizontalAlignment="Left" Height="159" Margin="10,150,0,0" VerticalAlignment="Top" Width="301" MouseDoubleClick="ui_displayfiles_listview_MouseDoubleClick" ToolTip="This list contains all of the mod files associated with the mod that will be placed in the Game Mods directory.">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Mod Files"/>
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="View File Contents" Click="ui_displayfiles_viewfilecontents_click"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
-        <Separator HorizontalAlignment="Left" Height="16" Margin="10,129,0,0" VerticalAlignment="Top" Width="301"/>
 
     </Grid>
 </mah:MetroWindow>
