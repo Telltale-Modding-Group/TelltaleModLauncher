@@ -30,6 +30,7 @@ namespace TelltaleModLauncher
         //xaml windows
         private ModManager_ViewMod modManager_ViewMod;
         private SetupWizard_Window setupWizard_Window;
+        private ModManager_ViewMod_ViewText modManager_ViewMod_ViewText;
 
         //IMPORTANT: xaml calls UpdateUI() too soon causing errors due to incomplete initalization.
         //This 'nullifies' UpdateUI() until InitalizeApplication() is done.
@@ -59,7 +60,8 @@ namespace TelltaleModLauncher
             modManager = new ModManager(appSettings, ioManagement);
             modManager.GetModsFromFolder();
 
-            modManager_ViewMod = new ModManager_ViewMod();
+            modManager_ViewMod_ViewText = new ModManager_ViewMod_ViewText();
+            modManager_ViewMod = new ModManager_ViewMod(modManager_ViewMod_ViewText, appSettings);
             setupWizard_Window = new SetupWizard_Window(appSettings, this, ioManagement, modManager);
 
             startingUp = false;
@@ -341,6 +343,19 @@ namespace TelltaleModLauncher
         private void ui_window_help_button_Click(object sender, RoutedEventArgs e)
         {
             appSettings.Open_LauncherHelp();
+        }
+
+        private void ui_modmanager_modlist_listview_contextmenu_add_click(object sender, RoutedEventArgs e)
+        {
+            modManager.AddMod();
+
+            UpdateUI();
+        }
+        private void ui_modmanager_modlist_listview_contextmenu_openmodfolder_click(object sender, RoutedEventArgs e)
+        {
+            modManager.OpenModFolder();
+
+            UpdateUI();
         }
         //---------------- XAML FUNCTIONS END ----------------
     }

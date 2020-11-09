@@ -190,6 +190,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CreatorManager.cs" />
+    <Compile Include="ModManager_ViewMod_ViewText.xaml.cs">
+      <DependentUpon>ModManager_ViewMod_ViewText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetupWizard_Window.xaml.cs">
       <DependentUpon>SetupWizard_Window.xaml</DependentUpon>
     </Compile>
@@ -212,6 +215,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ModManager_ViewMod.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModManager_ViewMod_ViewText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

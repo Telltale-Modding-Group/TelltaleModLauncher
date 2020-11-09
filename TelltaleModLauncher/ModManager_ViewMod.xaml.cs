@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ControlzEx.Theming;
+using System.IO;
 
 namespace TelltaleModLauncher
 {
@@ -23,12 +24,18 @@ namespace TelltaleModLauncher
         //mod object, this will need to be set with SetMod() to display the mod values.
         private Mod mod;
 
+        private AppSettings appSettings;
+        private ModManager_ViewMod_ViewText modManager_ViewMod_ViewText;
+
         /// <summary>
         /// Opens a 'ViewMod' window to view a mod.
         /// </summary>
-        public ModManager_ViewMod()
+        public ModManager_ViewMod(ModManager_ViewMod_ViewText modManager_ViewMod_ViewText, AppSettings appSettings)
         {
             InitializeComponent();
+
+            this.modManager_ViewMod_ViewText = modManager_ViewMod_ViewText;
+            this.appSettings = appSettings;
 
             //create a temporary mod object with some default values
             mod = new Mod("Mod Name", "0", "Mod Author", new List<string>(), "None");
@@ -71,6 +78,19 @@ namespace TelltaleModLauncher
         public void UI_ChangeTheme(string theme)
         {
             ThemeManager.Current.ChangeTheme(this, theme);
+        }
+
+        private void ui_displayfiles_listview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ui_displayfiles_listview.SelectedItem == null)
+                return;
+
+            string modDirectory = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+            string selectedModFilePath = (string)ui_displayfiles_listview.SelectedItem;
+            string finalPath = System.IO.Path.Combine(modDirectory, selectedModFilePath);
+
+            if (modManager_ViewMod_ViewText.CheckPreviewValidity(finalPath))
+                modManager_ViewMod_ViewText.OpenWindow(finalPath, mod.ModDisplayName);
         }
     }
 }

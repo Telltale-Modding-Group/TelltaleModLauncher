@@ -71,6 +71,8 @@
                             <ContextMenu>
                                 <MenuItem Header="View" Click="ui_modmanager_modlist_listview_contextmenu_view_click"></MenuItem>
                                 <MenuItem Header="Remove" Click="ui_modmanager_modlist_listview_contextmenu_remove_click"></MenuItem>
+                                <MenuItem Header="Add" Click="ui_modmanager_modlist_listview_contextmenu_add_click"></MenuItem>
+                                <MenuItem Header="Open Mod Folder" Click="ui_modmanager_modlist_listview_contextmenu_openmodfolder_click"></MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>

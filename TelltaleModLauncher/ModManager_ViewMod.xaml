@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="View Mod" Height="348" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing">
+        Title="View Mod" Height="348" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -22,7 +22,7 @@
         <Label Name="ui_displayversion_label" Content="ModVersion" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="301"/>
         <Label Name="ui_displayauthor_label" Content="ModAuthor" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="301"/>
         <Label Name="ui_displaycompatibility_label" Content="ModCompatibility" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="301"/>
-        <ListView Name="ui_displayfiles_listview" HorizontalAlignment="Left" Height="159" Margin="10,150,0,0" VerticalAlignment="Top" Width="301">
+        <ListView Name="ui_displayfiles_listview" HorizontalAlignment="Left" Height="159" Margin="10,150,0,0" VerticalAlignment="Top" Width="301" MouseDoubleClick="ui_displayfiles_listview_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Mod Files"/>
