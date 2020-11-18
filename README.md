@@ -6,7 +6,7 @@
 **If you are setting up the application and need help, click [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D-Application-Setup)!**
 **If your looking for Mods to get, supported mods can be found [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/Supported-Mods)!**
 
-[![Github All Releases](https://img.shields.io/github/downloads/changemymindpls/TelltaleModLauncher/dt/ansicolortags.svg)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)  
+[![Github All Releases](https://img.shields.io/github/downloads/Telltale-Modding-Group/TelltaleModLauncher/dt/ansicolortags.svg)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)  
 
 ## About
 This launcher is designed to make installing and managing mods for Telltale Games much easier through a very user friendly interface. In addition to that, the launcher also includes a hub for mod tools necessary for you to create a mod for a Telltale Title. You will be able to make the following mods.
