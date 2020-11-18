@@ -6,6 +6,7 @@
 **If you are setting up the application and need help, click [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D-Application-Setup)!**
 **If your looking for Mods to get, supported mods can be found [here](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/Supported-Mods)!**
 
+[![GitHub Release](https://img.shields.io/github/release/Telltale-Modding-Group/TelltaleModLauncher/PlayMusic.svg?style=flat)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Telltale-Modding-Group/TelltaleModLauncher/total.svg)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)  
 
 ## About
