@@ -21,6 +21,8 @@ Scripting mods are currently possible using the [Telltale Script Editor](https:/
 ![Screenshot 1](screenshots/shot1.png)
 ![Screenshot 2](screenshots/shot2.png)
 
+[![HitCount](http://hits.dwyl.com/Telltale-Modding-Group/Telltale-Script-Editor.svg)](http://hits.dwyl.com/Telltale-Modding-Group/Telltale-Script-Editor)
+
 ## Supported Games
 The launcher currently supports the following games.
 - The Walking Dead Definitive Edition
