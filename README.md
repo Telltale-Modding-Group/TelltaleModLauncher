@@ -11,7 +11,7 @@
 
 ## Supported Games
 The launcher currently supports the following games.
-- The Walking Dead Definitive Edition
+- **The Walking Dead Definitive Edition**
 
 NOTE: The installer has not been tested with any other Telltale game besides 'The Walking Dead Definitive Edition' though future support is planned.
 
