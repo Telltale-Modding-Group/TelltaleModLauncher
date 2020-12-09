@@ -87,6 +87,7 @@
                     <Button Name="ui_modmanager_purgemod_button" HorizontalAlignment="Left" Margin="427,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons TrashFill, Height=20, Width=20}" Click="ui_modmanager_purgemod_button_Click" ToolTip="Purge/Remove all Mods that are installed."/>
                     <Separator Height="14" Margin="10,235,10,0" VerticalAlignment="Top"/>
                     <Button Name="ui_modmanager_openmodfolder_button" HorizontalAlignment="Left" Margin="145,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons Folder2, Height=22, Width=22}" ToolTip="Open the Game Mods folder." Click="ui_modmanager_openmodfolder_button_Click"/>
+                    <Button Name="ui_modmanager_refreshmodfolder_button" HorizontalAlignment="Left" Margin="190,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BoxIcons RegularRefresh , Height=22, Width=22}" ToolTip="Refresh the Game Mods folder." Click="ui_modmanager_refreshmodfolder_button_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Name="ui_create_tab" Header="Create">

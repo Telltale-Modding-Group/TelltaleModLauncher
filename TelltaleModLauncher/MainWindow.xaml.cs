@@ -50,14 +50,14 @@ namespace TelltaleModLauncher
         }
 
         /// <summary>
-        /// Initalizes the main script objects
+        /// Initalizes the main script objects and windows
         /// </summary>
         private void InitalizeApplication()
         {
             ioManagement = new IOManagement();
             creatorManager = new CreatorManager();
             appSettings = new AppSettings(ioManagement);
-            modManager = new ModManager(appSettings, ioManagement);
+            modManager = new ModManager(appSettings, ioManagement, this);
             modManager.GetModsFromFolder();
 
             modManager_ViewMod_ViewText = new ModManager_ViewMod_ViewText();
@@ -354,6 +354,13 @@ namespace TelltaleModLauncher
         private void ui_modmanager_modlist_listview_contextmenu_openmodfolder_click(object sender, RoutedEventArgs e)
         {
             modManager.OpenModFolder();
+
+            UpdateUI();
+        }
+
+        private void ui_modmanager_refreshmodfolder_button_Click(object sender, RoutedEventArgs e)
+        {
+            modManager.GetModsFromFolder();
 
             UpdateUI();
         }

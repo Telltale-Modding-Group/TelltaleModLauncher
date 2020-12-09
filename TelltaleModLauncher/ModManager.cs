@@ -25,19 +25,25 @@ namespace TelltaleModLauncher
         //private variables
         private IOManagement ioManagement;
         private AppSettings appSettings;
+        private MainWindow mainWindow;
         private string modZipFilePath;
+
+        private FileSystemWatcher fileSystemWatcher;
 
         /// <summary>
         /// Initalizes a new Mod Manager object. The following fields must be given.
         /// </summary>
         /// <param name="appSettings"></param>
         /// <param name="ioManagement"></param>
-        public ModManager (AppSettings appSettings, IOManagement ioManagement)
+        public ModManager (AppSettings appSettings, IOManagement ioManagement, MainWindow mainWindow)
         {
             this.appSettings = appSettings;
             this.ioManagement = ioManagement;
+            this.mainWindow = mainWindow;
 
             mods = new List<Mod>();
+
+            //Initalize_FileSystemWatcher();
         }
 
         //------------------------- MAIN ACTIONS -------------------------
@@ -147,6 +153,56 @@ namespace TelltaleModLauncher
         //------------------------- MAIN ACTIONS END -------------------------
 
         /// <summary>
+        /// Initalizes the file system watcher object to watch the current game mods folder.
+        /// </summary>
+        public void Initalize_FileSystemWatcher()
+        {
+            //get our values ready, look for .json files only
+            string fileSystemWatcher_filter = "*.json";
+            string fileSystemWatcher_location = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+
+            //if we already have a watcher, dispose of it
+            if(fileSystemWatcher != null)
+            {
+                fileSystemWatcher.Dispose();
+            }
+
+            //initalize our file system watcher object
+            fileSystemWatcher = new FileSystemWatcher(fileSystemWatcher_location, fileSystemWatcher_filter);
+            fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            fileSystemWatcher.EnableRaisingEvents = true;
+
+            //add our events
+            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+            fileSystemWatcher.Created += FileSystemWatcher_Created;
+            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
+            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
+
+            //initalize the file system watcher object
+            fileSystemWatcher.BeginInit();
+        }
+
+        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            GetModsFromFolder();
+        }
+
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            GetModsFromFolder();
+        }
+
+        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            GetModsFromFolder();
+        }
+
+        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            GetModsFromFolder();
+        }
+
+        /// <summary>
         /// Remove the mod files assoicated with the given mod on the disk.
         /// </summary>
         /// <param name="mod"></param>
@@ -174,6 +230,7 @@ namespace TelltaleModLauncher
             else
             {
                 mods.Clear();
+                //Initalize_FileSystemWatcher();
                 GetModsFromFolder();
             }
         }
@@ -187,6 +244,9 @@ namespace TelltaleModLauncher
             //if the game mods directory exists
             if (Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()))
             {
+                //clear the list
+                mods.Clear();
+
                 //get all of the modinfo.json files found in the folder
                 List<string> modJsonFilesPath = ioManagement.GetFilesPathsByExtension(appSettings.Get_Current_GameVersionSettings_ModsLocation(), ".json");
 
@@ -216,6 +276,9 @@ namespace TelltaleModLauncher
                     RemoveMod(mods.IndexOf(badMod), true);
                 }
             }
+
+            //update the UI on the main window
+            //mainWindow.UpdateUI();
         }
 
         /// <summary>
