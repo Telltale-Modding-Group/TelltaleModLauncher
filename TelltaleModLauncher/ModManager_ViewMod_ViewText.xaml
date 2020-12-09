@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelltaleModLauncher"
         mc:Ignorable="d"
-        Title="View File" Height="355.814" Width="384.884" ResizeMode="CanResizeWithGrip" Closing="ViewText_Closing" Topmost="True">
+        Title="View File" Height="355.814" Width="384.884" ResizeMode="CanResizeWithGrip" Closing="ViewText_Closing" Topmost="True" MinWidth="384.884" MinHeight="355.814">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">

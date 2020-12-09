@@ -19,7 +19,7 @@
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Label Content="v0.6.0" ToolTip="Application Version"/>
+            <Label Content="v0.7.0" ToolTip="Application Version"/>
             <Button Name="ui_window_help_button" Content="Help" Click="ui_window_help_button_Click" ToolTip="Get Help for this Application.">
                 <Button.ContentTemplate>
                     <DataTemplate>

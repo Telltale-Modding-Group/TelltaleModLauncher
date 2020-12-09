@@ -513,6 +513,13 @@ namespace TelltaleModLauncher
             //create a new mod object
             Mod newMod = new Mod();
 
+            //check if the json does not exist
+            if(!File.Exists(modJsonFile))
+            {
+                MessageBox.Show("This mod zip file is not setup like a mod launcher file! Please refer to the help section to see how a mod zip file should be setup.", "Can't Add Mod!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
             //read the data from the config file
             string jsonText = File.ReadAllText(modJsonFile);
 
@@ -564,6 +571,12 @@ namespace TelltaleModLauncher
             //create a new mod object
             Mod newMod = GetJsonData(modJsonFile);
 
+            //if the new mod is null, do not continue!
+            if(newMod == null)
+            {
+                return;
+            }
+
             if (deleteJson)
             {
                 //delete the modJsonFile since we don't need it anymore
@@ -595,6 +608,12 @@ namespace TelltaleModLauncher
         {
             //create a new mod object
             Mod newMod = GetJsonData(modJsonFile);
+
+            //if the new mod is null, do not continue!
+            if (newMod == null)
+            {
+                return;
+            }
 
             newMod.Set_ModInfoJson_FilePath(modJsonFile);
 
