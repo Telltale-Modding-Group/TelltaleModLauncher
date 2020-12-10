@@ -223,8 +223,10 @@ namespace TelltaleModLauncher
         /// </summary>
         public void ChangedGameVersion()
         {
+            //check if the current selected game version has a mods location
             if(Directory.Exists(appSettings.Get_Current_GameVersionSettings_ModsLocation()) == false)
             {
+                //clear the list
                 mods.Clear();
             }
             else
