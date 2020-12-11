@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace TelltaleModLauncher
 
             mods = new List<Mod>();
 
-            //Initalize_FileSystemWatcher();
+            Initalize_FileSystemWatcher();
         }
 
         //------------------------- MAIN ACTIONS -------------------------
@@ -169,8 +170,7 @@ namespace TelltaleModLauncher
 
             //initalize our file system watcher object
             fileSystemWatcher = new FileSystemWatcher(fileSystemWatcher_location, fileSystemWatcher_filter);
-            fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.Security;
 
             //add our events
             fileSystemWatcher.Changed += FileSystemWatcher_Changed;
@@ -179,7 +179,8 @@ namespace TelltaleModLauncher
             fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
 
             //initalize the file system watcher object
-            fileSystemWatcher.BeginInit();
+            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.IncludeSubdirectories = false;
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
@@ -232,7 +233,7 @@ namespace TelltaleModLauncher
             else
             {
                 mods.Clear();
-                //Initalize_FileSystemWatcher();
+                Initalize_FileSystemWatcher();
                 GetModsFromFolder();
             }
         }
@@ -279,8 +280,11 @@ namespace TelltaleModLauncher
                 }
             }
 
-            //update the UI on the main window
-            //mainWindow.UpdateUI();
+            System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                //update the UI on the main window
+                mainWindow.UpdateUI();
+            }));
         }
 
         /// <summary>

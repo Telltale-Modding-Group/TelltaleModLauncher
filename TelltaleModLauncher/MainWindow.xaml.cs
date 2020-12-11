@@ -107,6 +107,7 @@ namespace TelltaleModLauncher
             ui_modmanager_viewmod_button.IsEnabled = ifModSelected;
             ui_modmanager_openmodfolder_button.IsEnabled = ifCanLaunchGame;
             ui_modmanager_purgemod_button.IsEnabled = ifModsExist;
+            ui_modmanager_refreshmodfolder_button.IsEnabled = ifCanLaunchGame;
             ui_modmanager_modlist_listview.IsEnabled = ifCanLaunchGame;
             ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
             ui_modmanager_modlist_listview.Items.Refresh();
