@@ -94,7 +94,6 @@ namespace TelltaleModLauncher
         {
             GameVersionSettings = new List<GameVersionSettings>();
 
-            var enumList = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>();
             var enumListString = Enum.GetNames(typeof(GameVersion));
 
             for (int i = 0; i < enumListString.Length; i++)
@@ -245,6 +244,9 @@ namespace TelltaleModLauncher
             return true;
         }
 
+        /// <summary>
+        /// Opens up the default web explorer and directs the user to the launcher help page
+        /// </summary>
         public void Open_LauncherHelp()
         {
             var processStartInfo = new ProcessStartInfo

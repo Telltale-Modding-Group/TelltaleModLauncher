@@ -33,6 +33,11 @@ namespace TelltaleModLauncher
         /// </summary>
         public List<string> ModFiles { get; set; }
 
+        /// <summary>
+        /// The list of filenames.extension's that are associated with the mod to be placed in the game directory.
+        /// </summary>
+        public List<string> ModFilesGameDirectory { get; set; }
+
         private string ModInfoJson_FilePath { get; set; }
 
         public void Set_ModInfoJson_FilePath(string path)

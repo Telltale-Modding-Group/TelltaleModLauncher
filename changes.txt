@@ -2,7 +2,7 @@ v0.7.0
 - [Removed] Creator Tab since it's no longer needed. This functionality is moved seperately to the Telltale Script Editor
 - [Added] Mod list refresh button, it's also automated as well in the background.
 - [Added] Mod refresh to the context menu
-
+- [Changed] Can still add/replace a mod even if it has both the same name and version.
 - [Changed] Name of creator dependencies to just dependencies
 - [Fix] Fixed issue when launcher would crash when opening mod files that were not properly structured. I.e. if you downloaded the source code zip of a project rather than the actual mod zip.
 - [Fix] Fixed issue when launcher would crash on startup due to the file system watcher for mod refreshing
@@ -10,4 +10,3 @@ v0.7.0
 
 W.I.P
 - [Added] Abillity to edit/change mod archive priorities
-- [Changed] Can still add/replace a mod even if it has both the same name and version.

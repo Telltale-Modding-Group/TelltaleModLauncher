@@ -452,9 +452,12 @@ namespace TelltaleModLauncher
                 {
                     if (mod.ModVersion.Equals(newMod.ModVersion)) //if the mod is the same version and has the same name, this mod is a duplicate! stop!
                     {
-                        string message = string.Format("You already have '{0}' version '{1}' installed!", newMod.ModDisplayName, newMod.ModVersion);
+                        string message = string.Format("You already have '{0}' version '{1}' installed!. Do you wish to replace it anyway?", mod.ModDisplayName, mod.ModVersion, newMod.ModVersion);
 
-                        MessageBox.Show(message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        if (ioManagement.MessageBox_Confirmation(message, "Replace Mod"))
+                        {
+                            ReplaceMod(mod, newMod);
+                        }
 
                         return;
                     }
