@@ -42,6 +42,8 @@ namespace TelltaleModLauncher
             this.ioManagement = ioManagement;
             this.modManager = modManager;
 
+            this.appSettings.GetDependencies();
+
             UpdateUI();
         }
 

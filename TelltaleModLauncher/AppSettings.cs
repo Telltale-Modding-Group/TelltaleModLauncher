@@ -55,8 +55,33 @@ namespace TelltaleModLauncher
                 if (!Directory.Exists(configFile_directory_location))
                     ioManagement.CreateDirectory(configFile_directory_location);
 
+                GetDependencies();
+
                 WriteToFile();
             }    
+        }
+
+        public void GetDependencies()
+        {
+            if(appSettingsFile == null)
+                return;
+
+            string dependencyFolder = AppContext.BaseDirectory + "/Dependencies";
+            string luaCompilerPath = dependencyFolder + "/luac.exe";
+            string luaDecompilerPath = dependencyFolder + "/luadec.exe";
+            string ttarchextPath = dependencyFolder + "/ttarchext.exe";
+
+            if (!Directory.Exists(dependencyFolder))
+                return;
+
+            if (File.Exists(luaCompilerPath))
+                appSettingsFile.Location_LuaCompiler = luaCompilerPath;
+
+            if (File.Exists(luaDecompilerPath))
+                appSettingsFile.Location_LuaDecompiler = luaDecompilerPath;
+
+            if (File.Exists(ttarchextPath))
+                appSettingsFile.Location_Ttarchext = ttarchextPath;
         }
 
         /// <summary>
