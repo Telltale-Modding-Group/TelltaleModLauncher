@@ -44,7 +44,7 @@ namespace TelltaleModLauncher
 
             mods = new List<Mod>();
 
-            Initalize_FileSystemWatcher();
+            //Initalize_FileSystemWatcher();
         }
 
         //------------------------- MAIN ACTIONS -------------------------
@@ -160,13 +160,21 @@ namespace TelltaleModLauncher
         {
             //get our values ready, look for .json files only
             string fileSystemWatcher_filter = "*.json";
+
+            //if our app settings object is null, don't continue
+            if (appSettings == null)
+                return;
+
+            //get the mod location of the current selected game
             string fileSystemWatcher_location = appSettings.Get_Current_GameVersionSettings_ModsLocation();
+
+            //if our given directory location does not exist, don't continue
+            if(!Directory.Exists(fileSystemWatcher_location))
+                return;
 
             //if we already have a watcher, dispose of it
             if(fileSystemWatcher != null)
-            {
                 fileSystemWatcher.Dispose();
-            }
 
             //initalize our file system watcher object
             fileSystemWatcher = new FileSystemWatcher(fileSystemWatcher_location, fileSystemWatcher_filter);
