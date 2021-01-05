@@ -189,7 +189,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CreatorManager.cs" />
     <Compile Include="ModManager_ViewMod_ViewText.xaml.cs">
       <DependentUpon>ModManager_ViewMod_ViewText.xaml</DependentUpon>
     </Compile>

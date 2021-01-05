@@ -25,7 +25,6 @@ namespace TelltaleModLauncher
         private IOManagement ioManagement;
         private AppSettings appSettings;
         private ModManager modManager;
-        private CreatorManager creatorManager;
 
         //xaml windows
         private ModManager_ViewMod modManager_ViewMod;
@@ -55,7 +54,6 @@ namespace TelltaleModLauncher
         private void InitalizeApplication()
         {
             ioManagement = new IOManagement();
-            creatorManager = new CreatorManager();
             appSettings = new AppSettings(ioManagement);
             modManager = new ModManager(appSettings, ioManagement, this);
             modManager.GetModsFromFolder();
@@ -111,6 +109,11 @@ namespace TelltaleModLauncher
             ui_modmanager_modlist_listview.IsEnabled = ifCanLaunchGame;
             ui_modmanager_modlist_listview.ItemsSource = modManager.mods;
             ui_modmanager_modlist_listview.Items.Refresh();
+            ui_modmanager_modlist_listview_contextmenu_add.IsEnabled = ui_modmanager_addmod_button.IsEnabled;
+            ui_modmanager_modlist_listview_contextmenu_remove.IsEnabled = ui_modmanager_removemod_button.IsEnabled;
+            ui_modmanager_modlist_listview_contextmenu_openmodfolder.IsEnabled = ui_modmanager_openmodfolder_button.IsEnabled;
+            ui_modmanager_modlist_listview_contextmenu_refreshmods.IsEnabled = ui_modmanager_refreshmodfolder_button.IsEnabled;
+            ui_modmanager_modlist_listview_contextmenu_view.IsEnabled = ui_modmanager_viewmod_button.IsEnabled;
             ui_modmanager_gameversion_label.Content = appSettings.Get_Current_GameVersionName();
             ui_modmanager_gameversion_label.Content = string.Format("Game: {0}", appSettings.Get_Current_GameVersionName().ToString().Replace("_", " "));
 
@@ -310,26 +313,6 @@ namespace TelltaleModLauncher
             UpdateUI();
         }
 
-        private void ui_create_scriptmod_tile_Click(object sender, RoutedEventArgs e)
-        {
-            creatorManager.Open_ScriptModCreator();
-        }
-
-        private void ui_create_audiomod_tile_Click(object sender, RoutedEventArgs e)
-        {
-            creatorManager.Open_SoundModCreator();
-        }
-
-        private void ui_create_texturemod_tile_Click(object sender, RoutedEventArgs e)
-        {
-            creatorManager.Open_TextureModCreator();
-        }
-
-        private void ui_create_viewarchive_tile_Click(object sender, RoutedEventArgs e)
-        {
-            creatorManager.Open_ArchiveViewer();
-        }
-
         private void ui_settings_ttarchexePathNumber_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (startingUp)
@@ -360,6 +343,13 @@ namespace TelltaleModLauncher
         }
 
         private void ui_modmanager_refreshmodfolder_button_Click(object sender, RoutedEventArgs e)
+        {
+            modManager.GetModsFromFolder();
+
+            UpdateUI();
+        }
+
+        private void ui_modmanager_modlist_listview_contextmenu_refreshmods_click(object sender, RoutedEventArgs e)
         {
             modManager.GetModsFromFolder();
 

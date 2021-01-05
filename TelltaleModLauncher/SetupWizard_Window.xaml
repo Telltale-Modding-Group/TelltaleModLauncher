@@ -37,7 +37,7 @@
                     <ComboBox Name="ui_gamesetup_ttarchexePathNumber_combobox" IsReadOnly="True" Height="29" Margin="10,236,10,0" VerticalAlignment="Top" SelectionChanged="ui_gamesetup_ttarchexePathNumber_combobox_SelectionChanged"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Creator Dependencies">
+            <TabItem Header="Dependencies">
                 <Grid>
                     <Label Name="ui_dependencies_ttarchexePath_label" Content="ttarchexe Executable Path" Margin="10,10,10,0" VerticalAlignment="Top"/>
                     <TextBox IsReadOnly="True" Name="ui_dependencies_ttarchexePath_textbox" Height="29" Margin="10,41,48,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top"/>

@@ -46,15 +46,15 @@
         <mah:MetroAnimatedSingleRowTabControl Height="302" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left" Grid.RowSpan="2">
             <TabItem Name="ui_launcher_tab" Header="Launcher">
                 <Grid>
-                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,72,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34"/>
+                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34"/>
                     <mah:Tile Name="ui_launcher_launchgame_tile" Margin="10,111,10,0" VerticalAlignment="Top" Width="Auto" Click="ui_launcher_launchgame_tile_Click" Height="181">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" Margin="10,41,10,0" VerticalAlignment="Top"/>
-                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" Margin="10,10,10,0" VerticalAlignment="Top"/>
+                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" Margin="10,80,10,0" VerticalAlignment="Top"/>
+                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" Margin="10,49,10,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Name="ui_modmanager_tab" Header="Mod Manager">
@@ -70,10 +70,11 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="View" Click="ui_modmanager_modlist_listview_contextmenu_view_click"></MenuItem>
-                                <MenuItem Header="Remove" Click="ui_modmanager_modlist_listview_contextmenu_remove_click"></MenuItem>
-                                <MenuItem Header="Add" Click="ui_modmanager_modlist_listview_contextmenu_add_click"></MenuItem>
-                                <MenuItem Header="Open Mod Folder" Click="ui_modmanager_modlist_listview_contextmenu_openmodfolder_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_view" Header="View" Click="ui_modmanager_modlist_listview_contextmenu_view_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_remove" Header="Remove" Click="ui_modmanager_modlist_listview_contextmenu_remove_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_add" Header="Add" Click="ui_modmanager_modlist_listview_contextmenu_add_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_openmodfolder" Header="Open Mod Folder" Click="ui_modmanager_modlist_listview_contextmenu_openmodfolder_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_refreshmods" Header="Refresh Mods" Click="ui_modmanager_modlist_listview_contextmenu_refreshmods_click"></MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -88,34 +89,6 @@
                     <Separator Height="14" Margin="10,235,10,0" VerticalAlignment="Top"/>
                     <Button Name="ui_modmanager_openmodfolder_button" HorizontalAlignment="Left" Margin="145,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons Folder2, Height=22, Width=22}" ToolTip="Open the Game Mods folder." Click="ui_modmanager_openmodfolder_button_Click"/>
                     <Button Name="ui_modmanager_refreshmodfolder_button" HorizontalAlignment="Left" Margin="190,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BoxIcons RegularRefresh , Height=22, Width=22}" ToolTip="Refresh the Game Mods folder." Click="ui_modmanager_refreshmodfolder_button_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Name="ui_create_tab" Header="Create">
-                <Grid>
-                    <mah:Tile Name="ui_create_scriptmod_tile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_scriptmod_tile_Click" ToolTip="Opens the Script Mod Editor for creating Telltale Scripting Mods.">
-                        <StackPanel>
-                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileCodeSolid"></iconPacks:PackIconFontAwesome>
-                            <TextBlock Margin="0,10,0,0" FontSize="16">Script Mod</TextBlock>
-                        </StackPanel>
-                    </mah:Tile>
-                    <mah:Tile Name="ui_create_audiomod_tile" HorizontalAlignment="Left" Margin="163,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_audiomod_tile_Click" ToolTip="Opens the Audio Mod Editor for creating Telltale Audio Mods.">
-                        <StackPanel>
-                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="FileAudioSolid"></iconPacks:PackIconFontAwesome>
-                            <TextBlock Margin="0,10,0,0" FontSize="16">Audio Mod</TextBlock>
-                        </StackPanel>
-                    </mah:Tile>
-                    <mah:Tile Name="ui_create_texturemod_tile" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_texturemod_tile_Click" ToolTip="Opens the Texture Mod Editor for creating Telltale Texture Mods.">
-                        <StackPanel>
-                            <iconPacks:PackIconFontAwesome Width="80" Height="60" Kind="PaintBrushSolid"></iconPacks:PackIconFontAwesome>
-                            <TextBlock Margin="0,10,0,0" FontSize="16">Texture Mod</TextBlock>
-                        </StackPanel>
-                    </mah:Tile>
-                    <mah:Tile Name="ui_create_viewarchive_tile" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="148" Click="ui_create_viewarchive_tile_Click" ToolTip="Opens a tool to view the contents of an archive.">
-                        <StackPanel>
-                            <iconPacks:PackIconFontAwesome Width="90" Height="40" Kind="FolderOpenSolid"/>
-                            <TextBlock Margin="0,10,0,0" FontSize="16"><Run Text="View Archive"/></TextBlock>
-                        </StackPanel>
-                    </mah:Tile>
                 </Grid>
             </TabItem>
             <TabItem Name="ui_settings_tab" Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
@@ -144,7 +117,7 @@
                         <ComboBox Name="ui_settings_ttarchexePathNumber_combobox" IsReadOnly="True" Height="29" Margin="10,439,19,0" VerticalAlignment="Top" SelectionChanged="ui_settings_ttarchexePathNumber_combobox_SelectionChanged"/>
 
                         <Separator Height="9" Margin="10,473,19,0" VerticalAlignment="Top"/>
-                        <Label Name="ui_settings_dependencies_label" Content="Creator Dependencies" Margin="10,487,19,0" VerticalAlignment="Top" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
+                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" Margin="10,487,19,0" VerticalAlignment="Top" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
                         <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" Margin="10,533,19,0" VerticalAlignment="Top"/>
                         <TextBox Name="ui_settings_ttarchexePath_textbox" Height="29" Margin="10,564,57,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top"/>
                         <Button Name="ui_settings_ttarchexePathBrowse_button" HorizontalAlignment="Right" Margin="0,564,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_ttarchexePathBrowse_button_Click" Height="29">
