@@ -46,15 +46,15 @@
         <mah:MetroAnimatedSingleRowTabControl Height="302" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left" Grid.RowSpan="2">
             <TabItem Name="ui_launcher_tab" Header="Launcher">
                 <Grid>
-                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,10,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34"/>
+                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,72,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34"/>
                     <mah:Tile Name="ui_launcher_launchgame_tile" Margin="10,111,10,0" VerticalAlignment="Top" Width="Auto" Click="ui_launcher_launchgame_tile_Click" Height="181">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
                         </StackPanel>
                     </mah:Tile>
-                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" Margin="10,80,10,0" VerticalAlignment="Top"/>
-                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" Margin="10,49,10,0" VerticalAlignment="Top"/>
+                    <Label Name="ui_launcher_gamedirectory_label" Content="The Walking Dead Series Definitive.exe" Margin="10,41,10,0" VerticalAlignment="Top"/>
+                    <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" Margin="10,10,10,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Name="ui_modmanager_tab" Header="Mod Manager">
@@ -70,11 +70,11 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_add" Header="Add" Click="ui_modmanager_modlist_listview_contextmenu_add_click"></MenuItem>
                                 <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_view" Header="View" Click="ui_modmanager_modlist_listview_contextmenu_view_click"></MenuItem>
                                 <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_remove" Header="Remove" Click="ui_modmanager_modlist_listview_contextmenu_remove_click"></MenuItem>
-                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_add" Header="Add" Click="ui_modmanager_modlist_listview_contextmenu_add_click"></MenuItem>
-                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_openmodfolder" Header="Open Mod Folder" Click="ui_modmanager_modlist_listview_contextmenu_openmodfolder_click"></MenuItem>
                                 <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_refreshmods" Header="Refresh Mods" Click="ui_modmanager_modlist_listview_contextmenu_refreshmods_click"></MenuItem>
+                                <MenuItem Name="ui_modmanager_modlist_listview_contextmenu_openmodfolder" Header="Open Mod Folder" Click="ui_modmanager_modlist_listview_contextmenu_openmodfolder_click"></MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
