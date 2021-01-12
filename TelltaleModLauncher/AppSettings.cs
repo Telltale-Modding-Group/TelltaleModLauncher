@@ -289,6 +289,11 @@ namespace TelltaleModLauncher
             return current_GameVersionSettings.Game_Ttarch_GameEnumNumber;
         }
 
+        public int Get_Current_GameVersionSettings_ttarchPath()
+        {
+            return ttarch;
+        }
+
         public string Get_Current_GameVersionSettings_GameDirectory()
         {
             return current_GameVersionSettings.Game_Location;

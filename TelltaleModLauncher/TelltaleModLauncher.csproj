@@ -198,6 +198,7 @@
     <Compile Include="ModManager_ViewMod_ViewText.xaml.cs">
       <DependentUpon>ModManager_ViewMod_ViewText.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Mod_ResdescEdit.cs" />
     <Compile Include="SetupWizard_Window.xaml.cs">
       <DependentUpon>SetupWizard_Window.xaml</DependentUpon>
     </Compile>
