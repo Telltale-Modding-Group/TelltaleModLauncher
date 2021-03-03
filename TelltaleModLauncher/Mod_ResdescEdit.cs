@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
 using System.Windows.Forms;
+using LibTelltale;
 
 namespace TelltaleModLauncher
 {
@@ -20,8 +21,6 @@ namespace TelltaleModLauncher
         public Mod_ResdescEdit(AppSettings appSettings)
         {
             this.appSettings = appSettings;
-
-
         }
 
         void EncryptFile_OnProcessExit(object sender, EventArgs e)
@@ -33,106 +32,65 @@ namespace TelltaleModLauncher
         private ProcessStartInfo encryptProcessStartInfoObj;
 
         /// <summary>
-        /// Encrpyts a given file using ttarchexe
+        /// Encrypts a given file using libtelltale
         /// </summary>
         /// <param name="game_archiveLocation"></param>
         /// <param name="extractionDumpLocation"></param>
         private void EncryptFile(string fileLocation)
         {
-            //initalize our process and process information
-            Process process = new Process();
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            //read the file into a byte array
+            byte[] file_bytes = File.ReadAllBytes(fileLocation);
 
-            //setup some values for the process
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.FileName = "cmd.exe";
-            processStartInfo.WorkingDirectory = appSettings.Get_Current_GameVersionSettings_GameDirectory();
+            //check if the file has a lenc extension
+            bool isLenc = Path.GetExtension(fileLocation).Equals(".lenc");
 
-            //for reading the console output
-            processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.UseShellExecute = false;
+            //get the game ID to encrypt the file with the proper encryption key that matches the current selected game
+            string gameID = appSettings.current_GameVersionSettings.Game_LibTelltale_GameID;
 
-            //call our process exit so we can know later if it's done.
-            process.EnableRaisingEvents = true;
-            process.Exited += new EventHandler(EncryptFile_OnProcessExit);
-            //process.OutputDataReceived += new DataReceivedEventHandler(Output_OnOutputDataReceived);
+            //use libtelltale and encrypt the file
+            MemoryHelper.Bytes bytes = Config.EncryptResourceDescription(file_bytes, gameID, false, isLenc);
 
-            //command line useage (IMPORTANT)
-            string fileLocationDirectory = Path.GetDirectoryName(fileLocation);
-            string cmd_arguments1 = String.Format("/c {0} {1} {2} {3}", appSettings.appSettingsFile.Location_Ttarchext, appSettings.Get_Current_GameVersionSettings_ttarchNumber().ToString(), fileLocation, fileLocationDirectory);
+            //overwrite the original resource description file with the encrypted bytes
+            File.WriteAllBytes(fileLocation, bytes.bytes);
 
-            //assign the arguments
-            processStartInfo.Arguments = cmd_arguments1;
-
-            //begin the process
-            process.StartInfo = processStartInfo;
-            process.Start();
-
-            //start read console output
-            process.BeginOutputReadLine();
-
-            encryptProcessStartInfoObj = processStartInfo;
-            encryptProcessObj = process;
-
-            process.OutputDataReceived += Process_OutputDataReceived;
-        }
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            string cmd_arguments2 = String.Format("y");
-
-            encryptProcessStartInfoObj.Arguments = cmd_arguments2;
-
-            //begin the process again
-            encryptProcessObj.StartInfo = encryptProcessStartInfoObj;
-            encryptProcessObj.Start();
-        }
-
-        void DecryptFile_OnProcessExit(object sender, EventArgs e)
-        {
-            taskFinished = true;
+            //free the memory since we have no use for it
+            MemoryHelper.FreeReadBytes(bytes);
         }
 
         /// <summary>
-        /// Extracts a given archive and dump's its contents into the given extraction dump location
+        /// Decrypts a given file using libtelltale
         /// </summary>
         /// <param name="game_archiveLocation"></param>
         /// <param name="extractionDumpLocation"></param>
         private void DecryptFile(string fileLocation)
         {
-            //initalize our process and process information
-            Process process = new Process();
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            //read the file into a byte array
+            byte[] file_bytes = File.ReadAllBytes(fileLocation);
 
-            //setup some values for the process
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.FileName = "cmd.exe";
-            processStartInfo.WorkingDirectory = appSettings.Get_Current_GameVersionSettings_GameDirectory();
+            //get the game ID to decrypt the file with the proper encryption key that matches the current selected game
+            string gameID = appSettings.current_GameVersionSettings.Game_LibTelltale_GameID;
 
-            //for reading the console output
-            processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.UseShellExecute = false;
+            //use libtelltale and decrypt the file
+            MemoryHelper.Bytes bytes = Config.DecryptResourceDescription(file_bytes, gameID, false);
 
-            //call our process exit so we can know later if it's done.
-            process.EnableRaisingEvents = true;
-            process.Exited += new EventHandler(DecryptFile_OnProcessExit);
-            //process.OutputDataReceived += new DataReceivedEventHandler(Output_OnOutputDataReceived);
+            //overwrite the original resource description file with the decrypted bytes
+            File.WriteAllBytes(fileLocation, bytes.bytes);
 
-            //command line useage (IMPORTANT)
-            string fileLocationDirectory = Path.GetDirectoryName(fileLocation);
-            string cmd_arguments = String.Format("/c {0} -V 7 -e 0 {1} {2} {3}", appSettings.appSettingsFile.Location_Ttarchext, appSettings.Get_Current_GameVersionSettings_ttarchNumber().ToString(), fileLocation, fileLocationDirectory);
+            //free the memory since we have no use for it
+            MemoryHelper.FreeReadBytes(bytes);
+        }
 
-            //assign the arguments
-            processStartInfo.Arguments = cmd_arguments;
+        public void Parse_File(string file)
+        {
+            //set.priority = 
+            //set.gameDataPriority = 
 
-            //begin the process
-            process.StartInfo = processStartInfo;
-            process.Start();
+            List<string> file_lines = new List<string>(File.ReadAllLines(file));
 
-            //start read console output
-            process.BeginOutputReadLine();
+            foreach(string line in file_lines)
+            {
+
+            }
         }
     }
 }

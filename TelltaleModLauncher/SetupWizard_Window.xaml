@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="Setup Wizard" Height="444.659" Width="543.62">
+        Title="Setup Wizard" Height="302.185" Width="488.468">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -17,47 +17,42 @@
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Label Name="ui_window_appversion_label" Content="v0.7.0" ToolTip="Application Version"/>
+            <Button Name="ui_window_help_button" Content="Help" Click="ui_window_help_button_Click" ToolTip="Get Help for Setting up the App.">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconModern Width="22"
+                                        Height="22"
+                                        VerticalAlignment="Center"
+                                        Kind="BookPerspectiveHelp" />
+                            <TextBlock Margin="4 0 0 0"
+                         VerticalAlignment="Center"
+                         Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
     <Grid>
-        <mah:MetroAnimatedSingleRowTabControl Height="330" Margin="10,10,10,0" VerticalAlignment="Top">
+        <mah:MetroAnimatedSingleRowTabControl Margin="10,10,10,74">
             <TabItem Header="Game Setup">
                 <Grid>
                     <Label Name="ui_gamesetup_gameversion_label" Content="Game Version" Margin="10,10,19,0" VerticalAlignment="Top"/>
-                    <ComboBox Name="ui_gamesetup_gameversion_combobox" Margin="10,41,10,0" VerticalAlignment="Top" MinHeight="29" SelectionChanged="ui_gamesetup_gameversion_combobox_SelectionChanged"/>
-                    <Label Name="ui_gamesetup_gamedirectoryexe_label" Content="Game Directory Executable" Margin="10,75,10,0" VerticalAlignment="Top"/>
+                    <ComboBox Name="ui_gamesetup_gameversion_combobox" Margin="10,41,10,0" VerticalAlignment="Top" MinHeight="29" SelectionChanged="ui_gamesetup_gameversion_combobox_SelectionChanged" ToolTip="Select a Supported Game Version."/>
+                    <Label Name="ui_gamesetup_gamedirectoryexe_label" Content="Game Executable Path" Margin="10,75,10,0" VerticalAlignment="Top"/>
                     <TextBox Name="ui_gamesetup_gamedirectoryexe_textbox" Height="29" Margin="10,106,48,0" TextWrapping="Wrap" Text="Game Directory Executable" VerticalAlignment="Top" IsReadOnly="True"/>
-                    <Button Name="ui_gamesetup_gamedirectoryexeBrowse_button" HorizontalAlignment="Right" Margin="0,106,10,0" VerticalAlignment="Top" Width="33" Height="29" Click="ui_gamesetup_gamedirectoryexeBrowse_button_Click">
-                        <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                    </Button>
-                    <Label Name="ui_gamesetup_gamemodsdirectory_label" Content="Game Mods Directory" Margin="10,140,10,0" VerticalAlignment="Top"/>
-                    <TextBox Name="ui_gamesetup_gamemodsdirectory_textbox" Height="29" Margin="10,171,48,0" TextWrapping="Wrap" Text="Game Mods Directory" VerticalAlignment="Top" IsReadOnly="True"/>
-                    <Button Name="ui_gamesetup_gamemodsdirectoryBrowse_button" HorizontalAlignment="Right" Margin="0,171,10,0" VerticalAlignment="Top" Width="33" Click="ui_gamesetup_gamemodsdirectoryBrowse_button_Click">
-                        <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                    </Button>
-                    <Label Name="ui_gamesetup_ttarchexePathNumber_label_" Content="ttarchexe Game Enum Value" Margin="10,205,10,0" VerticalAlignment="Top"/>
-                    <ComboBox Name="ui_gamesetup_ttarchexePathNumber_combobox" IsReadOnly="True" Height="29" Margin="10,236,10,0" VerticalAlignment="Top" SelectionChanged="ui_gamesetup_ttarchexePathNumber_combobox_SelectionChanged"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Dependencies">
-                <Grid>
-                    <Label Name="ui_dependencies_ttarchexePath_label" Content="ttarchexe Executable Path" Margin="10,10,10,0" VerticalAlignment="Top"/>
-                    <TextBox IsReadOnly="True" Name="ui_dependencies_ttarchexePath_textbox" Height="29" Margin="10,41,48,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top"/>
-                    <Button Name="ui_dependencies_ttarchexePathBrowse_button" HorizontalAlignment="Right" Margin="0,41,10,0" VerticalAlignment="Top" Width="33" Height="29" Click="ui_dependencies_ttarchexePathBrowse_button_Click">
-                        <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                    </Button>
-                    <Label Name="ui_dependencies_luacompiler_label" Content="Lua Compiler Executable Path" Margin="10,75,10,0" VerticalAlignment="Top"/>
-                    <TextBox Name="ui_dependencies_luacompilerPath_textbox" IsReadOnly="True" Height="29" Margin="10,106,48,0" TextWrapping="Wrap" Text="Lua Compiler Executable Path" VerticalAlignment="Top"/>
-                    <Button Name="ui_dependencies_luacompilerPathBrowse_button" HorizontalAlignment="Right" Margin="0,106,10,0" VerticalAlignment="Top" Width="33" Height="29" Click="ui_dependencies_luacompilerPathBrowse_button_Click">
-                        <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                    </Button>
-                    <Label Name="ui_dependencies_luadecompiler_label" Content="Lua Decompiler Executable Path" Margin="10,140,10,0" VerticalAlignment="Top"/>
-                    <TextBox Name="ui_dependencies_luadecompilerPath_textbox" IsReadOnly="True" Height="29" Margin="10,171,48,0" TextWrapping="Wrap" Text="Lua Decompiler Executable Path" VerticalAlignment="Top"/>
-                    <Button Name="ui_dependencies_luadecompilerPathBrowse_button" HorizontalAlignment="Right" Margin="0,171,10,0" VerticalAlignment="Top" Width="33" Height="29" Click="ui_dependencies_luadecompilerPathBrowse_button_Click">
+                    <Button Name="ui_gamesetup_gamedirectoryexeBrowse_button" HorizontalAlignment="Right" Margin="0,106,10,0" VerticalAlignment="Top" Width="33" Height="29" Click="ui_gamesetup_gamedirectoryexeBrowse_button_Click" ToolTip="Browse for the location of the currently selected game version executable.">
                         <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
                     </Button>
                 </Grid>
             </TabItem>
         </mah:MetroAnimatedSingleRowTabControl>
-        <mah:Tile Name="ui_gamesetup_done" Margin="10,345,10,0" VerticalAlignment="Top" Width="Auto" Height="59" Click="ui_gamesetup_done_Click">
+        <mah:Tile Name="ui_gamesetup_done" Margin="10,0,10,10" VerticalAlignment="Bottom" Width="Auto" Height="59" Click="ui_gamesetup_done_Click" ToolTip="Save changes and close this window.">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconFontAwesome Width="30" Height="50" Kind="CheckCircleSolid"></iconPacks:PackIconFontAwesome>
                 <TextBlock FontSize="36" TextAlignment="Center" FontWeight="Bold" Width="127">Done</TextBlock>

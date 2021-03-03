@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ControlzEx.Theming;
+using TelltaleModLauncher.Utillities;
 
 namespace TelltaleModLauncher
 {
@@ -42,8 +43,6 @@ namespace TelltaleModLauncher
             this.ioManagement = ioManagement;
             this.modManager = modManager;
 
-            this.appSettings.GetDependencies();
-
             UpdateUI();
         }
 
@@ -57,115 +56,53 @@ namespace TelltaleModLauncher
 
             bool ifOtherGame = appSettings.Get_Current_GameVersionName() == GameVersion.Other;
 
-            var GameVersions_ToStringList = Enum.GetValues(typeof(GameVersion)).Cast<GameVersion>();
+            var GameVersions_ToStringList = Enum.GetNames(typeof(GameVersion));
 
+            ui_window_appversion_label.Content = appSettings.appVersionString;
             ui_gamesetup_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
             ui_gamesetup_gamedirectoryexe_textbox.Text = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
-            ui_gamesetup_gamemodsdirectory_textbox.Text = appSettings.Get_Current_GameVersionSettings_ModsLocation();
-
-            ui_dependencies_luacompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaCompiler;
-            ui_dependencies_luadecompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaDecompiler;
-            ui_dependencies_ttarchexePath_textbox.Text = appSettings.appSettingsFile.Location_Ttarchext;
-
-            ui_gamesetup_ttarchexePathNumber_combobox.SelectedIndex = appSettings.Get_Current_GameVersionSettings_ttarchNumber();
-            ui_gamesetup_ttarchexePathNumber_combobox.IsEnabled = ifOtherGame;
-            List<string> ttarchext_GameEnumNames = Enum.GetNames(typeof(ttarchext_GameEnums)).ToList();
-            List<string> ttarchext_GameEnumDisplayNames = new List<string>();
-
-            foreach (string ttarchextName in ttarchext_GameEnumNames)
-            {
-                int gameEnumValue = (int)Enum.Parse(typeof(ttarchext_GameEnums), ttarchextName);
-                string displayName = string.Format("{0} | {1}", gameEnumValue, ttarchextName);
-
-                ttarchext_GameEnumDisplayNames.Add(displayName);
-            }
-
-            ui_gamesetup_ttarchexePathNumber_combobox.ItemsSource = ttarchext_GameEnumDisplayNames;
         }
 
         //---------------- XAML FUNCTIONS ----------------
 
         private void ui_gamesetup_gameversion_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            GameVersion selectedGameVersion = (GameVersion)ui_gamesetup_gameversion_combobox.SelectedItem;
-
+            GameVersion selectedGameVersion = (GameVersion)ui_gamesetup_gameversion_combobox.SelectedIndex;
+            
             appSettings.ChangeGameVersion(selectedGameVersion);
-            modManager.ChangedGameVersion();
 
             UpdateUI();
         }
 
         private void ui_gamesetup_ttarchexePathNumber_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            appSettings.Set_Current_GameVersionSettings_EnumNumber(ui_gamesetup_ttarchexePathNumber_combobox.SelectedIndex);
-            appSettings.UpdateChangesToFile();
-
             UpdateUI();
         }
 
         private void ui_gamesetup_gamedirectoryexeBrowse_button_Click(object sender, RoutedEventArgs e)
         {
             appSettings.Set_Current_GameVersionSettings_GameExeLocation();
-            appSettings.UpdateChangesToFile();
 
             UpdateUI();
         }
 
-        private void ui_gamesetup_gamemodsdirectoryBrowse_button_Click(object sender, RoutedEventArgs e)
+        private void ui_window_help_button_Click(object sender, RoutedEventArgs e)
         {
-            appSettings.Set_Current_GameVersionSettings_GameModsDirectory();
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-
-        private void ui_dependencies_ttarchexePathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the ttarchexe Executable");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_ttarchextLocation(path);
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-
-        private void ui_dependencies_luacompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the Lua Compiler");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_LuaCompilerLocation(path);
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-
-        private void ui_dependencies_luadecompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the Lua Decompiler");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_LuaDecompilerLocation(path);
-            appSettings.UpdateChangesToFile();
+            appSettings.Open_LauncherHelpSetup();
 
             UpdateUI();
         }
 
         private void ui_gamesetup_done_Click(object sender, RoutedEventArgs e)
         {
+            GameVersion selectedGameVersion = (GameVersion)ui_gamesetup_gameversion_combobox.SelectedItem;
+            appSettings.ChangeGameVersion(selectedGameVersion);
+
+            modManager.ChangedGameVersion();
+            appSettings.Set_Current_GameVersionSettings_GameExeLocation();
+
+            appSettings.UpdateChangesToFile();
+
             this.Hide();
             mainWindow.Show();
             mainWindow.Activate();

@@ -4,10 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TelltaleModLauncher
+namespace TelltaleModLauncher.Files
 {
     public class Mod
     {
+        /// <summary>
+        /// Mod Json Format Version
+        /// </summary>
+        public string ModJsonFormatVersion { get; } = "v1.0";
+
         /// <summary>
         /// The display name of the mod.
         /// </summary>
@@ -38,17 +43,15 @@ namespace TelltaleModLauncher
         /// </summary>
         public List<string> ModFilesGameDirectory { get; set; }
 
-        private string ModInfoJson_FilePath { get; set; }
+        /// <summary>
+        /// The file path of the mod info json file.
+        /// </summary>
+        public string ModInfoJson_FilePath { get; set; }
 
-        public void Set_ModInfoJson_FilePath(string path)
-        {
-            ModInfoJson_FilePath = path;
-        }
-
-        public string Get_ModInfoJson_FilePath()
-        {
-            return ModInfoJson_FilePath;
-        }
+        /// <summary>
+        /// Sets the resource priority for the mod archives
+        /// </summary>
+        public int ModResourcePriority { get; set; }
 
         /// <summary>
         /// Creates a blank mod object, must be filled

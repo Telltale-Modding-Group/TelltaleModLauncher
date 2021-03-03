@@ -14,6 +14,7 @@ namespace TelltaleModLauncher
     public enum GameVersion
     {
         Other = 0,
-        The_Walking_Dead_Definitive_Edition = 1
+        The_Walking_Dead_Definitive_Edition = 1,
+        The_Walking_Dead_Final_Season = 2
     };
 }

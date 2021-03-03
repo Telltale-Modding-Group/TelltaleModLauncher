@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using Ookii.Dialogs.Wpf;
 
-namespace TelltaleModLauncher
+namespace TelltaleModLauncher.Utillities
 {
     /// <summary>
     /// This class contains common System.IO functions but 'enhanced' with safety checks, warnings, and error messages.
@@ -16,7 +16,6 @@ namespace TelltaleModLauncher
     /// </summary>
     public class IOManagement
     {
-
         /// <summary>
         /// Duplicate/Copy a file, this will output the copied file path
         /// </summary>

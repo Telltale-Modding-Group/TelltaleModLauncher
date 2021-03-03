@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using ControlzEx.Theming;
 using System.IO;
 
+using TelltaleModLauncher.Files;
+
 namespace TelltaleModLauncher
 {
     /// <summary>

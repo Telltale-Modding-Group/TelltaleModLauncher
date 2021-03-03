@@ -1,12 +1,18 @@
 v0.7.0
 - [Removed] Creator Tab since it's no longer needed. This functionality is moved seperately to the Telltale Script Editor
+- [Removed] Game Mods Folder since it isn't necessary for the user to select, the launcher now automatically finds the correct folder for the game. Also causes less confusion during setup.
+- [Removed] Removed the dependencies tab and options since most are not needed, and other depedencies are handled internally. No setup needed for the user.
+- [Removed] Lua Compiler dependency since it's not needed
+- [Removed] Lua Decompiler depedency since it's not needed 
+- [Removed] ttarchexe depedency, which has now been replaced by LibTelltale (By Lucas Saragosa).
 - [Added] Mod list refresh button, it's also automated as well in the background.
 - [Added] Mod refresh to the context menu
-- [Changed] Can still add/replace a mod even if it has both the same name and version.
-- [Changed] Name of creator dependencies to just dependencies
-- [Fix] Fixed issue when launcher would crash when opening mod files that were not properly structured. I.e. if you downloaded the source code zip of a project rather than the actual mod zip.
+- [Added] Mods (if supported) can now place files in the game directory automatically (useful since some mods will have .ini config files)
+- [Added] Mod priorities can now be set and modified
+- [Changed] Mods are now sorted by priority
+- [Changed] Can still add/replace a mod even if it has both the same name and version (will give you a prompt)
+- [Fix] Fixed issue when launcher would crash when opening mod files that were not properly structured. (i.e. if you downloaded the source code zip of a project rather than the actual mod zip). Now it warns the user and displays an error
 - [Fix] Fixed issue when launcher would crash on startup due to the file system watcher for mod refreshing
-
 
 W.I.P
 - [Added] Abillity to edit/change mod archive priorities

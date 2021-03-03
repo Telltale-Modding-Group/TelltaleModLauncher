@@ -12,6 +12,8 @@ using Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using TelltaleModLauncher.Utillities;
+using TelltaleModLauncher.Files;
 
 namespace TelltaleModLauncher
 {
@@ -82,7 +84,7 @@ namespace TelltaleModLauncher
             if (ignorePrompt) //ignores the confirmation prompt and removes the mod object, mod contents, and json file
             {
                 RemoveModFiles(selectedMod); //remove the files associated with the mod
-                ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath()); //remove the modinfo.json file
+                ioManagement.DeleteFile(selectedMod.ModInfoJson_FilePath); //remove the modinfo.json file
                 mods.Remove(selectedMod); //remove the mod from the list in memory
             }
             else
@@ -94,7 +96,7 @@ namespace TelltaleModLauncher
                 if (ioManagement.MessageBox_Confirmation(promptDescription, "Remove Mod"))
                 {
                     RemoveModFiles(selectedMod); //remove the files associated with the mod
-                    ioManagement.DeleteFile(selectedMod.Get_ModInfoJson_FilePath()); //remove the modinfo.json file
+                    ioManagement.DeleteFile(selectedMod.ModInfoJson_FilePath); //remove the modinfo.json file
                     mods.Remove(selectedMod); //remove the mod from the list in memory
                 }
             }
@@ -312,7 +314,7 @@ namespace TelltaleModLauncher
 
                         //checks the extension for a .json file, if one is found then it sets it for the mod
                         if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
-                            mod.Set_ModInfoJson_FilePath(modFile_extractedFromArchive);
+                            mod.ModInfoJson_FilePath = modFile_extractedFromArchive;
 
                         // Ordinal match is safest, case-sensitive volumes can be mounted within volumes that are case-insensitive.
                         if (modFile_extractedFromArchive.StartsWith(appSettings.Get_Current_GameVersionSettings_ModsLocation(), StringComparison.Ordinal))
@@ -412,7 +414,7 @@ namespace TelltaleModLauncher
                     foreach(Mod mod in conflictingMods)
                     {
                         RemoveModFiles(mod);
-                        ioManagement.DeleteFile(mod.Get_ModInfoJson_FilePath());
+                        ioManagement.DeleteFile(mod.ModInfoJson_FilePath);
                         mods.Remove(mod);
                     }
                 }
@@ -576,7 +578,7 @@ namespace TelltaleModLauncher
         private void ReplaceMod(Mod orignalMod, Mod newMod)
         {
             RemoveModFiles(orignalMod);
-            ioManagement.DeleteFile(orignalMod.Get_ModInfoJson_FilePath());
+            ioManagement.DeleteFile(orignalMod.ModInfoJson_FilePath);
             mods.Remove(orignalMod);
 
             ExtractModZipFileContents_ToDirectory(newMod);
@@ -695,7 +697,7 @@ namespace TelltaleModLauncher
                 return;
             }
 
-            newMod.Set_ModInfoJson_FilePath(modJsonFile);
+            newMod.ModInfoJson_FilePath = modJsonFile;
 
             if (deleteJson)
             {

@@ -11,6 +11,8 @@ using Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using TelltaleModLauncher.Utillities;
+using TelltaleModLauncher.Files;
 
 namespace TelltaleModLauncher
 {
@@ -20,6 +22,8 @@ namespace TelltaleModLauncher
     public class AppSettings
     {
         //public
+        public string appVersionString = "v0.7.0";
+
         public AppSettingsFile appSettingsFile;
         public List<GameVersionSettings> GameVersionSettings { get; set; }
         public GameVersionSettings current_GameVersionSettings;
@@ -31,6 +35,7 @@ namespace TelltaleModLauncher
         private static string configFile_directory_location = systemDocumentsPath + "/TelltaleModLauncher/";
         private static string configFile_file_location = configFile_directory_location + configFile_filename;
         private static string launcherHelpLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D";
+        private static string launcherHelpSetupLink = "https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D-Application-Setup";
 
         /// <summary>
         /// Application Settings Class, creates an AppSettings object. This is called on application startup.
@@ -55,33 +60,8 @@ namespace TelltaleModLauncher
                 if (!Directory.Exists(configFile_directory_location))
                     ioManagement.CreateDirectory(configFile_directory_location);
 
-                GetDependencies();
-
                 WriteToFile();
             }    
-        }
-
-        public void GetDependencies()
-        {
-            if(appSettingsFile == null)
-                return;
-
-            string dependencyFolder = AppContext.BaseDirectory + "/Dependencies";
-            string luaCompilerPath = dependencyFolder + "/luac.exe";
-            string luaDecompilerPath = dependencyFolder + "/luadec.exe";
-            string ttarchextPath = dependencyFolder + "/ttarchext.exe";
-
-            if (!Directory.Exists(dependencyFolder))
-                return;
-
-            if (File.Exists(luaCompilerPath))
-                appSettingsFile.Location_LuaCompiler = luaCompilerPath;
-
-            if (File.Exists(luaDecompilerPath))
-                appSettingsFile.Location_LuaDecompiler = luaDecompilerPath;
-
-            if (File.Exists(ttarchextPath))
-                appSettingsFile.Location_Ttarchext = ttarchextPath;
         }
 
         /// <summary>
@@ -95,7 +75,7 @@ namespace TelltaleModLauncher
 
             Process.Start(processStartInfo);
         }
-
+         
         /// <summary>
         /// Changes the current game version to the desired game version.
         /// </summary>
@@ -165,15 +145,6 @@ namespace TelltaleModLauncher
                 if (name.Equals(nameof(appSettingsFile.Default_Game_Version)))
                     appSettingsFile.Default_Game_Version = (GameVersion)(int)property.Value;
 
-                if (name.Equals(nameof(appSettingsFile.Location_LuaCompiler)))
-                    appSettingsFile.Location_LuaCompiler = (string)property.Value;
-
-                if (name.Equals(nameof(appSettingsFile.Location_LuaDecompiler)))
-                    appSettingsFile.Location_LuaDecompiler = (string)property.Value;
-
-                if (name.Equals(nameof(appSettingsFile.Location_Ttarchext)))
-                    appSettingsFile.Location_Ttarchext = (string)property.Value;
-
                 if (name.Equals(nameof(appSettingsFile.UI_LightMode)))
                     appSettingsFile.UI_LightMode = (bool)property.Value;
             }
@@ -194,11 +165,8 @@ namespace TelltaleModLauncher
                     if (name.Equals(nameof(current_GameVersionSettings.Game_LocationExe)))
                         new_gameVersionSettings.Game_LocationExe = (string)property.Value;
 
-                    if (name.Equals(nameof(current_GameVersionSettings.Game_Location_Mods)))
-                        new_gameVersionSettings.Game_Location_Mods = (string)property.Value;
-
-                    if (name.Equals(nameof(current_GameVersionSettings.Game_Ttarch_GameEnumNumber)))
-                        new_gameVersionSettings.Game_Ttarch_GameEnumNumber = (int)property.Value;
+                    if (name.Equals(nameof(current_GameVersionSettings.Game_LibTelltale_GameID)))
+                        new_gameVersionSettings.Game_LibTelltale_GameID = (string)property.Value;
 
                     if (name.Equals(nameof(current_GameVersionSettings.Game_Version)))
                     {
@@ -283,15 +251,24 @@ namespace TelltaleModLauncher
             Process.Start(processStartInfo);
         }
 
-        //---------------- GETTERS ----------------
-        public int Get_Current_GameVersionSettings_ttarchNumber()
+        /// <summary>
+        /// Opens up the default web explorer and directs the user to the launcher help page
+        /// </summary>
+        public void Open_LauncherHelpSetup()
         {
-            return current_GameVersionSettings.Game_Ttarch_GameEnumNumber;
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = launcherHelpSetupLink,
+                UseShellExecute = true
+            };
+
+            Process.Start(processStartInfo);
         }
 
-        public int Get_Current_GameVersionSettings_ttarchPath()
+        //---------------- GETTERS ----------------
+        public string Get_Current_GameVersionSettings_LibTelltaleGameID()
         {
-            return ttarch;
+            return current_GameVersionSettings.Game_LibTelltale_GameID;
         }
 
         public string Get_Current_GameVersionSettings_GameDirectory()
@@ -324,43 +301,19 @@ namespace TelltaleModLauncher
             appSettingsFile.Default_Game_Version = version;
         }
 
-        public void Set_Current_AppSettings_LuaCompilerLocation(string location)
-        {
-            appSettingsFile.Location_LuaCompiler = location;
-        }
-
-        public void Set_Current_AppSettings_LuaDecompilerLocation(string location)
-        {
-            appSettingsFile.Location_LuaDecompiler = location;
-        }
-
-        public void Set_Current_AppSettings_ttarchextLocation(string location)
-        {
-            appSettingsFile.Location_Ttarchext = location;
-        }
-
         public void Set_Current_AppSettings_UI_LightMode(bool state)
         {
             appSettingsFile.UI_LightMode = state;
         }
 
-        public void Set_Current_GameVersionSettings_EnumNumber(int value)
+        public void Set_Current_GameVersionSettings_LibTelltaleGameID(string value)
         {
-            current_GameVersionSettings.Game_Ttarch_GameEnumNumber = value;
+            current_GameVersionSettings.Game_LibTelltale_GameID = value;
         }
 
         public void Set_Current_GameVersionSettings(int selectedIndex)
         {
             current_GameVersionSettings = GameVersionSettings[selectedIndex];
-        }
-
-        public void Set_Current_GameVersionSettings_GameModsDirectory()
-        {
-            string newDirectory = "";
-
-            ioManagement.GetFolderPath(ref newDirectory, "Select the Game Mods folder");
-
-            current_GameVersionSettings.Game_Location_Mods = newDirectory;
         }
 
         public void Set_Current_GameVersionSettings_GameExeLocation()

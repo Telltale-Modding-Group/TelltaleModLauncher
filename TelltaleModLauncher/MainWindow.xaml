@@ -9,7 +9,7 @@
         mc:Ignorable="d"
                  GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
                  ResizeMode="CanMinimize"
-        Title="Telltale Mod Launcher" Height="345.447" Width="669.355" WindowStartupLocation="CenterScreen">
+        Title="Telltale Mod Launcher" Height="353.297" Width="669.355" WindowStartupLocation="CenterScreen">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -19,7 +19,7 @@
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Label Content="v0.7.0" ToolTip="Application Version"/>
+            <Label Name="ui_window_appversion_label" Content="v0.7.0" ToolTip="Application Version"/>
             <Button Name="ui_window_help_button" Content="Help" Click="ui_window_help_button_Click" ToolTip="Get Help for this Application.">
                 <Button.ContentTemplate>
                     <DataTemplate>
@@ -38,16 +38,12 @@
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="235*"/>
-            <RowDefinition Height="81*"/>
-        </Grid.RowDefinitions>
-        <mah:MetroAnimatedSingleRowTabControl Height="302" Margin="10,10,0,0" VerticalAlignment="Top" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0" HorizontalAlignment="Left" Grid.RowSpan="2">
-            <TabItem Name="ui_launcher_tab" Header="Launcher">
-                <Grid>
-                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,72,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34"/>
-                    <mah:Tile Name="ui_launcher_launchgame_tile" Margin="10,111,10,0" VerticalAlignment="Top" Width="Auto" Click="ui_launcher_launchgame_tile_Click" Height="181">
+    <Grid Margin="0,0,0,0">
+        <mah:MetroAnimatedSingleRowTabControl Margin="10,10,1,10" Width="652" TabStripPlacement="Left" mah:HeaderedControlHelper.HeaderFontWeight="Thin" mah:HeaderedControlHelper.HeaderFontSize="26" TabStripMargin="0,0,8,0">
+            <TabItem Name="ui_launcher_tab" Header="Launcher" ToolTip="Menu for Selecting a Game Version, and launching it.">
+                <Grid Margin="0,0,0,0">
+                    <ComboBox Name="ui_launcher_gameversion_combobox" Margin="10,72,10,0" SelectionChanged="ui_launcher_gameversion_combobox_SelectionChanged" VerticalAlignment="Top" Height="34" ToolTip="The current game selected."/>
+                    <mah:Tile Name="ui_launcher_launchgame_tile" Margin="10,111,10,10" Width="Auto" Click="ui_launcher_launchgame_tile_Click" Height="Auto" ToolTip="Click to the launch the game.">
                         <StackPanel>
                             <iconPacks:PackIconFontAwesome Width="90" Height="60" Kind="GamepadSolid"></iconPacks:PackIconFontAwesome>
                             <TextBlock Margin="0,10,0,0" FontSize="16">Launch Game</TextBlock>
@@ -57,8 +53,8 @@
                     <Label Name="ui_launcher_gamemodsamount_label" Content="0 mods installed" Margin="10,10,10,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem Name="ui_modmanager_tab" Header="Mod Manager">
-                <Grid>
+            <TabItem Name="ui_modmanager_tab" Header="Mod Manager" ToolTip="The mod list view/manager for managing the mods of the currently selected game.">
+                <Grid Margin="0" MinHeight="302">
                     <Label Name="ui_modmanager_gameversion_label" Content="The Walking Dead - Telltale Definitive Series" Margin="10,10,10,0" VerticalAlignment="Top"/>
                     <ListView Name="ui_modmanager_modlist_listview" Margin="10,41,10,72" SelectionChanged="ui_modmanager_modlist_listview_SelectionChanged" MouseDoubleClick="ui_modmanager_modlist_listview_MouseDoubleClick">
                         <ListView.View>
@@ -86,14 +82,14 @@
                     </Button>
                     <Button Name="ui_modmanager_viewmod_button" HorizontalAlignment="Left" Margin="100,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons EyeFill, Height=25, Width=25}" Click="ui_modmanager_viewmod_button_Click"  ToolTip="View the Mod contents."/>
                     <Button Name="ui_modmanager_purgemod_button" HorizontalAlignment="Left" Margin="427,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons TrashFill, Height=20, Width=20}" Click="ui_modmanager_purgemod_button_Click" ToolTip="Purge/Remove all Mods that are installed."/>
-                    <Separator Height="14" Margin="10,235,10,0" VerticalAlignment="Top"/>
+                    <Separator Height="14" Margin="10,0,10,53" VerticalAlignment="Bottom"/>
                     <Button Name="ui_modmanager_openmodfolder_button" HorizontalAlignment="Left" Margin="145,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BootstrapIcons Folder2, Height=22, Width=22}" ToolTip="Open the Game Mods folder." Click="ui_modmanager_openmodfolder_button_Click"/>
                     <Button Name="ui_modmanager_refreshmodfolder_button" HorizontalAlignment="Left" Margin="190,0,0,8" VerticalAlignment="Bottom" Width="40" Height="40" Content="{iconPacks:BoxIcons RegularRefresh , Height=22, Width=22}" ToolTip="Refresh the Game Mods folder." Click="ui_modmanager_refreshmodfolder_button_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Name="ui_settings_tab" Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0">
-                <ScrollViewer>
-                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="796">
+            <TabItem Name="ui_settings_tab" Header="Settings" mah:HeaderedControlHelper.HeaderMargin="0" ToolTip="Settings for the application and current game version.">
+                <ScrollViewer Margin="0">
+                    <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Height="444">
                         <Label Name="ui_settings_gamesettings_label" Content="Game Settings" Margin="10,201,19,0" VerticalAlignment="Top" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
 
                         <Separator Height="9" Margin="10,187,19,0" VerticalAlignment="Top"/>
@@ -106,31 +102,6 @@
                         <Label Name="ui_settings_gamedirectoryexe_label" Content="Game Directory Executable" Margin="10,278,19,0" VerticalAlignment="Top"/>
                         <TextBox Name="ui_settings_gamedirectoryexe_textbox" Height="29" Margin="10,309,57,0" TextWrapping="Wrap" Text="Game Directory Executable" VerticalAlignment="Top" IsReadOnly="True"/>
                         <Button Name="ui_settings_gamedirectoryexeBrowse_button" HorizontalAlignment="Right" Margin="0,309,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_gamedirectoryexeBrowse_button_Click" Height="29">
-                            <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                        </Button>
-                        <Label Name="ui_settings_gamemodsdirectory_label" Content="Game Mods Directory" Margin="10,343,19,0" VerticalAlignment="Top"/>
-                        <TextBox Name="ui_settings_gamemodsdirectory_textbox" Height="29" Margin="10,374,57,0" TextWrapping="Wrap" Text="Game Mods Directory" VerticalAlignment="Top" IsReadOnly="True"/>
-                        <Button Name="ui_settings_gamemodsdirectoryBrowse_button" HorizontalAlignment="Right" Margin="0,374,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_gamemodsdirectoryBrowse_button_Click">
-                            <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                        </Button>
-                        <Label Name="ui_settings_ttarchexePathNumber_label_" Content="ttarchexe Game Enum Value" Margin="10,408,19,0" VerticalAlignment="Top"/>
-                        <ComboBox Name="ui_settings_ttarchexePathNumber_combobox" IsReadOnly="True" Height="29" Margin="10,439,19,0" VerticalAlignment="Top" SelectionChanged="ui_settings_ttarchexePathNumber_combobox_SelectionChanged"/>
-
-                        <Separator Height="9" Margin="10,473,19,0" VerticalAlignment="Top"/>
-                        <Label Name="ui_settings_dependencies_label" Content="Dependencies" Margin="10,487,19,0" VerticalAlignment="Top" Height="41" FontSize="20" FontWeight="Bold" Padding="0,5,5,5"/>
-                        <Label Name="ui_settings_ttarchexePath_label" Content="ttarchexe Executable Path" Margin="10,533,19,0" VerticalAlignment="Top"/>
-                        <TextBox Name="ui_settings_ttarchexePath_textbox" Height="29" Margin="10,564,57,0" TextWrapping="Wrap" Text="ttarchexe Executable Path" VerticalAlignment="Top"/>
-                        <Button Name="ui_settings_ttarchexePathBrowse_button" HorizontalAlignment="Right" Margin="0,564,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_ttarchexePathBrowse_button_Click" Height="29">
-                            <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                        </Button>
-                        <Label Name="ui_settings_luacompiler_label" Content="Lua Compiler Executable Path" Margin="10,598,19,0" VerticalAlignment="Top"/>
-                        <TextBox Name="ui_settings_luacompilerPath_textbox" IsReadOnly="True" Height="29" Margin="10,629,57,0" TextWrapping="Wrap" Text="Lua Compiler Executable Path" VerticalAlignment="Top"/>
-                        <Button Name="ui_settings_luacompilerPathBrowse_button" HorizontalAlignment="Right" Margin="0,629,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_luacompilerPathBrowse_button_Click" Height="29">
-                            <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
-                        </Button>
-                        <Label Name="ui_settings_luadecompiler_label" Content="Lua Decompiler Executable Path" Margin="10,663,19,0" VerticalAlignment="Top"/>
-                        <TextBox Name="ui_settings_luadecompilerPath_textbox" IsReadOnly="True" Height="29" Margin="10,694,57,0" TextWrapping="Wrap" Text="Lua Decompiler Executable Path" VerticalAlignment="Top" Width="396"/>
-                        <Button Name="ui_settings_luadecompilerPathBrowse_button" HorizontalAlignment="Right" Margin="0,694,19,0" VerticalAlignment="Top" Width="33" Click="ui_settings_luadecompilerPathBrowse_button_Click" Height="29">
                             <iconPacks:PackIconFontAwesome Width="19" Height="15" Kind="FolderOpenRegular"></iconPacks:PackIconFontAwesome>
                         </Button>
                     </Grid>

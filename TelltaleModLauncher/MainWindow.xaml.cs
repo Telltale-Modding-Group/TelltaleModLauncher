@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ControlzEx.Theming;
+using TelltaleModLauncher.Utillities;
+using TelltaleModLauncher.Files;
 
 namespace TelltaleModLauncher
 {
@@ -98,6 +100,7 @@ namespace TelltaleModLauncher
             ui_launcher_gamedirectory_label.Content = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
             ui_launcher_gamemodsamount_label.Content = string.Format("Mods Installed: {0}", modManager.mods.Count);
             ui_launcher_launchgame_tile.IsEnabled = ifCanLaunchGame;
+            ui_window_appversion_label.Content = appSettings.appVersionString;
 
             //mod manager stuff
             ui_modmanager_addmod_button.IsEnabled = ifCanLaunchGame;
@@ -122,25 +125,6 @@ namespace TelltaleModLauncher
             ui_settings_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
             ui_settings_gameversion_combobox.SelectedIndex = (int)appSettings.appSettingsFile.Default_Game_Version;
             ui_settings_gamedirectoryexe_textbox.Text = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
-            ui_settings_gamemodsdirectory_textbox.Text = appSettings.Get_Current_GameVersionSettings_ModsLocation();
-            ui_settings_luacompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaCompiler;
-            ui_settings_luadecompilerPath_textbox.Text = appSettings.appSettingsFile.Location_LuaDecompiler;
-            ui_settings_ttarchexePath_textbox.Text = appSettings.appSettingsFile.Location_Ttarchext;
-
-            ui_settings_ttarchexePathNumber_combobox.IsEnabled = ifOtherGame;
-            ui_settings_ttarchexePathNumber_combobox.SelectedIndex = appSettings.Get_Current_GameVersionSettings_ttarchNumber();
-            List<string> ttarchext_GameEnumNames = Enum.GetNames(typeof(ttarchext_GameEnums)).ToList();
-            List<string> ttarchext_GameEnumDisplayNames = new List<string>();
-
-            foreach(string ttarchextName in ttarchext_GameEnumNames)
-            {
-                int gameEnumValue = (int)Enum.Parse(typeof(ttarchext_GameEnums), ttarchextName);
-                string displayName = string.Format("{0} | {1}", gameEnumValue, ttarchextName);
-
-                ttarchext_GameEnumDisplayNames.Add(displayName);
-            }
-
-            ui_settings_ttarchexePathNumber_combobox.ItemsSource = ttarchext_GameEnumDisplayNames;
         }
 
         //---------------- XAML FUNCTIONS ----------------
@@ -167,50 +151,6 @@ namespace TelltaleModLauncher
 
         private void ui_modmanager_modlist_listview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateUI();
-        }
-
-        private void ui_settings_ttarchexePathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the ttarchext executable");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_ttarchextLocation(path);
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-
-        private void ui_settings_luacompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the Lua Compiler executable");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_LuaCompilerLocation(path);
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-        private void ui_settings_luadecompilerPathBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            string path = "";
-
-            ioManagement.GetFilePath(ref path, "Locate the Lua Decompiler executable");
-
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            appSettings.Set_Current_AppSettings_LuaDecompilerLocation(path);
-            appSettings.UpdateChangesToFile();
-
             UpdateUI();
         }
 
@@ -283,14 +223,6 @@ namespace TelltaleModLauncher
             UpdateUI();
         }
 
-        private void ui_settings_gamemodsdirectoryBrowse_button_Click(object sender, RoutedEventArgs e)
-        {
-            appSettings.Set_Current_GameVersionSettings_GameModsDirectory();
-            appSettings.UpdateChangesToFile();
-
-            UpdateUI();
-        }
-
         private void ui_settings_gameversion_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GameVersion selectedGameVersion = (GameVersion)ui_settings_gameversion_combobox.SelectedItem;
@@ -309,17 +241,6 @@ namespace TelltaleModLauncher
         private void ui_modmanager_openmodfolder_button_Click(object sender, RoutedEventArgs e)
         {
             modManager.OpenModFolder();
-
-            UpdateUI();
-        }
-
-        private void ui_settings_ttarchexePathNumber_combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (startingUp)
-                return;
-
-            appSettings.Set_Current_GameVersionSettings_EnumNumber(ui_settings_ttarchexePathNumber_combobox.SelectedIndex);
-            appSettings.UpdateChangesToFile();
 
             UpdateUI();
         }
