@@ -258,7 +258,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Dependencies\bin\LibTelltale.lib" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -284,51 +283,15 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dependencies\bin\LibTelltale.dll" />
-    <Content Include="Dependencies\include\ByteOutStream.h" />
-    <Content Include="Dependencies\include\ByteStream.h" />
-    <Content Include="Dependencies\include\ClassAccess.h" />
-    <Content Include="Dependencies\include\FileOutStream.h" />
-    <Content Include="Dependencies\include\FileStream.h" />
-    <Content Include="Dependencies\include\HandleObjectInfo.h" />
-    <Content Include="Dependencies\include\LibTelltale.h" />
-    <Content Include="Dependencies\include\MetaStream.h" />
-    <Content Include="Dependencies\include\metastreamed\InputMapper.h" />
-    <Content Include="Dependencies\include\metastreamed\Vers.h" />
-    <Content Include="Dependencies\include\Test.cpp" />
-    <Content Include="Dependencies\include\TTArchive.h" />
-    <Content Include="Dependencies\include\TTContext.h" />
-    <Content Include="Dependencies\include\zlib\adler32.c" />
-    <Content Include="Dependencies\include\zlib\crc32.c" />
-    <Content Include="Dependencies\include\zlib\crc32.h" />
-    <Content Include="Dependencies\include\zlib\deflate.c" />
-    <Content Include="Dependencies\include\zlib\deflate.h" />
-    <Content Include="Dependencies\include\zlib\gzclose.c" />
-    <Content Include="Dependencies\include\zlib\gzguts.h" />
-    <Content Include="Dependencies\include\zlib\gzlib.c" />
-    <Content Include="Dependencies\include\zlib\gzread.c" />
-    <Content Include="Dependencies\include\zlib\gzwrite.c" />
-    <Content Include="Dependencies\include\zlib\infback.c" />
-    <Content Include="Dependencies\include\zlib\inffast.c" />
-    <Content Include="Dependencies\include\zlib\inffast.h" />
-    <Content Include="Dependencies\include\zlib\inffixed.h" />
-    <Content Include="Dependencies\include\zlib\inflate.c" />
-    <Content Include="Dependencies\include\zlib\inflate.h" />
-    <Content Include="Dependencies\include\zlib\inftrees.c" />
-    <Content Include="Dependencies\include\zlib\inftrees.h" />
-    <Content Include="Dependencies\include\zlib\trees.c" />
-    <Content Include="Dependencies\include\zlib\trees.h" />
-    <Content Include="Dependencies\include\zlib\uncompr.c" />
-    <Content Include="Dependencies\include\zlib\zconf.h" />
-    <Content Include="Dependencies\include\zlib\zlib.h" />
-    <Content Include="Dependencies\include\zlib\zutil.c" />
-    <Content Include="Dependencies\include\zlib\zutil.h" />
-    <Resource Include="Dependencies\LibTelltale_README.txt" />
+    <Content Include="LibTelltale.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>; Move all assemblies and related files to lib folder
 ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF *.exe *.config *.manifest /XD lib logs data /E /IS /MOVE
+move /Y "$(TargetDir)lib\LibTelltale.dll" "$(TargetDir)"
 if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25</PostBuildEvent>
   </PropertyGroup>
 </Project>

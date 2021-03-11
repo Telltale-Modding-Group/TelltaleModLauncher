@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="View Mod" Height="351" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True" MinWidth="327.074" MinHeight="351">
+        Title="View Mod" Height="377" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True" MinWidth="327.074" MinHeight="351" Background="Black">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -18,13 +18,13 @@
     </mah:MetroWindow.LeftWindowCommands>
 
     <Grid>
-        <Label Name="ui_displayname_label" Content="ModDisplayName" Margin="10,10,10,0" VerticalAlignment="Top"/>
-        <Label Name="ui_displayversion_label" Content="ModVersion" Margin="10,41,10,0" VerticalAlignment="Top"/>
-        <Label Name="ui_displayauthor_label" Content="ModAuthor" Margin="10,72,10,0" VerticalAlignment="Top"/>
-        <Label Name="ui_displaycompatibility_label" Content="ModCompatibility" Margin="10,103,10,0" VerticalAlignment="Top"/>
-        <Separator Height="16" Margin="10,129,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Stretch"/>
+        <Label Name="ui_displayname_label" Content="Mod Display Name" Margin="10,10,10,0" VerticalAlignment="Top"/>
+        <Label Name="ui_displayversion_label" Content="Mod Version" Margin="10,41,10,0" VerticalAlignment="Top"/>
+        <Label Name="ui_displayauthor_label" Content="Mod Author" Margin="10,72,10,0" VerticalAlignment="Top"/>
+        <Label Name="ui_displaycompatibility_label" Content="Mod Compatibility" Margin="10,103,10,0" VerticalAlignment="Top"/>
+        <Separator Height="16" Margin="10,165,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Stretch"/>
 
-        <ListView Name="ui_displayfiles_listview" Margin="10,150,10,10" MouseDoubleClick="ui_displayfiles_listview_MouseDoubleClick" ToolTip="This list contains all of the mod files associated with the mod that will be placed in the Game Mods directory." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <ListView Name="ui_displayfiles_listview" Margin="10,186,10,10" MouseDoubleClick="ui_displayfiles_listview_MouseDoubleClick" ToolTip="This list contains all of the mod files associated with the mod that will be placed in the Game Mods directory." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Mod Files"/>
@@ -36,6 +36,8 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
+        <Label Name="ui_displaypriority_label" Content="Mod Priority" Margin="10,134,85,0" VerticalAlignment="Top"/>
+        <Button Content="Edit" Margin="0,134,10,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Right" Width="70"/>
 
     </Grid>
 </mah:MetroWindow>

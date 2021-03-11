@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 /** 
  * C# Implementation of LibTelltale. May look slightly like Java because I don't code much C# D:
  * 
- * Written by LucasSaragosa, used and modified by changemymindpls1
+ * Written by LucasSaragosa
  * 
  * Members are left all protected but the classes are left final because in the future I may make then inheritable.
  * 
