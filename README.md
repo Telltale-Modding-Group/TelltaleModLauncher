@@ -10,6 +10,8 @@
 ## DISCLAIMER
 ***NOTE: This project is a work in progress. Some features have not been implemented just yet and there could be issues/bugs that you might encounter. If you do please follow [this](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D---Reporting-an-Issue-or-Bug) to submit an issue.***
 
+***NOTE (3/16/21): Creator functionality is being stripped and moved to the [Telltale Script Editor](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor) as of the next release V0.7.0 which will be coming soon (biggest update yet).***
+
 ## Supported Games
 The launcher currently supports the following games.
 - **The Walking Dead Definitive Edition**
