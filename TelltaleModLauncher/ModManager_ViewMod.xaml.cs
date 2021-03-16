@@ -34,6 +34,7 @@ namespace TelltaleModLauncher
         /// </summary>
         public ModManager_ViewMod(ModManager_ViewMod_ViewText modManager_ViewMod_ViewText, AppSettings appSettings)
         {
+            //xaml initalization
             InitializeComponent();
 
             this.modManager_ViewMod_ViewText = modManager_ViewMod_ViewText;
@@ -62,12 +63,37 @@ namespace TelltaleModLauncher
             ui_displaycompatibility_label.Content = string.Format("Compatibility: {0}", mod.ModCompatibility.Replace("_", " "));
             ui_displayname_label.Content = string.Format("Name: {0}", mod.ModDisplayName);
             ui_displayversion_label.Content = string.Format("Version: {0}", mod.ModVersion);
+            ui_modpriority_textbox.Text = mod.ModResourcePriority.ToString();
 
             ui_displayfiles_listview.ItemsSource = mod.ModFiles;
         }
 
+        private void UI_Effect_DeFocusWindow()
+        {
+            if (appSettings.Get_AppSettings_DefocusEffect() == false)
+                return;
+
+            System.Windows.Media.Effects.BlurEffect blurEffect = new System.Windows.Media.Effects.BlurEffect();
+            blurEffect.Radius = 10;
+
+            this.Effect = blurEffect;
+            this.Opacity = 0.75;
+        }
+
+        private void UI_Effect_ClearEffects()
+        {
+            if (appSettings.Get_AppSettings_DefocusEffect() == false)
+                return;
+
+            this.Effect = null;
+            this.Opacity = 1;
+        }
+
         private void ViewMod_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if(modManager_ViewMod_ViewText != null)
+                modManager_ViewMod_ViewText.Close();
+
             //hide the window on closing instead of creating a new window object every time
             e.Cancel = true;
             this.Hide();
@@ -91,8 +117,15 @@ namespace TelltaleModLauncher
             string selectedModFilePath = (string)ui_displayfiles_listview.SelectedItem;
             string finalPath = System.IO.Path.Combine(modDirectory, selectedModFilePath);
 
+            UI_Effect_DeFocusWindow();
+
             if (modManager_ViewMod_ViewText.CheckPreviewValidity(finalPath))
+            {
                 modManager_ViewMod_ViewText.OpenWindow(finalPath, mod.ModDisplayName);
+                //modManager_ViewMod_ViewText.ShowDialog();
+            }
+
+            UI_Effect_ClearEffects();
         }
 
         private void ui_displayfiles_viewfilecontents_click(object sender, RoutedEventArgs e)
@@ -104,8 +137,15 @@ namespace TelltaleModLauncher
             string selectedModFilePath = (string)ui_displayfiles_listview.SelectedItem;
             string finalPath = System.IO.Path.Combine(modDirectory, selectedModFilePath);
 
+            UI_Effect_DeFocusWindow();
+
             if (modManager_ViewMod_ViewText.CheckPreviewValidity(finalPath))
+            {
                 modManager_ViewMod_ViewText.OpenWindow(finalPath, mod.ModDisplayName);
+                //modManager_ViewMod_ViewText.ShowDialog();
+            }
+
+            UI_Effect_ClearEffects();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TelltaleModLauncher.Files
         /// <summary>
         /// Mod Json Format Version
         /// </summary>
-        public string ModJsonFormatVersion { get; } = "v1.0";
+        public string ModJsonFormatVersion { get; } = "1.0";
 
         /// <summary>
         /// The display name of the mod.

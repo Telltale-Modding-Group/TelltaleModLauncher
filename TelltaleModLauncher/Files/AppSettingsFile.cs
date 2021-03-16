@@ -10,5 +10,6 @@ namespace TelltaleModLauncher.Files
     {
         public GameVersion Default_Game_Version { get; set; }
         public bool UI_LightMode { get; set; } = false;
+        public bool UI_WindowDefocusing { get; set; } = true;
     }
 }

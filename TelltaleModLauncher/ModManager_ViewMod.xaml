@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="View Mod" Height="377" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True" MinWidth="327.074" MinHeight="351" Background="Black">
+        Title="View Mod" Height="377" Width="327.074" WindowStartupLocation="CenterScreen" Closing="ViewMod_Closing" Topmost="True" MinWidth="327.074" MinHeight="351">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -36,8 +36,8 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <Label Name="ui_displaypriority_label" Content="Mod Priority" Margin="10,134,85,0" VerticalAlignment="Top"/>
-        <Button Content="Edit" Margin="0,134,10,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Right" Width="70"/>
+        <Label Name="ui_displaypriority_label" Content="Mod Priority: " Margin="10,134,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="93"/>
+        <TextBox Name="ui_modpriority_textbox" Height="26" Margin="108,134,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
 
     </Grid>
 </mah:MetroWindow>

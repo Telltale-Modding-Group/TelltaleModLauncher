@@ -29,7 +29,6 @@ namespace TelltaleModLauncher
         public GameVersionSettings current_GameVersionSettings;
 
         //private
-        private IOManagement ioManagement;
         private static string systemDocumentsPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private static string configFile_filename = "TelltaleModLauncher_Config.json";
         private static string configFile_directory_location = systemDocumentsPath + "/TelltaleModLauncher/";
@@ -42,10 +41,8 @@ namespace TelltaleModLauncher
         /// <para>If there is an existing config file, it will parse the data from it.</para>
         /// <para>If there is not an existing config file, or a TelltaleModLauncher directory, create a new one.</para>
         /// </summary>
-        public AppSettings(IOManagement ioManagement)
+        public AppSettings()
         {
-            this.ioManagement = ioManagement;
-
             if (File.Exists(configFile_file_location))
             {
                 ReadConfigFile();
@@ -55,10 +52,8 @@ namespace TelltaleModLauncher
                 appSettingsFile = new AppSettingsFile();
                 New_GameVersionSettingsList();
 
-                current_GameVersionSettings = GameVersionSettings[1];
-
                 if (!Directory.Exists(configFile_directory_location))
-                    ioManagement.CreateDirectory(configFile_directory_location);
+                    IOManagement.CreateDirectory(configFile_directory_location);
 
                 WriteToFile();
             }    
@@ -147,6 +142,9 @@ namespace TelltaleModLauncher
 
                 if (name.Equals(nameof(appSettingsFile.UI_LightMode)))
                     appSettingsFile.UI_LightMode = (bool)property.Value;
+
+                if (name.Equals(nameof(appSettingsFile.UI_WindowDefocusing)))
+                    appSettingsFile.UI_WindowDefocusing = (bool)property.Value;
             }
 
             //loop through each property to get the data
@@ -165,13 +163,8 @@ namespace TelltaleModLauncher
                     if (name.Equals(nameof(current_GameVersionSettings.Game_LocationExe)))
                         new_gameVersionSettings.Game_LocationExe = (string)property.Value;
 
-                    if (name.Equals(nameof(current_GameVersionSettings.Game_LibTelltale_GameID)))
-                        new_gameVersionSettings.Game_LibTelltale_GameID = (string)property.Value;
-
                     if (name.Equals(nameof(current_GameVersionSettings.Game_Version)))
-                    {
                         new_gameVersionSettings.Game_Version = (GameVersion)(int)property.Value;
-                    }
                 }
 
                 GameVersionSettings.Add(new_gameVersionSettings);
@@ -190,7 +183,7 @@ namespace TelltaleModLauncher
         public void WriteToFile()
         {
             if(File.Exists(configFile_file_location))
-                ioManagement.DeleteFile(configFile_file_location);
+                IOManagement.DeleteFile(configFile_file_location);
 
             //open a stream writer to create the text file and write to it
             using (StreamWriter file = File.CreateText(configFile_file_location))
@@ -213,7 +206,7 @@ namespace TelltaleModLauncher
         /// </summary>
         public void UpdateChangesToFile()
         {
-            ioManagement.DeleteFile(configFile_file_location);
+            IOManagement.DeleteFile(configFile_file_location);
             WriteToFile();
         }
 
@@ -223,16 +216,34 @@ namespace TelltaleModLauncher
         /// <para>returns false if one or all of these values aren't assigned/exist</para>
         /// </summary>
         /// <returns></returns>
-        public bool IsGameSetupAndValid()
+        public bool IsGameSetupAndValid(bool showMessageBoxes = false)
         {
+            if (current_GameVersionSettings == null)
+                return true;
+
             if (File.Exists(current_GameVersionSettings.Game_LocationExe) == false)
+            {
+                if (showMessageBoxes)
+                    MessageBoxes.Error("The game executable location does not exist!", "Error");
+
                 return false;
+            }
 
             if (Directory.Exists(current_GameVersionSettings.Game_Location) == false)
+            {
+                if (showMessageBoxes)
+                    MessageBoxes.Error("The directory of the game does not exist!", "Error");
+
                 return false;
+            }
 
             if (Directory.Exists(current_GameVersionSettings.Game_Location_Mods) == false)
+            {
+                if (showMessageBoxes)
+                    MessageBoxes.Error("The directory of the game archives/pack folder does not exist!", "Error");
+
                 return false;
+            }
 
             return true;
         }
@@ -268,31 +279,57 @@ namespace TelltaleModLauncher
         //---------------- GETTERS ----------------
         public string Get_Current_GameVersionSettings_LibTelltaleGameID()
         {
+            if (current_GameVersionSettings == null)
+                return "";
+
             return current_GameVersionSettings.Game_LibTelltale_GameID;
         }
 
         public string Get_Current_GameVersionSettings_GameDirectory()
         {
+            if (current_GameVersionSettings == null)
+                return "";
+
             return current_GameVersionSettings.Game_Location;
         }
 
         public string Get_Current_GameVersionSettings_GameExeLocation()
         {
+            if (current_GameVersionSettings == null)
+                return "";
+
             return current_GameVersionSettings.Game_LocationExe;
         }
 
         public string Get_Current_GameVersionSettings_ModsLocation()
         {
+            if (current_GameVersionSettings == null)
+                return "";
+
             return current_GameVersionSettings.Game_Location_Mods;
         }
 
         public GameVersion Get_Current_GameVersionName()
         {
+            if (current_GameVersionSettings == null)
+                return GameVersion.Other;
+
             return current_GameVersionSettings.Game_Version;
         }
+
         public bool Get_AppSettings_LightMode()
         {
             return appSettingsFile.UI_LightMode;
+        }
+
+        public bool Get_AppSettings_DefocusEffect()
+        {
+            return appSettingsFile.UI_WindowDefocusing;
+        }
+
+        public string Get_App_ConfigDirectory()
+        {
+            return configFile_directory_location;
         }
         //---------------- GETTERS END ----------------
         //---------------- MODIFIERS ----------------
@@ -306,9 +343,9 @@ namespace TelltaleModLauncher
             appSettingsFile.UI_LightMode = state;
         }
 
-        public void Set_Current_GameVersionSettings_LibTelltaleGameID(string value)
+        public void Set_Current_AppSettings_UI_DefocusEffect(bool state)
         {
-            current_GameVersionSettings.Game_LibTelltale_GameID = value;
+            appSettingsFile.UI_WindowDefocusing = state;
         }
 
         public void Set_Current_GameVersionSettings(int selectedIndex)
@@ -320,7 +357,7 @@ namespace TelltaleModLauncher
         {
             string newFilePath = "";
 
-            ioManagement.GetFilePath(ref newFilePath, "Exe Files (.exe)|*.exe", "Select the Game Executable File");
+            IOManagement.GetFilePath(ref newFilePath, "Exe Files (.exe)|*.exe", "Select the Game Executable File");
 
             if (File.Exists(newFilePath))
             {

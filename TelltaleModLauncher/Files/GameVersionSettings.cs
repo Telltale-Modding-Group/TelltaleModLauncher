@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TelltaleModLauncher.Files
 {
     public class GameVersionSettings
     {
-        private string Game_LibTelltale_GameID_value;
-
         //the version of said game
         public GameVersion Game_Version { get; set; }
 
@@ -24,19 +23,7 @@ namespace TelltaleModLauncher.Files
         {
             get
             {
-                switch (Game_Version)
-                {
-                    case GameVersion.The_Walking_Dead_Definitive_Edition:
-                        return "wdc";
-                    case GameVersion.The_Walking_Dead_Final_Season:
-                        return "wd4";
-                    default:
-                        return "";
-                }
-            }
-            set
-            {
-                Game_LibTelltale_GameID_value = value;
+                return GameVersion_Functions.Get_GameID_FromVersion(Game_Version);
             }
         }
 
@@ -45,15 +32,14 @@ namespace TelltaleModLauncher.Files
         {
             get
             {
-                switch (Game_Version)
-                {
-                    case GameVersion.The_Walking_Dead_Definitive_Edition:
-                        return Game_Location + "/Archives/";
-                    case GameVersion.The_Walking_Dead_Final_Season:
-                        return Game_Location + "/Archives/";
-                    default:
-                        return "Undefined";
-                }
+                if (Directory.Exists(Game_Location + "/Archives/"))
+                    return Game_Location + "/Archives/";
+                else if (Directory.Exists(Game_Location + "/Packs/"))
+                    return Game_Location + "/Packs/";
+                else if (Directory.Exists(Game_Location + "/Pack/"))
+                    return Game_Location + "/Pack/";
+                else
+                    return "";
             }
         }
     }

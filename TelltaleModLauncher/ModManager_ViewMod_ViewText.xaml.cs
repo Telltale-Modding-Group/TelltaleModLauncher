@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using TelltaleModLauncher.Utillities;
 
 namespace TelltaleModLauncher
 {
@@ -49,7 +50,7 @@ namespace TelltaleModLauncher
             {
                 string message = string.Format("'{0}' does not exist!", newFilePath);
 
-                MessageBox.Show(message, "Can't Read File", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxes.Error(message, "Can't Read File");
 
                 return false;
             }
@@ -60,7 +61,7 @@ namespace TelltaleModLauncher
             {
                 string message = string.Format("File Type '{0}' is not supported for previewing!", fileExt);
 
-                MessageBox.Show(message, "Can't Read File", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxes.Error(message, "Can't Read File");
 
                 return false;
             }
@@ -78,7 +79,7 @@ namespace TelltaleModLauncher
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show(e.ToString(), e.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBoxes.Error(e.ToString(), e.Message);
                 }
             }
         }

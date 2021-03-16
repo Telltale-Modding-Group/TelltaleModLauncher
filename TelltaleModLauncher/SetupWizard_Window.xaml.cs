@@ -24,7 +24,6 @@ namespace TelltaleModLauncher
         //main objects passed down from MainWindow
         private AppSettings appSettings;
         private MainWindow mainWindow;
-        private IOManagement ioManagement;
         private ModManager modManager;
 
         /// <summary>
@@ -32,15 +31,13 @@ namespace TelltaleModLauncher
         /// </summary>
         /// <param name="appSettings"></param>
         /// <param name="mainWindow"></param>
-        /// <param name="ioManagement"></param>
         /// <param name="modManager"></param>
-        public SetupWizard_Window(AppSettings appSettings, MainWindow mainWindow, IOManagement ioManagement, ModManager modManager)
+        public SetupWizard_Window(AppSettings appSettings, MainWindow mainWindow, ModManager modManager)
         {
             InitializeComponent();
 
             this.appSettings = appSettings;
             this.mainWindow = mainWindow;
-            this.ioManagement = ioManagement;
             this.modManager = modManager;
 
             UpdateUI();
@@ -54,13 +51,18 @@ namespace TelltaleModLauncher
             string darkmodeTheme = appSettings.Get_AppSettings_LightMode() ? "Light.Blue" : "Dark.Blue";
             ThemeManager.Current.ChangeTheme(this, darkmodeTheme);
 
-            bool ifOtherGame = appSettings.Get_Current_GameVersionName() == GameVersion.Other;
-
-            var GameVersions_ToStringList = Enum.GetNames(typeof(GameVersion));
-
             ui_window_appversion_label.Content = appSettings.appVersionString;
-            ui_gamesetup_gameversion_combobox.ItemsSource = GameVersions_ToStringList;
+            ui_gamesetup_gameversion_combobox.ItemsSource = GameVersion_Functions.Get_Versions_StringList(true);
             ui_gamesetup_gamedirectoryexe_textbox.Text = appSettings.Get_Current_GameVersionSettings_GameExeLocation();
+        }
+
+        /// <summary>
+        /// Changes the theme of the window.
+        /// </summary>
+        /// <param name="theme"></param>
+        public void UI_ChangeTheme(string theme)
+        {
+            ThemeManager.Current.ChangeTheme(this, theme);
         }
 
         //---------------- XAML FUNCTIONS ----------------
@@ -95,11 +97,13 @@ namespace TelltaleModLauncher
 
         private void ui_gamesetup_done_Click(object sender, RoutedEventArgs e)
         {
-            GameVersion selectedGameVersion = (GameVersion)ui_gamesetup_gameversion_combobox.SelectedItem;
+            GameVersion selectedGameVersion = GameVersion_Functions.Get_Versions_ParseIntValue(ui_gamesetup_gameversion_combobox.SelectedIndex);
             appSettings.ChangeGameVersion(selectedGameVersion);
 
             modManager.ChangedGameVersion();
-            appSettings.Set_Current_GameVersionSettings_GameExeLocation();
+
+            if(appSettings.IsGameSetupAndValid(true) == false)
+                return;
 
             appSettings.UpdateChangesToFile();
 

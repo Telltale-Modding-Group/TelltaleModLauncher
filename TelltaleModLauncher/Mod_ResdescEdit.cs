@@ -15,21 +15,10 @@ namespace TelltaleModLauncher
     {
         private AppSettings appSettings;
 
-        //thread management
-        private bool taskFinished;
-
         public Mod_ResdescEdit(AppSettings appSettings)
         {
             this.appSettings = appSettings;
         }
-
-        void EncryptFile_OnProcessExit(object sender, EventArgs e)
-        {
-            taskFinished = true;
-        }
-
-        private Process encryptProcessObj;
-        private ProcessStartInfo encryptProcessStartInfoObj;
 
         /// <summary>
         /// Encrypts a given file using libtelltale
@@ -82,15 +71,75 @@ namespace TelltaleModLauncher
 
         public void Parse_File(string file)
         {
-            //set.priority = 
-            //set.gameDataPriority = 
-
             List<string> file_lines = new List<string>(File.ReadAllLines(file));
+
+            string archivePriority_name = "set.priority";
+            string archiveGamePriority_name = "set.gameDataPriority";
+
+            int archivePriority_value = 0;
+            int archiveGamePriority_value = 0;
 
             foreach(string line in file_lines)
             {
+                string archivePriority_file = line.Remove(archivePriority_name.Length - 1, Math.Abs(line.Length - archivePriority_name.Length));
+                string archiveGamePriority_file = line.Remove(archiveGamePriority_name.Length - 1, Math.Abs(line.Length - archiveGamePriority_name.Length));
 
+                if (archivePriority_file.Equals(archivePriority_name))
+                {
+                    string a = line.Remove(0, archivePriority_file.Length);
+                    string noSpaces = a.Replace(" ", "");
+                    string noEquals = noSpaces.Replace("=", "");
+
+                    archivePriority_value = int.Parse(noEquals);
+                }
+
+                if (archiveGamePriority_file.Equals(archivePriority_name))
+                {
+                    string a = line.Remove(0, archiveGamePriority_file.Length);
+                    string noSpaces = a.Replace(" ", "");
+                    string noEquals = noSpaces.Replace("=", "");
+
+                    archiveGamePriority_value = int.Parse(noEquals);
+                }
             }
+        }
+
+        public void Edit_File(string file, int archivePriority_value, int archiveGamePriority_value)
+        {
+            List<string> file_lines = new List<string>(File.ReadAllLines(file));
+
+            string archivePriority_name = "set.priority";
+            string archiveGamePriority_name = "set.gameDataPriority";
+
+            int index = 0;
+
+            foreach (string line in file_lines)
+            {
+                string archivePriority_file = line.Remove(archivePriority_name.Length - 1, Math.Abs(line.Length - archivePriority_name.Length));
+                string archiveGamePriority_file = line.Remove(archiveGamePriority_name.Length - 1, Math.Abs(line.Length - archiveGamePriority_name.Length));
+
+                if (archivePriority_file.Equals(archivePriority_name))
+                {
+                    string a = line.Remove(0, archivePriority_file.Length);
+                    string noSpaces = a.Replace(" ", "");
+                    string noEquals = noSpaces.Replace("=", "");
+
+                    file_lines[index] = string.Format("{0} = {1}", archivePriority_name, archivePriority_value.ToString());
+                }
+
+                if (archiveGamePriority_file.Equals(archivePriority_name))
+                {
+                    string a = line.Remove(0, archiveGamePriority_file.Length);
+                    string noSpaces = a.Replace(" ", "");
+                    string noEquals = noSpaces.Replace("=", "");
+
+                    file_lines[index] = string.Format("{0} = {1}", archiveGamePriority_name, archiveGamePriority_value.ToString());
+                }
+
+                index++;
+            }
+
+            File.WriteAllLines(file, file_lines);
         }
     }
 }
