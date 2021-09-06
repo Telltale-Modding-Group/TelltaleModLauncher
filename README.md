@@ -19,12 +19,11 @@ The launcher currently supports the following games.
 NOTE: The installer has not been tested with any other Telltale game besides 'The Walking Dead Definitive Edition' though future support is planned.
 
 ## About
-This launcher is designed to make installing and managing mods for Telltale Games much easier through a very user friendly interface. In addition to that, the launcher also includes a hub for mod tools necessary for you to create a mod for a Telltale Title. You will be able to make the following mods.
-- **Texture Mods** (not implemented yet)
-- **[Sound Mods](https://github.com/Telltale-Modding-Group/SoundModCreator)** (work in progress, not implemented yet)
-- **[Scripting Mods](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor)** (work in progress, not implemented yet)
+This launcher is designed to make installing and managing mods for Telltale Games much easier through a very user friendly interface.
 
-Scripting mods are currently possible using the [Telltale Script Editor](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor), however the other two are currently a work in progress.
+If you wish to make mods, we have the following tools avaliable.
+- **[Texture Mods](https://github.com/Telltale-Modding-Group/DDS-D3DTX-Converter)**
+- **[Scripting Mods](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor)**
 
 ![Screenshot 1](screenshots/shot1.png)
 ![Screenshot 2](screenshots/shot2.png)
