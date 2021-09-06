@@ -23,9 +23,10 @@ NOTE: The installer has not been tested with any other Telltale game besides 'Th
 ## About
 This launcher is designed to make installing and managing mods for Telltale Games much easier through a very user friendly interface.
 
-If you wish to make mods, we have the following tools avaliable.
-- **[Texture Mods](https://github.com/Telltale-Modding-Group/DDS-D3DTX-Converter)**
+**If you wish to make mods, we have the following tools avaliable.**
+- **[Texture Mods](https://github.com/Telltale-Modding-Group/DDS-D3DTX-Converter)** **[(Tutorial)](https://github.com/Telltale-Modding-Group/DDS-D3DTX-Converter/wiki/%5BTutorial%5D--How-to-make-a-Texture-Mod-(Part-1))**
 - **[Scripting Mods](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor)**
+Additional info can be found and asked in our **[Discord Server](https://discord.gg/rn8HvqZjZZ)**.
 
 ![Screenshot 1](screenshots/shot1.png)
 ![Screenshot 2](screenshots/shot2.png)
