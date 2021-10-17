@@ -7,6 +7,10 @@ v0.6.0 (2nd release)
 - [Added] application version number on the application bar
 - [Updated] Help URL
 
+v0.6.5 (3rd release)
+- [Removed] Creator Functionality and UI
+- [Removed] Game Mods folder, this is now automatically found by the launcher
+
 v0.7.0 (W.I.P)
 - [Added] Support for most other Telltale Games (not all have been tested)
 - [Added] Launch Game Exe Icon preview
