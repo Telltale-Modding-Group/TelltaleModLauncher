@@ -200,7 +200,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="LibTelltale\LibTelltaleWrapper.cs" />
     <Compile Include="ModManager_ViewMod_ViewText.xaml.cs">
       <DependentUpon>ModManager_ViewMod_ViewText.xaml</DependentUpon>
     </Compile>
@@ -285,11 +284,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LibTelltale.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

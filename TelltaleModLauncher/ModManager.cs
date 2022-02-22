@@ -37,7 +37,7 @@ namespace TelltaleModLauncher
         /// </summary>
         /// <param name="appSettings"></param>
         /// <param name="ioManagement"></param>
-        public ModManager (AppSettings appSettings, MainWindow mainWindow)
+        public ModManager(AppSettings appSettings, MainWindow mainWindow)
         {
             this.appSettings = appSettings;
             this.mainWindow = mainWindow;
@@ -155,6 +155,7 @@ namespace TelltaleModLauncher
 
         /// <summary>
         /// Initalizes the file system watcher object to watch the current game mods folder.
+        /// TODO: STILL NEEDS WORK
         /// </summary>
         public void Initalize_FileSystemWatcher()
         {
@@ -191,21 +192,25 @@ namespace TelltaleModLauncher
             fileSystemWatcher.IncludeSubdirectories = false;
         }
 
+        // TODO: STILL NEEDS WORK
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
             GetModsFromFolder();
         }
 
+        // TODO: STILL NEEDS WORK
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             GetModsFromFolder();
         }
 
+        // TODO: STILL NEEDS WORK
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             GetModsFromFolder();
         }
 
+        // TODO: STILL NEEDS WORK
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             GetModsFromFolder();

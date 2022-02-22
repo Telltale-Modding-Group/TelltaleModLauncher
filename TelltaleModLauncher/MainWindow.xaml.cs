@@ -33,6 +33,7 @@ namespace TelltaleModLauncher
         private ModManager_ViewMod modManager_ViewMod;
         private SetupWizard_Window setupWizard_Window;
         private ModManager_ViewMod_ViewText modManager_ViewMod_ViewText;
+        //recomendation: singleton pattern for managing window instances
 
         //IMPORTANT: xaml calls UpdateUI() too soon causing errors due to incomplete initalization.
         //This 'nullifies' UpdateUI() until InitalizeApplication() is done.

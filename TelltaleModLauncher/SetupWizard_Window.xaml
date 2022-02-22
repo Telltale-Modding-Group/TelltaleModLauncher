@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-        Title="Setup Wizard" Height="302.185" Width="488.468">
+        Title="Setup Wizard" Height="302.185" Width="488.468" Background="Black">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
