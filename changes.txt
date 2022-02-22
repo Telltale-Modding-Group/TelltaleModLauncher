@@ -7,6 +7,13 @@ v0.6.0 (2nd release)
 - [Added] application version number on the application bar
 - [Updated] Help URL
 
+v0.6.5 (3rd release)
+- [Removed] Creator Tab since it's no longer needed. The functionality and tools for creating mods will be moved seperately to the Telltale Script Editor and other related tools.
+- [Removed] Game Mods Folder field during setup since it isn't necessary for the user to define, the launcher now automatically finds the correct folder for the game. (causes less confusion during setup, makes things easier for the user)
+- [Removed] Lua Compiler dependency since it's not needed
+- [Removed] Lua Decompiler depedency since it's not needed 
+- [Removed] Removed the dependencies tab and it's options since it's not needed, and other depedencies are handled internally. No setup needed for the user.
+
 v0.7.0 (W.I.P)
 - [Added] Support for most other Telltale Games (not all have been tested)
 - [Added] Launch Game Exe Icon preview
@@ -19,11 +26,6 @@ v0.7.0 (W.I.P)
 - [Added] Mod priorities are now displayed and visible, mod priorities can also be set and modified
 - [Changed] Mods are now sorted by priority
 - [Changed] Can still add/replace a mod even if it has both the same name and version (will give you a prompt instead of not allowing you to do it)
-- [Removed] Creator Tab since it's no longer needed. The functionality and tools for creating mods will be moved seperately to the Telltale Script Editor and other related tools.
-- [Removed] Game Mods Folder field during setup since it isn't necessary for the user to define, the launcher now automatically finds the correct folder for the game. (causes less confusion during setup, makes things easier for the user)
-- [Removed] Removed the dependencies tab and it's options since it's not needed, and other depedencies are handled internally. No setup needed for the user.
-- [Removed] Lua Compiler dependency since it's not needed
-- [Removed] Lua Decompiler depedency since it's not needed 
 - [Removed] ttarchexe depedency, which has now been replaced by LibTelltale (By Lucas Saragosa).
 - [Fix] Fixed issue when the launcher would crash when opening mod files that were not properly structured. (i.e. if you downloaded the source code zip of a project rather than the actual mod zip). Now it warns the user and displays an error
 - [Fix] Fixed issue when the launcher would crash on startup due to the file system watcher for mod refreshing
