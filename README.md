@@ -12,7 +12,7 @@
 
 ***NOTE (3/16/21): Creator functionality is being stripped and moved to the [Telltale Script Editor](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor) as of the next release V0.7.0 which will be coming soon [(biggest update yet)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/blob/main/changes.txt).***
 
-***NOTE (9/6/21): Apologies for the very very late update. Life got in the way, I cannot predict when V0.7.0 will finally come but in the meantime I've updated the launcher to 0.6.5 which is mostly a quality-of-life update which makes the setup of the Launcher alot more simpler and less confusing (despite making a tutorial that is linked on this page that guides you how to set it up properly...)***
+***NOTE (9/6/21): Apologies for the very very late update. I cannot predict when V0.7.0 will finally come but in the meantime I've updated the launcher to 0.6.5 which is mostly a quality-of-life update which makes the setup of the Launcher alot more simpler and less confusing (despite making a tutorial that is linked on this page that guides you how to set it up properly...)***
 
 ## Supported Games
 The launcher currently supports the following games.
