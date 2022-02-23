@@ -30,4 +30,3 @@ This launcher is designed to make installing and managing mods for Telltale Game
 Additional info can be found and asked in our **[Discord Server](https://discord.gg/rn8HvqZjZZ)**.
 
 ![Screenshot 1](screenshots/shot1.png)
-![Screenshot 2](screenshots/shot2.png)
