@@ -3,7 +3,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Telltale-Modding-Group/TelltaleModLauncher)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Telltale-Modding-Group/TelltaleModLauncher/total.svg)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)  
 
-# [DOWNLOAD HERE](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)!**
+# [DOWNLOAD HERE](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)!
 
 **Releases are now being put out! You can get them [HERE](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/releases)!**
 **If you need help or have questions about the application, click [HERE](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D-Application-Setup)!**
