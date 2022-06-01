@@ -12,10 +12,6 @@
 ## DISCLAIMER
 ***NOTE: This project is a work in progress. Some features have not been implemented just yet and there could be issues/bugs that you might encounter. If you do please follow [this](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/wiki/%5BHelp%5D---Reporting-an-Issue-or-Bug) to submit an issue.***
 
-***NOTE (3/16/21): Creator functionality is being stripped and moved to the [Telltale Script Editor](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor) as of the next release V0.7.0 which will be coming soon [(biggest update yet)](https://github.com/Telltale-Modding-Group/TelltaleModLauncher/blob/main/changes.txt).***
-
-***NOTE (9/6/21): Apologies for the very very late update. I cannot predict when V0.7.0 will finally come but in the meantime I've updated the launcher to 0.6.5 which is mostly a quality-of-life update which makes the setup of the Launcher alot more simpler and less confusing (despite making a tutorial that is linked on this page that guides you how to set it up properly...)***
-
 ## Supported Games
 The launcher currently supports the following games.
 - **The Walking Dead Definitive Edition**
@@ -30,5 +26,3 @@ This launcher is designed to make installing and managing mods for Telltale Game
 - **[Scripting Mods](https://github.com/Telltale-Modding-Group/Telltale-Script-Editor)**
 
 Additional info can be found and asked in our **[Discord Server](https://discord.gg/rn8HvqZjZZ)**.
-
-![Screenshot 1](screenshots/shot1.png)
