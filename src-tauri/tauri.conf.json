@@ -11,6 +11,12 @@
     "version": "0.1.0"
   },
   "tauri": {
+    "pattern": {
+      "use": "isolation",
+      "options": {
+        "dir": "../dist-isolation"
+      }
+    },
     "allowlist": {
       "all": true
     },
