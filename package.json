@@ -27,6 +27,7 @@
     "vite": "^2.9.9"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.0.0-rc.6"
+    "@tauri-apps/api": "^1.0.0-rc.6",
+    "daisyui": "^2.15.2"
   }
 }

@@ -1,8 +1,12 @@
 import './index.css';
 import App from './App.svelte';
 
+const target = document.getElementById('app');
+
+if (!target) throw new Error('Unable to initialise application! Element with ID "app" not found!');
+
 const app = new App({
-	target: document.getElementById('app')
+	target
 });
 
 export default app;
