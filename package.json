@@ -5,29 +5,29 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:tauri": "tauri dev",
     "build": "vite build",
-    "build:tauri": "tauri build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "tauri": "tauri"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
-    "@tauri-apps/cli": "^1.0.0-rc.13",
+    "@tauri-apps/cli": "^1.0.2",
     "@tsconfig/svelte": "^2.0.1",
     "autoprefixer": "^10.4.7",
+    "daisyui": "^2.18.0",
     "postcss": "^8.4.14",
     "svelte": "^3.44.0",
     "svelte-check": "^2.2.7",
     "svelte-preprocess": "^4.9.8",
-    "tailwindcss": "^3.0.24",
+    "tailwindcss": "^3.1.4",
     "tslib": "^2.3.1",
     "typescript": "^4.5.4",
     "vite": "^2.9.9"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.0.0-rc.6",
-    "daisyui": "^2.15.2"
+    "@tauri-apps/api": "^1.0.1",
+    "svelte-icons": "^2.1.0",
+    "svelte-spa-router": "^3.2.0"
   }
 }
