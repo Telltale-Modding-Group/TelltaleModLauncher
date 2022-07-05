@@ -1,6 +1,15 @@
 <script lang="ts">
 	import {link} from 'svelte-spa-router';
 	import MdFolderOpen from 'svelte-icons/md/MdFolderOpen.svelte'
+	import { exePath } from "../stores.js";
+	import { invoke } from '@tauri-apps/api';
+
+	const handleSelectExePath = async () => {
+		const path = await invoke<string>('select_exe_path');
+
+		if (!path) return;
+		exePath.set(path);
+	};
 </script>
 
 <div>
@@ -10,11 +19,14 @@
 	<div class="grow p-4">
 		<label for="path">WDC.exe Path:</label>
 		<div class="path flex mt-2">
-			<input id="path" class="input input-bordered w-full" type="text" value="" disabled>
-			<button class="btn btn-md py-3">
+			<input id="path" class="input input-bordered w-full" type="text" value={$exePath ?? ''} disabled>
+			<button class="btn btn-md py-3" on:click={handleSelectExePath}>
 				<MdFolderOpen />
 			</button>
 		</div>
+		{#if !$exePath}
+			<span class="text-error">Please select the path to your local installation of The Walking Dead: Definitive Edition</span>
+		{/if}
 	</div>
 </div>
 

@@ -4,16 +4,18 @@
 	import MdFolderOpen from 'svelte-icons/md/MdFolderOpen.svelte';
 	import MdAddCircle from 'svelte-icons/md/MdAddCircle.svelte';
 	import type { IMod } from '../../types';
-	import { mod } from '../../types';
 	import Mod from "../Mod.svelte";
 	import {link} from 'svelte-spa-router';
+	import { exePath } from "../stores.js";
+	import { onMount } from 'svelte';
+	import { invoke } from '@tauri-apps/api';
 
-	const mods: IMod[] = [
-		mod('Load Any Level', '1.0.0', 'Droyti', '', []),
-		mod('First Cutscene Mod', '0.5', 'changemymindpls1', '', []),
-		mod('menumod', '0.0.1', 'somedev', '', []),
-		mod('Alive Inside', '1.0.2', 'Alive Inside Team', '', []),
-	];
+	let mods: Record<string, IMod> = {};
+
+	onMount(async () => {
+		mods = await invoke('get_mods');
+		console.log(mods);
+	});
 </script>
 
 <div class="flex flex-col h-full">
@@ -23,7 +25,7 @@
 				<MdAddCircle />
 			</button>
 		</div>
-		{#each mods as mod (mod.name)}
+		{#each Object.entries(mods) as [uuid, mod] (mod.name)}
 			<Mod mod={mod} />
 		{/each}
 	</div>
@@ -31,10 +33,10 @@
 		<a class="btn btn-sm" href="/settings" use:link>
 			<MdSettings />
 		</a>
-		<button class="btn btn-primary">
+		<button class="btn btn-primary" disabled={!$exePath}>
 			<MdPlayArrow />
 		</button>
-		<button class="btn btn-sm">
+		<button class="btn btn-sm" disabled={!$exePath}>
 			<MdFolderOpen />
 		</button>
 	</div>
