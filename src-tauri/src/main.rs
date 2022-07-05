@@ -29,6 +29,8 @@ struct InteriorAppState {
 struct AppState(Mutex<InteriorAppState>);
 
 #[tauri::command]
+// I originally tried returning an Option<String>, but I was getting error[E0597]: `__tauri_message__` does not live long enough
+// A Result<Option<String, ()> is effectively the same thing anyway, so I'm going with this
 async fn select_exe_path(state: State<'_, AppState>) -> Result<Option<String>, ()> {
     let path = FileDialogBuilder::new()
         .set_title("Select Executable")
@@ -36,7 +38,7 @@ async fn select_exe_path(state: State<'_, AppState>) -> Result<Option<String>, (
         .pick_file()
         .map(|path| path.to_str().unwrap().into());
 
-    state.0.lock().unwrap().exe_path = path.clone();
+    state.0.lock().expect("Error obtaining lock on global state!").exe_path = path.clone();
 
     Ok(path)
 }
