@@ -2,9 +2,7 @@
 	import {link} from 'svelte-spa-router';
 	import MdFolderOpen from 'svelte-icons/md/MdFolderOpen.svelte'
 	import { invoke } from '@tauri-apps/api';
-	import { onMount } from 'svelte';
-
-	let exePath: string | undefined;
+	import { exePath } from '../../stores';
 
 	const handleSelectExePath = async () => {
 		const path = await invoke<string>('select_exe_path');
@@ -13,9 +11,6 @@
 		exePath.set(path);
 	};
 
-	onMount(async () => {
-		await invoke('get_exe_path');
-	});
 </script>
 
 <div>

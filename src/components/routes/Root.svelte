@@ -6,17 +6,7 @@
 	import type { IMod } from '../../types';
 	import Mod from "../Mod.svelte";
 	import {link} from 'svelte-spa-router';
-	import { onMount } from 'svelte';
-	import { invoke } from '@tauri-apps/api';
-
-	let mods: Record<string, IMod> = {};
-	let exePath: string | undefined;
-
-	onMount(async () => {
-		exePath = await invoke('get_exe_path');
-		mods = await invoke('get_mods');
-		console.log(mods);
-	});
+	import { exePath, mods } from '../../stores.js';
 </script>
 
 <div class="flex flex-col h-full">
@@ -26,7 +16,7 @@
 				<MdAddCircle />
 			</button>
 		</div>
-		{#each Object.entries(mods) as [uuid, mod] (mod.name)}
+		{#each Object.entries($mods) as [uuid, mod] (mod.name)}
 			<Mod mod={mod} />
 		{/each}
 	</div>
@@ -34,10 +24,10 @@
 		<a class="btn btn-sm" href="/settings" use:link>
 			<MdSettings />
 		</a>
-		<button class="btn btn-primary" disabled={!exePath}>
+		<button class="btn btn-primary" disabled={!$exePath}>
 			<MdPlayArrow />
 		</button>
-		<button class="btn btn-sm" disabled={!exePath}>
+		<button class="btn btn-sm" disabled={!$exePath}>
 			<MdFolderOpen />
 		</button>
 	</div>

@@ -4,11 +4,14 @@
 	import Settings from './routes/Settings.svelte';
 	import { invoke } from '@tauri-apps/api';
 	import { onMount } from 'svelte';
+	import { exePath, mods } from '../stores';
 
 	let loading = true;
 
 	onMount(async () => {
 		await invoke('initialise');
+		exePath.set(await invoke('get_exe_path'));
+		mods.set(await invoke('get_mods'));
 		loading = false;
 	});
 
