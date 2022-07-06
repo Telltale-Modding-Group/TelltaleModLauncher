@@ -6,13 +6,14 @@
 	import type { IMod } from '../../types';
 	import Mod from "../Mod.svelte";
 	import {link} from 'svelte-spa-router';
-	import { exePath } from "../stores.js";
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api';
 
 	let mods: Record<string, IMod> = {};
+	let exePath: string | undefined;
 
 	onMount(async () => {
+		exePath = await invoke('get_exe_path');
 		mods = await invoke('get_mods');
 		console.log(mods);
 	});
@@ -33,10 +34,10 @@
 		<a class="btn btn-sm" href="/settings" use:link>
 			<MdSettings />
 		</a>
-		<button class="btn btn-primary" disabled={!$exePath}>
+		<button class="btn btn-primary" disabled={!exePath}>
 			<MdPlayArrow />
 		</button>
-		<button class="btn btn-sm" disabled={!$exePath}>
+		<button class="btn btn-sm" disabled={!exePath}>
 			<MdFolderOpen />
 		</button>
 	</div>
