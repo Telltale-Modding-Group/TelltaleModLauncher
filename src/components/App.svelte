@@ -17,6 +17,7 @@
 
 	onMount(async () => {
 		await listen<BackendState>('STATE_UPDATE', ({ payload }) => {
+			console.log(payload);
 			exePath.set(payload.exe_path);
 			mods.set(payload.mods);
 		});

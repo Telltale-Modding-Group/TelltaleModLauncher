@@ -6,12 +6,17 @@
 	import Mod from "../Mod.svelte";
 	import {link} from 'svelte-spa-router';
 	import { exePath, mods } from '../../stores';
+	import { invoke } from '@tauri-apps/api';
+
+	const handleImportMod = async () => {
+		await invoke('import_mod');
+	};
 </script>
 
 <div class="flex flex-col h-full">
 	<div class="grow overflow-y-auto">
 		<div class="px-2 pt-2">
-			<button class="import">
+			<button class="import" on:click={handleImportMod}>
 				<MdAddCircle />
 			</button>
 		</div>

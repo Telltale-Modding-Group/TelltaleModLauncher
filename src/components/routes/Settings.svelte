@@ -4,12 +4,7 @@
 	import { invoke } from '@tauri-apps/api';
 	import { exePath } from '../../stores';
 
-	const handleSelectExePath = async () => {
-		const path = await invoke<string>('select_exe_path');
-
-		if (!path) return;
-		exePath.set(path);
-	};
+	const handleSelectExePath = () => invoke('select_exe_path');
 
 </script>
 
