@@ -3,10 +3,9 @@
 	import MdPlayArrow from 'svelte-icons/md/MdPlayArrow.svelte';
 	import MdFolderOpen from 'svelte-icons/md/MdFolderOpen.svelte';
 	import MdAddCircle from 'svelte-icons/md/MdAddCircle.svelte';
-	import type { IMod } from '../../types';
 	import Mod from "../Mod.svelte";
 	import {link} from 'svelte-spa-router';
-	import { exePath, mods } from '../../stores.js';
+	import { exePath, mods } from '../../stores';
 </script>
 
 <div class="flex flex-col h-full">

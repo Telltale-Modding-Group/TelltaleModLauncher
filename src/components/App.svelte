@@ -4,14 +4,23 @@
 	import Settings from './routes/Settings.svelte';
 	import { invoke } from '@tauri-apps/api';
 	import { onMount } from 'svelte';
+	import type { IMod } from '../types';
+	import { listen } from '@tauri-apps/api/event';
 	import { exePath, mods } from '../stores';
+
+	type BackendState = {
+		exe_path: string,
+		mods: Record<string, IMod>
+	};
 
 	let loading = true;
 
 	onMount(async () => {
+		await listen<BackendState>('STATE_UPDATE', ({ payload }) => {
+			exePath.set(payload.exe_path);
+			mods.set(payload.mods);
+		});
 		await invoke('initialise');
-		exePath.set(await invoke('get_exe_path'));
-		mods.set(await invoke('get_mods'));
 		loading = false;
 	});
 

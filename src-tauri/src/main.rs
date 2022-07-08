@@ -9,7 +9,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::sync::Mutex;
 use tauri::api::dialog::blocking::FileDialogBuilder;
-use tauri::{PathResolver, State, Wry};
+use tauri::{PathResolver, State};
 use uuid::Uuid;
 
 #[derive(Clone, Serialize)]
@@ -21,6 +21,7 @@ struct Mod {
     files: Vec<PathBuf>,
 }
 
+#[derive(Serialize)]
 struct InteriorAppState {
     exe_path: Option<String>,
     mods: HashMap<Uuid, Mod>,
@@ -37,13 +38,28 @@ fn get_config_path(resolver: &PathResolver) -> Option<PathBuf> {
     resolver.app_dir().map(|dir| dir.join("config.json"))
 }
 
-// I originally tried returning an Option<String>, but I was getting error[E0597]: `__tauri_message__` does not live long enough
-// A Result<Option<String, ()> is effectively the same thing anyway, so I'm going with this
+fn send_state_to_window(
+    window: &tauri::Window,
+    state: &InteriorAppState,
+) -> Result<(), tauri::Error> {
+    window.emit("STATE_UPDATE", state)
+}
+
+fn update_exe_path(
+    window: &tauri::Window,
+    state: &mut InteriorAppState,
+    exe_path: Option<String>,
+) -> Result<(), tauri::Error> {
+    state.exe_path = exe_path;
+    send_state_to_window(window, state)
+}
+
 #[tauri::command]
 async fn select_exe_path(
     state: State<'_, AppState>,
-    app: tauri::AppHandle<Wry>,
-) -> Result<Option<String>, String> {
+    app: tauri::AppHandle,
+    window: tauri::Window,
+) -> Result<(), String> {
     let path_option = FileDialogBuilder::new()
         .set_title("Select Executable")
         .add_filter("WDC.exe", &["exe"])
@@ -51,7 +67,7 @@ async fn select_exe_path(
         .map(|path| String::from(path.to_str().unwrap()));
 
     match path_option {
-        None => Ok(None),
+        None => Ok(()),
         Some(path) => {
             let config_path =
                 get_config_path(&app.path_resolver()).ok_or("Error getting config path")?;
@@ -68,49 +84,34 @@ async fn select_exe_path(
             .map_err(|e| e.to_string())?;
             fs::write(config_path, contents).map_err(|e| e.to_string())?;
 
-            state
-                .0
-                .lock()
-                .map_err(|_| "Error obtaining lock on global state")?
-                .exe_path = Some(path.clone());
+            let app_state = &mut *state.0.lock().map_err(|e| e.to_string())?;
 
-            Ok(Some(path))
+            update_exe_path(&window, app_state, Some(path)).map_err(|e| e.to_string())
         }
     }
 }
 
-#[tauri::command]
-fn get_exe_path(state_mutex: State<'_, AppState>) -> Result<Option<String>, String> {
-    state_mutex
-        .0
-        .lock()
-        .map(|state| state.exe_path.clone())
-        .map_err(|_| "Error obtaining lock on global state".into())
-}
+async fn import_mod() {}
 
 #[tauri::command]
-fn get_mods(state: State<'_, AppState>) -> Result<HashMap<Uuid, Mod>, ()> {
-    let app_state = state.0.lock().unwrap();
-
-    Ok(app_state.mods.clone())
-}
-
-#[tauri::command]
-async fn initialise(state: State<'_, AppState>, app: tauri::AppHandle<Wry>) -> Result<(), String> {
-    let mut app_state = state.0.lock().unwrap();
-
+async fn initialise(
+    state: State<'_, AppState>,
+    app: tauri::AppHandle,
+    window: tauri::Window,
+) -> Result<(), String> {
     let path = get_config_path(&app.path_resolver()).ok_or("Error getting config path")?;
     let contents_result = fs::read_to_string(path);
 
     match contents_result {
-        Err(_) => return Ok(()),
+        Err(_) => Ok(()),
         Ok(contents) => {
             let config: Config = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
-            app_state.exe_path = Some(config.exe_path);
+
+            let app_state = &mut *state.0.lock().map_err(|e| e.to_string())?;
+
+            update_exe_path(&window, app_state, Some(config.exe_path)).map_err(|e| e.to_string())
         }
     }
-
-    Ok(())
 }
 
 fn main() {
@@ -127,12 +128,7 @@ fn main() {
             tauri::Menu::default()
         })
         .manage(initial_state)
-        .invoke_handler(tauri::generate_handler![
-            initialise,
-            select_exe_path,
-            get_mods,
-            get_exe_path,
-        ])
+        .invoke_handler(tauri::generate_handler![initialise, select_exe_path,])
         .run(context)
         .expect("error while running tauri application");
 }
