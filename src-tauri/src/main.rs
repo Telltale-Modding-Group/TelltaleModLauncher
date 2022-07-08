@@ -137,77 +137,6 @@ async fn select_exe_path(
     }
 }
 
-#[tauri::command]
-async fn import_mod(
-    state: State<'_, AppState>,
-    app: tauri::AppHandle,
-    window: Window,
-) -> Result<bool, String> {
-    let path_option = FileDialogBuilder::new()
-        .set_title("Select Mod Archive")
-        .add_filter("Mod Archive", &["zip"])
-        .pick_file()
-        .map(|path| String::from(path.to_str().unwrap()));
-
-    match path_option {
-        None => Ok(false),
-        Some(path) => {
-            let file = fs::File::open(path).map_err(|e| e.to_string())?;
-            let mut archive = zip::ZipArchive::new(file).map_err(|e| e.to_string())?;
-
-            let mut mod_info: Option<ModInfo> = None;
-            let mut json_file_count = 0;
-
-            for i in 0..archive.len() {
-                let mut zip_file = archive.by_index(i).map_err(|e| e.to_string())?;
-                
-                let zip_file_name = &zip_file.name();
-
-                if zip_file_name.ends_with(".json") {
-                    json_file_count += 1;
-                }
-
-                let unexpected_file = !zip_file_name.ends_with(".lua") && !zip_file_name.ends_with(".ttarch2") && !zip_file_name.ends_with(".json");
-                let is_directory = zip_file.is_dir();
-                if unexpected_file || is_directory {
-                    return Err("Unexpected item or directory found in archive! Only .lua, .ttarch2, and .json files should be present!".into());
-                }
-
-                if zip_file_name.starts_with("modinfo") && zip_file_name.ends_with(".json") {
-                    let mut buffer = String::new();
-                    zip_file.read_to_string(&mut buffer).map_err(|e| e.to_string() + "read to string")?;
-
-                    let info: ModInfo = serde_json::from_str(&buffer).map_err(|e| e.to_string())?;
-
-                    mod_info = Some(info);
-                }
-            }
-
-            if json_file_count > 1 {
-                return Err("Multiple JSON files detected in selected archive, only one modinfo JSON file should be present!".into());
-            }
-
-            if mod_info.is_none() {
-                return Err("Unable to find modinfo file in selected archive!".into());
-            }
-
-            let info = mod_info.unwrap();
-            let mod_name = info.mod_display_name.replace(" ", "_").replace("/", "_");
-            let mod_version = info.mod_version;
-            let author = info.mod_author;
-            let mod_directory_name = format!("{mod_name}__v{mod_version}__{author}");
-
-            let mods_path = get_mods_path(&app).ok_or("Error getting mods path")?;
-            let extract_into = &mods_path.join(mod_directory_name);
-            fs::create_dir_all(extract_into).map_err(|e| e.to_string())?;
-
-            archive.extract(extract_into).map_err(|e| e.to_string())?;
-
-            Ok(true)
-        }
-    }
-}
-
 fn load_available_mod(mod_path: &PathBuf) -> Result<Mod, String> {
     let mod_path_display = mod_path.display();
     let files = fs::read_dir(mod_path).map_err(|e| e.to_string())?;
@@ -276,13 +205,88 @@ async fn initialise(
             let config: Config = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
             update_exe_path(&window, &state, Some(config.exe_path)).map_err(|e| e.to_string())?;
 
-            let mods = load_available_mods(&app).map_err(|e| e.to_string())?;
-            let mut mods_map: HashMap<Uuid, Mod> = HashMap::new();
-            for available_mod in mods {
-                mods_map.insert(Uuid::new_v4(), available_mod);
+            if let Ok(mods) = load_available_mods(&app) {
+                let mut mods_map: HashMap<Uuid, Mod> = HashMap::new();
+                for available_mod in mods {
+                    mods_map.insert(Uuid::new_v4(), available_mod);
+                }
+    
+                update_mods(&window, &state, mods_map).map_err(|e| e.to_string())?;
             }
 
-            update_mods(&window, &state, mods_map).map_err(|e| e.to_string())
+            Ok(())
+        }
+    }
+}
+
+#[tauri::command]
+async fn import_mod(
+    state: State<'_, AppState>,
+    app: tauri::AppHandle,
+    window: Window,
+) -> Result<bool, String> {
+    let path_option = FileDialogBuilder::new()
+        .set_title("Select Mod Archive")
+        .add_filter("Mod Archive", &["zip"])
+        .pick_file()
+        .map(|path| String::from(path.to_str().unwrap()));
+
+    match path_option {
+        None => Ok(false),
+        Some(path) => {
+            let file = fs::File::open(path).map_err(|e| e.to_string())?;
+            let mut archive = zip::ZipArchive::new(file).map_err(|e| e.to_string())?;
+
+            let mut mod_info: Option<ModInfo> = None;
+            let mut json_file_count = 0;
+
+            for i in 0..archive.len() {
+                let mut zip_file = archive.by_index(i).map_err(|e| e.to_string())?;
+                
+                let zip_file_name = &zip_file.name();
+
+                if zip_file_name.ends_with(".json") {
+                    json_file_count += 1;
+                }
+
+                let unexpected_file = !zip_file_name.ends_with(".lua") && !zip_file_name.ends_with(".ttarch2") && !zip_file_name.ends_with(".json");
+                let is_directory = zip_file.is_dir();
+                if unexpected_file || is_directory {
+                    return Err("Unexpected item or directory found in archive! Only .lua, .ttarch2, and .json files should be present!".into());
+                }
+
+                if zip_file_name.starts_with("modinfo") && zip_file_name.ends_with(".json") {
+                    let mut buffer = String::new();
+                    zip_file.read_to_string(&mut buffer).map_err(|e| e.to_string() + "read to string")?;
+
+                    let info: ModInfo = serde_json::from_str(&buffer).map_err(|e| e.to_string())?;
+
+                    mod_info = Some(info);
+                }
+            }
+
+            if json_file_count > 1 {
+                return Err("Multiple JSON files detected in selected archive, only one modinfo JSON file should be present!".into());
+            }
+
+            if mod_info.is_none() {
+                return Err("Unable to find modinfo file in selected archive!".into());
+            }
+
+            let info = mod_info.unwrap();
+            let mod_name = info.mod_display_name.replace(" ", "_").replace("/", "_");
+            let mod_version = info.mod_version;
+            let author = info.mod_author;
+            let mod_directory_name = format!("{mod_name}__v{mod_version}__{author}");
+
+            let mods_path = get_mods_path(&app).ok_or("Error getting mods path")?;
+            let extract_into = &mods_path.join(mod_directory_name);
+            fs::create_dir_all(extract_into).map_err(|e| e.to_string())?;
+
+            archive.extract(extract_into).map_err(|e| e.to_string())?;
+
+            initialise(state, app, window).await?;
+            Ok(true)
         }
     }
 }
